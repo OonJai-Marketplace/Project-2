@@ -710,54 +710,195 @@ const App = (function() {
 
   const menuData = {
     burgers: [
-      { id: 'b1', name: 'Burger Combo', price: 199000, desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', images: ["https://placehold.co/400x400/083c33/fff?text=Burger+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Burger+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Burger+Combo+3"] },
-      { id: 'b2', name: 'The Classic', price: 120000, desc: 'Meaty patty, lettuce, tomato, onion, pickles, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://placehold.co/400x400/083c33/fff?text=The+Classic+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Classic+2"] },
-      { id: 'b3', name: 'The Cheeser', price: 110000, desc: 'Meaty patty, tomato, garlic mayo, and cheese sauce. Served with a portion of fries.' },
-      { id: 'b4', name: 'The Bougie', price: 130000, desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.' },
-      { id: 'b5', name: 'French Fries', price: 60000, desc: 'Crispy golden French fries with seasoning.' }
+      { 
+        id: 'b1', name: 'Burger Combo', price: 199000, 
+        desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Burger+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Burger+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Burger+Combo+3"] 
+      },
+      { 
+        id: 'b2', name: 'The Classic', price: 120000, 
+        desc: 'Meaty patty, lettuce, tomato, onion, pickles, garlic mayo, and cheese sauce. Served with a portion of fries.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=The+Classic+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Classic+2", "https://placehold.co/400x400/4ade80/000?text=The+Classic+3"] 
+      },
+      { 
+        id: 'b3', name: 'The Cheeser', price: 110000, 
+        desc: 'Meaty patty, tomato, garlic mayo, and cheese sauce. Served with a portion of fries.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=The+Cheeser+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Cheeser+2", "https://placehold.co/400x400/4ade80/000?text=The+Cheeser+3"] 
+      },
+      { 
+        id: 'b4', name: 'The Bougie', price: 130000, 
+        desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=The+Bougie+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Bougie+2", "https://placehold.co/400x400/4ade80/000?text=The+Bougie+3"] 
+      },
+      { 
+        id: 'b5', name: 'French Fries', price: 60000, 
+        desc: 'Crispy golden French fries with seasoning.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=French+Fries+1", "https://placehold.co/400x400/1e4d40/fff?text=French+Fries+2", "https://placehold.co/400x400/4ade80/000?text=French+Fries+3"] 
+      }
     ],
     sandwiches: [
-      { id: 's1', name: 'Sandwich Combo', price: 180000, desc: 'Chickelicious sandwich + Paradise Point Refresher + Brownie.', images: ["https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Sandwich+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Sandwich+Combo+3"] },
-      { id: 's2', name: 'Mediterranean', price: 105000, desc: 'Falafel, hummus, tahini sauce, tomato, pickles, mint, and cilantro.' },
-      { id: 's3', name: 'Italian', price: 105000, desc: 'Grilled tofu, sautéed veggies, tomato, lettuce, onion, and basil mayo.' },
-      { id: 's4', name: 'Chickelicious', price: 110000, desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.' },
-      { id: 's5', name: 'Build Your Own Sandwich', price: 110000, desc: 'Customizable sandwich. Choose your sauces, veggies, and protein.', isCustom: true, maxSauces: 2, maxVeggies: 3, maxProteins: 1, specificProteins: 'sandwichProteins' }
+      { 
+        id: 's1', name: 'Sandwich Combo', price: 180000, 
+        desc: 'Chickelicious sandwich + Paradise Point Refresher + Brownie.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Sandwich+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Sandwich+Combo+3"] 
+      },
+      { 
+        id: 's2', name: 'Mediterranean', price: 105000, 
+        desc: 'Falafel, hummus, tahini sauce, tomato, pickles, mint, and cilantro.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Mediterranean+1", "https://placehold.co/400x400/1e4d40/fff?text=Mediterranean+2", "https://placehold.co/400x400/4ade80/000?text=Mediterranean+3"] 
+      },
+      { 
+        id: 's3', name: 'Italian', price: 105000, 
+        desc: 'Grilled tofu, sautéed veggies, tomato, lettuce, onion, and basil mayo.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Italian+1", "https://placehold.co/400x400/1e4d40/fff?text=Italian+2", "https://placehold.co/400x400/4ade80/000?text=Italian+3"] 
+      },
+      { 
+        id: 's4', name: 'Chickelicious', price: 110000, 
+        desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Chickelicious+1", "https://placehold.co/400x400/1e4d40/fff?text=Chickelicious+2", "https://placehold.co/400x400/4ade80/000?text=Chickelicious+3"] 
+      },
+      { 
+        id: 's5', name: 'Build Your Own Sandwich', price: 110000, 
+        desc: 'Customizable sandwich. Choose your sauces, veggies, and protein.', 
+        isCustom: true, maxSauces: 2, maxVeggies: 3, maxProteins: 1, specificProteins: 'sandwichProteins',
+        images: ["https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+1", "https://placehold.co/400x400/1e4d40/fff?text=BYO+Sandwich+2", "https://placehold.co/400x400/4ade80/000?text=BYO+Sandwich+3"] 
+      }
     ],
     texmex: [
-      { id: 'tx1', name: 'Tex-Mex Combo', price: 210000, desc: 'Tacos + Quesadilla + Mint Pineapple Refresher.', images: ["https://placehold.co/400x400/083c33/fff?text=TexMex+Combo"] },
-      { id: 'tx2', name: 'Quesadilla', price: 85000, desc: 'Flour tortilla with cheese sauce, ground meat, and pico de gallo.' },
-      { id: 'tx3', name: 'Tacos', price: 99000, desc: 'Two soft shell tacos filled with ground meat or black beans, grilled bell pepper, avocado, pico de gallo, and cheese sauce.' }
+      { 
+        id: 'tx1', name: 'Tex-Mex Combo', price: 210000, 
+        desc: 'Tacos + Quesadilla + Mint Pineapple Refresher.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Tex-Mex+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Tex-Mex+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Tex-Mex+Combo+3"] 
+      },
+      { 
+        id: 'tx2', name: 'Quesadilla', price: 85000, 
+        desc: 'Flour tortilla with cheese sauce, ground meat, and pico de gallo.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Quesadilla+1", "https://placehold.co/400x400/1e4d40/fff?text=Quesadilla+2", "https://placehold.co/400x400/4ade80/000?text=Quesadilla+3"] 
+      },
+      { 
+        id: 'tx3', name: 'Tacos', price: 99000, 
+        desc: 'Two soft shell tacos filled with ground meat or black beans, grilled bell pepper, avocado, pico de gallo, and cheese sauce.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Tacos+1", "https://placehold.co/400x400/1e4d40/fff?text=Tacos+2", "https://placehold.co/400x400/4ade80/000?text=Tacos+3"] 
+      }
     ],
     pasta: [
-      { id: 'p1', name: 'Miso-Seaweed', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic miso-seaweed fusion.', images: ["https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed"] },
-      { id: 'p2', name: 'Carbonara', price: 110000, desc: 'Rich and creamy pasta made with peanut butter and coconut milk.' },
-      { id: 'p3', name: 'Spaghetti', price: 110000, desc: 'Classic spaghetti packed with fresh, bright tomato goodness.' },
-      { id: 'p4', name: 'Pesto Pasta', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic basil pesto.' }
+      { 
+        id: 'p1', name: 'Miso-Seaweed', price: 110000, 
+        desc: 'Herb, fresh, vibrant, and aromatic miso-seaweed fusion.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed+1", "https://placehold.co/400x400/1e4d40/fff?text=Miso-Seaweed+2", "https://placehold.co/400x400/4ade80/000?text=Miso-Seaweed+3"] 
+      },
+      { 
+        id: 'p2', name: 'Carbonara', price: 110000, 
+        desc: 'Rich and creamy pasta made with peanut butter and coconut milk.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Carbonara+1", "https://placehold.co/400x400/1e4d40/fff?text=Carbonara+2", "https://placehold.co/400x400/4ade80/000?text=Carbonara+3"] 
+      },
+      { 
+        id: 'p3', name: 'Spaghetti', price: 110000, 
+        desc: 'Classic spaghetti packed with fresh, bright tomato goodness.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Spaghetti+1", "https://placehold.co/400x400/1e4d40/fff?text=Spaghetti+2", "https://placehold.co/400x400/4ade80/000?text=Spaghetti+3"] 
+      },
+      { 
+        id: 'p4', name: 'Pesto Pasta', price: 110000, 
+        desc: 'Herb, fresh, vibrant, and aromatic basil pesto.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Pesto+Pasta+1", "https://placehold.co/400x400/1e4d40/fff?text=Pesto+Pasta+2", "https://placehold.co/400x400/4ade80/000?text=Pesto+Pasta+3"] 
+      }
     ],
     bowl: [
-      { id: 'bw1', name: 'Bowl Combo', price: 160000, desc: 'Protein pack + Wellness drink of your choice + Banana bread.', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, needsWellnessChoice: true, images: ["https://placehold.co/400x400/083c33/fff?text=Bowl+Combo"] },
-      { id: 'bw2', name: 'Veggie Pack', price: 110000, desc: 'Includes 2 sauces, 5 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 5, maxProteins: 1 },
-      { id: 'bw3', name: 'Protein Pack', price: 115000, desc: 'Includes 2 sauces, 4 veggies, and 2 proteins. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2 },
-      { id: 'bw4', name: 'Mini Pack', price: 99000, desc: 'Includes 1 sauce, 3 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 1, maxVeggies: 3, maxProteins: 1 }
+      { 
+        id: 'bw1', name: 'Bowl Combo', price: 160000, 
+        desc: 'Protein pack + Wellness drink of your choice + Banana bread.', 
+        isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, needsWellnessChoice: true, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Bowl+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Bowl+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Bowl+Combo+3"] 
+      },
+      { 
+        id: 'bw2', name: 'Veggie Pack', price: 110000, 
+        desc: 'Includes 2 sauces, 5 veggies, and 1 protein. Additional choices (+7,000 Kip each).', 
+        isCustom: true, maxSauces: 2, maxVeggies: 5, maxProteins: 1, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Veggie+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Veggie+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Veggie+Pack+3"] 
+      },
+      { 
+        id: 'bw3', name: 'Protein Pack', price: 115000, 
+        desc: 'Includes 2 sauces, 4 veggies, and 2 proteins. Additional choices (+7,000 Kip each).', 
+        isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Protein+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Protein+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Protein+Pack+3"] 
+      },
+      { 
+        id: 'bw4', name: 'Mini Pack', price: 99000, 
+        desc: 'Includes 1 sauce, 3 veggies, and 1 protein. Additional choices (+7,000 Kip each).', 
+        isCustom: true, maxSauces: 1, maxVeggies: 3, maxProteins: 1, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Mini+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Mini+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Mini+Pack+3"] 
+      }
     ],
     smoothies: [
-      { id: 'sm1', name: 'Kickstart', price: 70000, desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Kickstart"] },
-      { id: 'sm2', name: 'Fruitopia', price: 70000, desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.' },
-      { id: 'sm3', name: 'Paradise Point', price: 70000, desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.' },
-      { id: 'sm4', name: 'Mary Jane', price: 80000, desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.' },
-      { id: 'sm5', name: "Reese's Cup", price: 70000, desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.' }
+      { 
+        id: 'sm1', name: 'Kickstart', price: 70000, 
+        desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Kickstart+1", "https://placehold.co/400x400/1e4d40/fff?text=Kickstart+2", "https://placehold.co/400x400/4ade80/000?text=Kickstart+3"] 
+      },
+      { 
+        id: 'sm2', name: 'Fruitopia', price: 70000, 
+        desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Fruitopia+1", "https://placehold.co/400x400/1e4d40/fff?text=Fruitopia+2", "https://placehold.co/400x400/4ade80/000?text=Fruitopia+3"] 
+      },
+      { 
+        id: 'sm3', name: 'Paradise Point', price: 70000, 
+        desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Paradise+Point+1", "https://placehold.co/400x400/1e4d40/fff?text=Paradise+Point+2", "https://placehold.co/400x400/4ade80/000?text=Paradise+Point+3"] 
+      },
+      { 
+        id: 'sm4', name: 'Mary Jane', price: 80000, 
+        desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Mary+Jane+1", "https://placehold.co/400x400/1e4d40/fff?text=Mary+Jane+2", "https://placehold.co/400x400/4ade80/000?text=Mary+Jane+3"] 
+      },
+      { 
+        id: 'sm5', name: "Reese's Cup", price: 70000, 
+        desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+1", "https://placehold.co/400x400/1e4d40/fff?text=Reeses+Cup+2", "https://placehold.co/400x400/4ade80/000?text=Reeses+Cup+3"] 
+      }
     ],
     refreshers: [
-      { id: 'r1', name: 'Mint Pineapple', price: 45000, desc: 'Fresh mint and pineapple.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple"] },
-      { id: 'r2', name: 'Strawberry Lemonade', price: 50000, desc: 'Strawberry and lime.', isCustom: true, isRefresher: true },
-      { id: 'r3', name: 'Sparkling Lime', price: 45000, desc: 'Sparkling water and fresh lime.', isCustom: true, isRefresher: true },
-      { id: 'r4', name: 'Honey Passion', price: 45000, desc: 'Passion fruit and honey.', isCustom: true, isRefresher: true }
+      { 
+        id: 'r1', name: 'Mint Pineapple', price: 45000, 
+        desc: 'Fresh mint and pineapple.', isCustom: true, isRefresher: true, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+1", "https://placehold.co/400x400/1e4d40/fff?text=Mint+Pineapple+2", "https://placehold.co/400x400/4ade80/000?text=Mint+Pineapple+3"] 
+      },
+      { 
+        id: 'r2', name: 'Strawberry Lemonade', price: 50000, 
+        desc: 'Strawberry and lime.', isCustom: true, isRefresher: true, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+1", "https://placehold.co/400x400/1e4d40/fff?text=Strawberry+Lemonade+2", "https://placehold.co/400x400/4ade80/000?text=Strawberry+Lemonade+3"] 
+      },
+      { 
+        id: 'r3', name: 'Sparkling Lime', price: 45000, 
+        desc: 'Sparkling water and fresh lime.', isCustom: true, isRefresher: true, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+1", "https://placehold.co/400x400/1e4d40/fff?text=Sparkling+Lime+2", "https://placehold.co/400x400/4ade80/000?text=Sparkling+Lime+3"] 
+      },
+      { 
+        id: 'r4', name: 'Honey Passion', price: 45000, 
+        desc: 'Passion fruit and honey.', isCustom: true, isRefresher: true, 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Honey+Passion+1", "https://placehold.co/400x400/1e4d40/fff?text=Honey+Passion+2", "https://placehold.co/400x400/4ade80/000?text=Honey+Passion+3"] 
+      }
     ],
     wellness: [
-      { id: 'w1', name: 'Summer in My Heart', price: 47000, desc: 'Pineapple juice and coconut water.', images: ["https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart"] },
-      { id: 'w2', name: 'Wish Upon a Heart', price: 47000, desc: 'Green apple, basil cordial, lemon juice, and tapioca pearls.' },
-      { id: 'w3', name: 'Heartwarmer', price: 47000, desc: 'Ginger and turmeric tea, lemon juice, honey, and chia seeds.' },
-      { id: 'w4', name: 'Red Heart', price: 47000, desc: 'Lemongrass cordial, lemon, beetroot, and apple.' }
+      { 
+        id: 'w1', name: 'Summer in My Heart', price: 47000, 
+        desc: 'Pineapple juice and coconut water.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Summer+in+My+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Summer+in+My+Heart+3"] 
+      },
+      { 
+        id: 'w2', name: 'Wish Upon a Heart', price: 47000, 
+        desc: 'Green apple, basil cordial, lemon juice, and tapioca pearls.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Wish+Upon+a+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Wish+Upon+a+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Wish+Upon+a+Heart+3"] 
+      },
+      { 
+        id: 'w3', name: 'Heartwarmer', price: 47000, 
+        desc: 'Ginger and turmeric tea, lemon juice, honey, and chia seeds.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Heartwarmer+1", "https://placehold.co/400x400/1e4d40/fff?text=Heartwarmer+2", "https://placehold.co/400x400/4ade80/000?text=Heartwarmer+3"] 
+      },
+      { 
+        id: 'w4', name: 'Red Heart', price: 47000, 
+        desc: 'Lemongrass cordial, lemon, beetroot, and apple.', 
+        images: ["https://placehold.co/400x400/083c33/fff?text=Red+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Red+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Red+Heart+3"] 
+      }
     ]
   };
 
