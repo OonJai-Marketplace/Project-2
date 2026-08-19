@@ -29,7 +29,7 @@
   <!-- ========================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- ========================================== -->
   <!--                CSS STYLESHEET              -->
@@ -155,8 +155,8 @@
     @media (min-width: 600px) { .product-card { flex-direction: row; justify-content: space-between; align-items: center; } }
     
     /* Product Image Thumbnails */
-    .product-image { width: 75px; height: 75px; border-radius: var(--border-radius-sm); object-fit: cover; border: 1px solid var(--border-color); flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-    .product-image:hover { transform: scale(1.05); border-color: var(--accent-green); }
+    .product-image { width: 75px; height: 75px; border-radius: var(--border-radius-sm); object-fit: cover; border: 1px solid var(--border-color); flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    .product-image:hover { transform: scale(1.04); border-color: var(--accent-green); }
 
     .product-info { flex: 1; }
     .product-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
@@ -201,7 +201,7 @@
     .btn-hope-action:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(74, 222, 128, 0.3); }
 
     /* --- 7. MODALS --- */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; padding: 14px; z-index: 2000; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 2000; }
     .modal-overlay.active { display: flex; }
     .modal-box { background: #041f1a; border: 1px solid var(--border-color); border-radius: var(--border-radius-main); max-width: 480px; width: 100%; max-height: 90%; overflow-y: auto; padding: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); position: relative; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -214,17 +214,152 @@
     .option-label:has(input:checked) { border-color: var(--accent-green); background: rgba(30, 77, 64, 0.5); color: var(--accent-green); font-weight: 700; }
     .modal-subtitle { font-size: 11px; color: var(--accent-green); margin-bottom: 10px; background: rgba(74, 222, 128, 0.1); padding: 6px 10px; border-radius: var(--border-radius-sm); }
 
-    /* IMAGE GALLERY MODAL SPECIFIC */
-    .gallery-modal-box { padding: 0; background: #010c0a; border: 1px solid var(--border-color); max-width: 440px; overflow: hidden; display: flex; flex-direction: column; }
-    .gallery-header-section { padding: 16px 40px 16px 16px; background: rgba(2, 18, 15, 0.95); border-bottom: 1px solid var(--border-color); }
-    .gallery-title { color: var(--accent-green); font-size: 18px; font-weight: 600; margin-bottom: 6px; font-family: 'Georgia', serif; }
-    .gallery-desc { color: var(--text-subhead); font-size: 13px; line-height: 1.4; font-family: 'Segoe UI', sans-serif; }
-    .square-carousel { aspect-ratio: 1/1 !important; border: none; border-radius: 0; box-shadow: none; flex-shrink: 0; }
-    .square-carousel .carousel-img { object-fit: cover; }
-    .gallery-close-btn { position: absolute; top: 12px; right: 12px; z-index: 20; background: rgba(0,0,0,0.5); color: white; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; }
-    .gallery-dots { position: absolute; bottom: 15px; left: 0; right: 0; margin: 0; z-index: 20; }
-    .gallery-dots .dot { background: rgba(255,255,255,0.4); box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-    .gallery-dots .dot.active { background: var(--accent-green); }
+    /* ======================================================= */
+    /*        PREMIUM LUXURY IMAGE GALLERY MODAL               */
+    /* ======================================================= */
+    .gallery-modal-box {
+      padding: 0;
+      background: radial-gradient(circle at 50% 0%, #083c33 0%, #041f1a 50%, #010c0a 100%);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      border-radius: 18px;
+      max-width: 440px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(74, 222, 128, 0.15);
+      position: relative;
+    }
+    
+    .gallery-header-section {
+      padding: 22px 20px 16px 20px;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(180deg, rgba(4, 31, 26, 0.8) 0%, rgba(1, 12, 10, 0.4) 100%);
+      border-bottom: 1px solid rgba(30, 77, 64, 0.6);
+    }
+    
+    .gallery-badge {
+      font-size: 9.5px;
+      color: #D4AF37;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    
+    .gallery-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: #f7f9f6;
+      font-size: 1.65rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+    
+    .gallery-divider {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+      margin: 0 auto 8px auto;
+    }
+
+    .gallery-desc {
+      color: var(--text-subhead);
+      font-size: 12.5px;
+      font-style: italic;
+      font-family: 'Georgia', serif;
+      line-height: 1.45;
+      padding: 0 10px;
+    }
+
+    .square-carousel {
+      aspect-ratio: 1/1 !important;
+      border: none;
+      border-radius: 0;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+      position: relative;
+      background: #010c0a;
+    }
+    
+    .square-carousel .carousel-img {
+      object-fit: cover;
+    }
+
+    .gallery-price-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 20;
+      background: rgba(1, 12, 10, 0.75);
+      border: 1px solid var(--accent-green);
+      backdrop-filter: blur(8px);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-green);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .gallery-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 25;
+      background: rgba(1, 12, 10, 0.7);
+      color: #cbd5e1;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .gallery-close-btn:hover {
+      background: var(--accent-green);
+      color: #010c0a;
+      border-color: var(--accent-green);
+      transform: scale(1.08);
+    }
+
+    .square-carousel .carousel-btn {
+      background: rgba(1, 12, 10, 0.65);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+      backdrop-filter: blur(6px);
+      padding: 10px 14px;
+    }
+    .square-carousel .carousel-btn:hover {
+      background: var(--accent-green);
+      color: var(--bg-dark);
+    }
+
+    .gallery-dots {
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      margin: 0;
+      z-index: 20;
+    }
+    .gallery-dots .dot {
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.8);
+      width: 7px;
+      height: 7px;
+    }
+    .gallery-dots .dot.active {
+      background: var(--accent-green);
+      transform: scale(1.3);
+    }
 
     /* --- 8. SHARED CAROUSEL STYLES (Used in Hope & Reviews) --- */
     .gallery-col { display: flex; flex-direction: column; align-items: center; width: 100%; }
@@ -235,7 +370,6 @@
     .carousel-container { position: relative; width: 100%; max-width: 100%; margin: 0 auto; border-radius: var(--border-radius-main); overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 8px 24px rgba(0,0,0,0.5); aspect-ratio: 16/9; }
     @media (min-width: 480px) { .carousel-container { max-width: 480px; } }
     
-    /* NO-SMOOTH class for invisible endless loop jumping */
     .carousel-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; height: 100%; }
     .carousel-track.no-smooth { scroll-behavior: auto !important; }
     .carousel-track::-webkit-scrollbar { display: none; }
@@ -245,7 +379,7 @@
     .carousel-btn:hover { background: var(--accent-green); color: var(--bg-dark); }
     .carousel-btn.prev { left: 10px; } .carousel-btn.next { right: 10px; }
     .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-    .dot { width: 8px; height: 8px; background: var(--border-color); border-radius: 50%; cursor: pointer; transition: background 0.3s ease; }
+    .dot { width: 8px; height: 8px; background: var(--border-color); border-radius: 50%; cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; }
     .dot.active { background: var(--accent-green); }
 
     /* --- 9. WORDS OF HOPE TAB SPECIFIC --- */
@@ -656,19 +790,29 @@
     </div>
   </div>
 
-  <!-- IMAGE GALLERY MODAL (Square, 1:1 Aspect Ratio) -->
+  <!-- REDESIGNED LUXURY IMAGE GALLERY MODAL -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
     <div class="modal-box gallery-modal-box">
+      <!-- Close Button -->
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
+      
+      <!-- Top Title & Description Section -->
       <div class="gallery-header-section">
+        <div class="gallery-badge">✦ Oon Jai Specialty ✦</div>
         <h3 class="gallery-title" id="galleryTitle"></h3>
+        <div class="gallery-divider"></div>
         <p class="gallery-desc" id="galleryDesc"></p>
       </div>
+      
+      <!-- 1:1 Square Auto-Scrolling Carousel -->
       <div class="carousel-container square-carousel">
-        <button class="carousel-btn prev" onclick="App.scrollCarousel('galleryCarouselTrack', -1)">&#10094;</button>
+        <div class="gallery-price-tag" id="galleryPrice"></div>
+        <button class="carousel-btn prev" onclick="App.scrollCarousel('galleryCarouselTrack', -1)" aria-label="Previous image">&#10094;</button>
         <div class="carousel-track" id="galleryCarouselTrack"></div>
-        <button class="carousel-btn next" onclick="App.scrollCarousel('galleryCarouselTrack', 1)">&#10095;</button>
+        <button class="carousel-btn next" onclick="App.scrollCarousel('galleryCarouselTrack', 1)" aria-label="Next image">&#10095;</button>
       </div>
+      
+      <!-- Dots Indicator -->
       <div class="carousel-dots gallery-dots" id="galleryCarouselDots" aria-hidden="true"></div>
     </div>
   </div>
@@ -693,13 +837,6 @@ const App = (function() {
   const EXTRA_ADDON_PRICE = 7000;
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw82CgCvJ6vcNC4IZ86-gDOkn9--L2w-DYVD-txuZ3rqzjmcDeHftf9KSjgYS2USezn/exec";
 
-  // DEFAULT DUMMY IMAGES for testing the gallery
-  const defaultDummyImages = [
-    "https://placehold.co/400x400/083c33/fff?text=Image+1",
-    "https://placehold.co/400x400/1e4d40/fff?text=Image+2",
-    "https://placehold.co/400x400/4ade80/000?text=Image+3"
-  ];
-
   const commonChoices = {
     veggies: ['Grilled mushrooms', 'Grilled bell peppers', 'Grilled eggplant', 'Caramelized onion', 'Microgreens', 'Avocado', 'Lettuce', 'Tomatoes', 'Onions', 'Carrots', 'Olives', 'Corn'],
     proteins: ['Beans', 'Sautéed tofu', 'Lemon chicken', 'Ground meat', 'Spicy sausage', 'Regular sausage', 'Falafel'],
@@ -710,195 +847,54 @@ const App = (function() {
 
   const menuData = {
     burgers: [
-      { 
-        id: 'b1', name: 'Burger Combo', price: 199000, 
-        desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Burger+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Burger+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Burger+Combo+3"] 
-      },
-      { 
-        id: 'b2', name: 'The Classic', price: 120000, 
-        desc: 'Meaty patty, lettuce, tomato, onion, pickles, garlic mayo, and cheese sauce. Served with a portion of fries.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=The+Classic+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Classic+2", "https://placehold.co/400x400/4ade80/000?text=The+Classic+3"] 
-      },
-      { 
-        id: 'b3', name: 'The Cheeser', price: 110000, 
-        desc: 'Meaty patty, tomato, garlic mayo, and cheese sauce. Served with a portion of fries.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=The+Cheeser+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Cheeser+2", "https://placehold.co/400x400/4ade80/000?text=The+Cheeser+3"] 
-      },
-      { 
-        id: 'b4', name: 'The Bougie', price: 130000, 
-        desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=The+Bougie+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Bougie+2", "https://placehold.co/400x400/4ade80/000?text=The+Bougie+3"] 
-      },
-      { 
-        id: 'b5', name: 'French Fries', price: 60000, 
-        desc: 'Crispy golden French fries with seasoning.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=French+Fries+1", "https://placehold.co/400x400/1e4d40/fff?text=French+Fries+2", "https://placehold.co/400x400/4ade80/000?text=French+Fries+3"] 
-      }
+      { id: 'b1', name: 'Burger Combo', price: 199000, desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', images: ["https://placehold.co/400x400/083c33/fff?text=Burger+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Burger+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Burger+Combo+3"] },
+      { id: 'b2', name: 'The Classic', price: 120000, desc: 'Meaty patty, lettuce, tomato, onion, pickles, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://placehold.co/400x400/083c33/fff?text=The+Classic+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Classic+2", "https://placehold.co/400x400/4ade80/000?text=The+Classic+3"] },
+      { id: 'b3', name: 'The Cheeser', price: 110000, desc: 'Meaty patty, tomato, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://placehold.co/400x400/083c33/fff?text=The+Cheeser+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Cheeser+2", "https://placehold.co/400x400/4ade80/000?text=The+Cheeser+3"] },
+      { id: 'b4', name: 'The Bougie', price: 130000, desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.', images: ["https://placehold.co/400x400/083c33/fff?text=The+Bougie+1", "https://placehold.co/400x400/1e4d40/fff?text=The+Bougie+2", "https://placehold.co/400x400/4ade80/000?text=The+Bougie+3"] },
+      { id: 'b5', name: 'French Fries', price: 60000, desc: 'Crispy golden French fries with seasoning.', images: ["https://placehold.co/400x400/083c33/fff?text=French+Fries+1", "https://placehold.co/400x400/1e4d40/fff?text=French+Fries+2", "https://placehold.co/400x400/4ade80/000?text=French+Fries+3"] }
     ],
     sandwiches: [
-      { 
-        id: 's1', name: 'Sandwich Combo', price: 180000, 
-        desc: 'Chickelicious sandwich + Paradise Point Refresher + Brownie.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Sandwich+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Sandwich+Combo+3"] 
-      },
-      { 
-        id: 's2', name: 'Mediterranean', price: 105000, 
-        desc: 'Falafel, hummus, tahini sauce, tomato, pickles, mint, and cilantro.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Mediterranean+1", "https://placehold.co/400x400/1e4d40/fff?text=Mediterranean+2", "https://placehold.co/400x400/4ade80/000?text=Mediterranean+3"] 
-      },
-      { 
-        id: 's3', name: 'Italian', price: 105000, 
-        desc: 'Grilled tofu, sautéed veggies, tomato, lettuce, onion, and basil mayo.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Italian+1", "https://placehold.co/400x400/1e4d40/fff?text=Italian+2", "https://placehold.co/400x400/4ade80/000?text=Italian+3"] 
-      },
-      { 
-        id: 's4', name: 'Chickelicious', price: 110000, 
-        desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Chickelicious+1", "https://placehold.co/400x400/1e4d40/fff?text=Chickelicious+2", "https://placehold.co/400x400/4ade80/000?text=Chickelicious+3"] 
-      },
-      { 
-        id: 's5', name: 'Build Your Own Sandwich', price: 110000, 
-        desc: 'Customizable sandwich. Choose your sauces, veggies, and protein.', 
-        isCustom: true, maxSauces: 2, maxVeggies: 3, maxProteins: 1, specificProteins: 'sandwichProteins',
-        images: ["https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+1", "https://placehold.co/400x400/1e4d40/fff?text=BYO+Sandwich+2", "https://placehold.co/400x400/4ade80/000?text=BYO+Sandwich+3"] 
-      }
+      { id: 's1', name: 'Sandwich Combo', price: 180000, desc: 'Chickelicious sandwich + Paradise Point Refresher + Brownie.', images: ["https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Sandwich+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Sandwich+Combo+3"] },
+      { id: 's2', name: 'Mediterranean', price: 105000, desc: 'Falafel, hummus, tahini sauce, tomato, pickles, mint, and cilantro.', images: ["https://placehold.co/400x400/083c33/fff?text=Mediterranean+1", "https://placehold.co/400x400/1e4d40/fff?text=Mediterranean+2", "https://placehold.co/400x400/4ade80/000?text=Mediterranean+3"] },
+      { id: 's3', name: 'Italian', price: 105000, desc: 'Grilled tofu, sautéed veggies, tomato, lettuce, onion, and basil mayo.', images: ["https://placehold.co/400x400/083c33/fff?text=Italian+1", "https://placehold.co/400x400/1e4d40/fff?text=Italian+2", "https://placehold.co/400x400/4ade80/000?text=Italian+3"] },
+      { id: 's4', name: 'Chickelicious', price: 110000, desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.', images: ["https://placehold.co/400x400/083c33/fff?text=Chickelicious+1", "https://placehold.co/400x400/1e4d40/fff?text=Chickelicious+2", "https://placehold.co/400x400/4ade80/000?text=Chickelicious+3"] },
+      { id: 's5', name: 'Build Your Own Sandwich', price: 110000, desc: 'Customizable sandwich. Choose your sauces, veggies, and protein.', isCustom: true, maxSauces: 2, maxVeggies: 3, maxProteins: 1, specificProteins: 'sandwichProteins', images: ["https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+1", "https://placehold.co/400x400/1e4d40/fff?text=BYO+Sandwich+2", "https://placehold.co/400x400/4ade80/000?text=BYO+Sandwich+3"] }
     ],
     texmex: [
-      { 
-        id: 'tx1', name: 'Tex-Mex Combo', price: 210000, 
-        desc: 'Tacos + Quesadilla + Mint Pineapple Refresher.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Tex-Mex+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Tex-Mex+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Tex-Mex+Combo+3"] 
-      },
-      { 
-        id: 'tx2', name: 'Quesadilla', price: 85000, 
-        desc: 'Flour tortilla with cheese sauce, ground meat, and pico de gallo.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Quesadilla+1", "https://placehold.co/400x400/1e4d40/fff?text=Quesadilla+2", "https://placehold.co/400x400/4ade80/000?text=Quesadilla+3"] 
-      },
-      { 
-        id: 'tx3', name: 'Tacos', price: 99000, 
-        desc: 'Two soft shell tacos filled with ground meat or black beans, grilled bell pepper, avocado, pico de gallo, and cheese sauce.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Tacos+1", "https://placehold.co/400x400/1e4d40/fff?text=Tacos+2", "https://placehold.co/400x400/4ade80/000?text=Tacos+3"] 
-      }
+      { id: 'tx1', name: 'Tex-Mex Combo', price: 210000, desc: 'Tacos + Quesadilla + Mint Pineapple Refresher.', images: ["https://placehold.co/400x400/083c33/fff?text=Tex-Mex+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Tex-Mex+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Tex-Mex+Combo+3"] },
+      { id: 'tx2', name: 'Quesadilla', price: 85000, desc: 'Flour tortilla with cheese sauce, ground meat, and pico de gallo.', images: ["https://placehold.co/400x400/083c33/fff?text=Quesadilla+1", "https://placehold.co/400x400/1e4d40/fff?text=Quesadilla+2", "https://placehold.co/400x400/4ade80/000?text=Quesadilla+3"] },
+      { id: 'tx3', name: 'Tacos', price: 99000, desc: 'Two soft shell tacos filled with ground meat or black beans, grilled bell pepper, avocado, pico de gallo, and cheese sauce.', images: ["https://placehold.co/400x400/083c33/fff?text=Tacos+1", "https://placehold.co/400x400/1e4d40/fff?text=Tacos+2", "https://placehold.co/400x400/4ade80/000?text=Tacos+3"] }
     ],
     pasta: [
-      { 
-        id: 'p1', name: 'Miso-Seaweed', price: 110000, 
-        desc: 'Herb, fresh, vibrant, and aromatic miso-seaweed fusion.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed+1", "https://placehold.co/400x400/1e4d40/fff?text=Miso-Seaweed+2", "https://placehold.co/400x400/4ade80/000?text=Miso-Seaweed+3"] 
-      },
-      { 
-        id: 'p2', name: 'Carbonara', price: 110000, 
-        desc: 'Rich and creamy pasta made with peanut butter and coconut milk.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Carbonara+1", "https://placehold.co/400x400/1e4d40/fff?text=Carbonara+2", "https://placehold.co/400x400/4ade80/000?text=Carbonara+3"] 
-      },
-      { 
-        id: 'p3', name: 'Spaghetti', price: 110000, 
-        desc: 'Classic spaghetti packed with fresh, bright tomato goodness.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Spaghetti+1", "https://placehold.co/400x400/1e4d40/fff?text=Spaghetti+2", "https://placehold.co/400x400/4ade80/000?text=Spaghetti+3"] 
-      },
-      { 
-        id: 'p4', name: 'Pesto Pasta', price: 110000, 
-        desc: 'Herb, fresh, vibrant, and aromatic basil pesto.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Pesto+Pasta+1", "https://placehold.co/400x400/1e4d40/fff?text=Pesto+Pasta+2", "https://placehold.co/400x400/4ade80/000?text=Pesto+Pasta+3"] 
-      }
+      { id: 'p1', name: 'Miso-Seaweed', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic miso-seaweed fusion.', images: ["https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed+1", "https://placehold.co/400x400/1e4d40/fff?text=Miso-Seaweed+2", "https://placehold.co/400x400/4ade80/000?text=Miso-Seaweed+3"] },
+      { id: 'p2', name: 'Carbonara', price: 110000, desc: 'Rich and creamy pasta made with peanut butter and coconut milk.', images: ["https://placehold.co/400x400/083c33/fff?text=Carbonara+1", "https://placehold.co/400x400/1e4d40/fff?text=Carbonara+2", "https://placehold.co/400x400/4ade80/000?text=Carbonara+3"] },
+      { id: 'p3', name: 'Spaghetti', price: 110000, desc: 'Classic spaghetti packed with fresh, bright tomato goodness.', images: ["https://placehold.co/400x400/083c33/fff?text=Spaghetti+1", "https://placehold.co/400x400/1e4d40/fff?text=Spaghetti+2", "https://placehold.co/400x400/4ade80/000?text=Spaghetti+3"] },
+      { id: 'p4', name: 'Pesto Pasta', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic basil pesto.', images: ["https://placehold.co/400x400/083c33/fff?text=Pesto+Pasta+1", "https://placehold.co/400x400/1e4d40/fff?text=Pesto+Pasta+2", "https://placehold.co/400x400/4ade80/000?text=Pesto+Pasta+3"] }
     ],
     bowl: [
-      { 
-        id: 'bw1', name: 'Bowl Combo', price: 160000, 
-        desc: 'Protein pack + Wellness drink of your choice + Banana bread.', 
-        isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, needsWellnessChoice: true, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Bowl+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Bowl+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Bowl+Combo+3"] 
-      },
-      { 
-        id: 'bw2', name: 'Veggie Pack', price: 110000, 
-        desc: 'Includes 2 sauces, 5 veggies, and 1 protein. Additional choices (+7,000 Kip each).', 
-        isCustom: true, maxSauces: 2, maxVeggies: 5, maxProteins: 1, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Veggie+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Veggie+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Veggie+Pack+3"] 
-      },
-      { 
-        id: 'bw3', name: 'Protein Pack', price: 115000, 
-        desc: 'Includes 2 sauces, 4 veggies, and 2 proteins. Additional choices (+7,000 Kip each).', 
-        isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Protein+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Protein+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Protein+Pack+3"] 
-      },
-      { 
-        id: 'bw4', name: 'Mini Pack', price: 99000, 
-        desc: 'Includes 1 sauce, 3 veggies, and 1 protein. Additional choices (+7,000 Kip each).', 
-        isCustom: true, maxSauces: 1, maxVeggies: 3, maxProteins: 1, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Mini+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Mini+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Mini+Pack+3"] 
-      }
+      { id: 'bw1', name: 'Bowl Combo', price: 160000, desc: 'Protein pack + Wellness drink of your choice + Banana bread.', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, needsWellnessChoice: true, images: ["https://placehold.co/400x400/083c33/fff?text=Bowl+Combo+1", "https://placehold.co/400x400/1e4d40/fff?text=Bowl+Combo+2", "https://placehold.co/400x400/4ade80/000?text=Bowl+Combo+3"] },
+      { id: 'bw2', name: 'Veggie Pack', price: 110000, desc: 'Includes 2 sauces, 5 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 5, maxProteins: 1, images: ["https://placehold.co/400x400/083c33/fff?text=Veggie+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Veggie+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Veggie+Pack+3"] },
+      { id: 'bw3', name: 'Protein Pack', price: 115000, desc: 'Includes 2 sauces, 4 veggies, and 2 proteins. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, images: ["https://placehold.co/400x400/083c33/fff?text=Protein+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Protein+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Protein+Pack+3"] },
+      { id: 'bw4', name: 'Mini Pack', price: 99000, desc: 'Includes 1 sauce, 3 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 1, maxVeggies: 3, maxProteins: 1, images: ["https://placehold.co/400x400/083c33/fff?text=Mini+Pack+1", "https://placehold.co/400x400/1e4d40/fff?text=Mini+Pack+2", "https://placehold.co/400x400/4ade80/000?text=Mini+Pack+3"] }
     ],
     smoothies: [
-      { 
-        id: 'sm1', name: 'Kickstart', price: 70000, 
-        desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Kickstart+1", "https://placehold.co/400x400/1e4d40/fff?text=Kickstart+2", "https://placehold.co/400x400/4ade80/000?text=Kickstart+3"] 
-      },
-      { 
-        id: 'sm2', name: 'Fruitopia', price: 70000, 
-        desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Fruitopia+1", "https://placehold.co/400x400/1e4d40/fff?text=Fruitopia+2", "https://placehold.co/400x400/4ade80/000?text=Fruitopia+3"] 
-      },
-      { 
-        id: 'sm3', name: 'Paradise Point', price: 70000, 
-        desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Paradise+Point+1", "https://placehold.co/400x400/1e4d40/fff?text=Paradise+Point+2", "https://placehold.co/400x400/4ade80/000?text=Paradise+Point+3"] 
-      },
-      { 
-        id: 'sm4', name: 'Mary Jane', price: 80000, 
-        desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Mary+Jane+1", "https://placehold.co/400x400/1e4d40/fff?text=Mary+Jane+2", "https://placehold.co/400x400/4ade80/000?text=Mary+Jane+3"] 
-      },
-      { 
-        id: 'sm5', name: "Reese's Cup", price: 70000, 
-        desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+1", "https://placehold.co/400x400/1e4d40/fff?text=Reeses+Cup+2", "https://placehold.co/400x400/4ade80/000?text=Reeses+Cup+3"] 
-      }
+      { id: 'sm1', name: 'Kickstart', price: 70000, desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Kickstart+1", "https://placehold.co/400x400/1e4d40/fff?text=Kickstart+2", "https://placehold.co/400x400/4ade80/000?text=Kickstart+3"] },
+      { id: 'sm2', name: 'Fruitopia', price: 70000, desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Fruitopia+1", "https://placehold.co/400x400/1e4d40/fff?text=Fruitopia+2", "https://placehold.co/400x400/4ade80/000?text=Fruitopia+3"] },
+      { id: 'sm3', name: 'Paradise Point', price: 70000, desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Paradise+Point+1", "https://placehold.co/400x400/1e4d40/fff?text=Paradise+Point+2", "https://placehold.co/400x400/4ade80/000?text=Paradise+Point+3"] },
+      { id: 'sm4', name: 'Mary Jane', price: 80000, desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Mary+Jane+1", "https://placehold.co/400x400/1e4d40/fff?text=Mary+Jane+2", "https://placehold.co/400x400/4ade80/000?text=Mary+Jane+3"] },
+      { id: 'sm5', name: "Reese's Cup", price: 70000, desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+1", "https://placehold.co/400x400/1e4d40/fff?text=Reeses+Cup+2", "https://placehold.co/400x400/4ade80/000?text=Reeses+Cup+3"] }
     ],
     refreshers: [
-      { 
-        id: 'r1', name: 'Mint Pineapple', price: 45000, 
-        desc: 'Fresh mint and pineapple.', isCustom: true, isRefresher: true, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+1", "https://placehold.co/400x400/1e4d40/fff?text=Mint+Pineapple+2", "https://placehold.co/400x400/4ade80/000?text=Mint+Pineapple+3"] 
-      },
-      { 
-        id: 'r2', name: 'Strawberry Lemonade', price: 50000, 
-        desc: 'Strawberry and lime.', isCustom: true, isRefresher: true, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+1", "https://placehold.co/400x400/1e4d40/fff?text=Strawberry+Lemonade+2", "https://placehold.co/400x400/4ade80/000?text=Strawberry+Lemonade+3"] 
-      },
-      { 
-        id: 'r3', name: 'Sparkling Lime', price: 45000, 
-        desc: 'Sparkling water and fresh lime.', isCustom: true, isRefresher: true, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+1", "https://placehold.co/400x400/1e4d40/fff?text=Sparkling+Lime+2", "https://placehold.co/400x400/4ade80/000?text=Sparkling+Lime+3"] 
-      },
-      { 
-        id: 'r4', name: 'Honey Passion', price: 45000, 
-        desc: 'Passion fruit and honey.', isCustom: true, isRefresher: true, 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Honey+Passion+1", "https://placehold.co/400x400/1e4d40/fff?text=Honey+Passion+2", "https://placehold.co/400x400/4ade80/000?text=Honey+Passion+3"] 
-      }
+      { id: 'r1', name: 'Mint Pineapple', price: 45000, desc: 'Fresh mint and pineapple.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+1", "https://placehold.co/400x400/1e4d40/fff?text=Mint+Pineapple+2", "https://placehold.co/400x400/4ade80/000?text=Mint+Pineapple+3"] },
+      { id: 'r2', name: 'Strawberry Lemonade', price: 50000, desc: 'Strawberry and lime.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+1", "https://placehold.co/400x400/1e4d40/fff?text=Strawberry+Lemonade+2", "https://placehold.co/400x400/4ade80/000?text=Strawberry+Lemonade+3"] },
+      { id: 'r3', name: 'Sparkling Lime', price: 45000, desc: 'Sparkling water and fresh lime.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+1", "https://placehold.co/400x400/1e4d40/fff?text=Sparkling+Lime+2", "https://placehold.co/400x400/4ade80/000?text=Sparkling+Lime+3"] },
+      { id: 'r4', name: 'Honey Passion', price: 45000, desc: 'Passion fruit and honey.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Honey+Passion+1", "https://placehold.co/400x400/1e4d40/fff?text=Honey+Passion+2", "https://placehold.co/400x400/4ade80/000?text=Honey+Passion+3"] }
     ],
     wellness: [
-      { 
-        id: 'w1', name: 'Summer in My Heart', price: 47000, 
-        desc: 'Pineapple juice and coconut water.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Summer+in+My+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Summer+in+My+Heart+3"] 
-      },
-      { 
-        id: 'w2', name: 'Wish Upon a Heart', price: 47000, 
-        desc: 'Green apple, basil cordial, lemon juice, and tapioca pearls.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Wish+Upon+a+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Wish+Upon+a+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Wish+Upon+a+Heart+3"] 
-      },
-      { 
-        id: 'w3', name: 'Heartwarmer', price: 47000, 
-        desc: 'Ginger and turmeric tea, lemon juice, honey, and chia seeds.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Heartwarmer+1", "https://placehold.co/400x400/1e4d40/fff?text=Heartwarmer+2", "https://placehold.co/400x400/4ade80/000?text=Heartwarmer+3"] 
-      },
-      { 
-        id: 'w4', name: 'Red Heart', price: 47000, 
-        desc: 'Lemongrass cordial, lemon, beetroot, and apple.', 
-        images: ["https://placehold.co/400x400/083c33/fff?text=Red+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Red+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Red+Heart+3"] 
-      }
+      { id: 'w1', name: 'Summer in My Heart', price: 47000, desc: 'Pineapple juice and coconut water.', images: ["https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Summer+in+My+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Summer+in+My+Heart+3"] },
+      { id: 'w2', name: 'Wish Upon a Heart', price: 47000, desc: 'Green apple, basil cordial, lemon juice, and tapioca pearls.', images: ["https://placehold.co/400x400/083c33/fff?text=Wish+Upon+a+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Wish+Upon+a+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Wish+Upon+a+Heart+3"] },
+      { id: 'w3', name: 'Heartwarmer', price: 47000, desc: 'Ginger and turmeric tea, lemon juice, honey, and chia seeds.', images: ["https://placehold.co/400x400/083c33/fff?text=Heartwarmer+1", "https://placehold.co/400x400/1e4d40/fff?text=Heartwarmer+2", "https://placehold.co/400x400/4ade80/000?text=Heartwarmer+3"] },
+      { id: 'w4', name: 'Red Heart', price: 47000, desc: 'Lemongrass cordial, lemon, beetroot, and apple.', images: ["https://placehold.co/400x400/083c33/fff?text=Red+Heart+1", "https://placehold.co/400x400/1e4d40/fff?text=Red+Heart+2", "https://placehold.co/400x400/4ade80/000?text=Red+Heart+3"] }
     ]
   };
 
@@ -966,7 +962,7 @@ const App = (function() {
       const diffX = touchEndX - touchStartX;
       const diffY = Math.abs(touchEndY - touchStartY);
       
-      // Swipe horizontal must be > 50px and vertical must be < 50px (prevent scrolling interference)
+      // Horizontal swipe > 50px and vertical scroll < 50px
       if (Math.abs(diffX) > 50 && diffY < 50) {
         const currentTab = document.querySelector('.nav-tab.active').dataset.tab;
         let idx = mainTabs.indexOf(currentTab);
@@ -981,7 +977,7 @@ const App = (function() {
 
   // --- CAROUSEL SYSTEM ---
   function makeScrollableDraggable(ele, trackId, isVertical = false) {
-    if (ele.dataset.dragAttached) return; // Prevent attaching multiple times
+    if (ele.dataset.dragAttached) return;
     let pos = { top: 0, left: 0, x: 0, y: 0 }, isDragging = false;
     const mouseDownHandler = (e) => {
       isDragging = true; ele.style.cursor = 'grabbing'; ele.style.userSelect = 'none';
@@ -1043,7 +1039,6 @@ const App = (function() {
     // Initialize position without smooth scrolling to the first real slide
     track.classList.add('no-smooth');
     track.scrollLeft = track.clientWidth;
-    // Force DOM reflow
     void track.offsetWidth;
     track.classList.remove('no-smooth');
 
@@ -1055,13 +1050,13 @@ const App = (function() {
       // Hit the first clone (scrolling left past beginning)
       if (track.scrollLeft === 0) {
         track.classList.add('no-smooth');
-        track.scrollLeft = maxScroll - track.clientWidth; // jump to last real slide
+        track.scrollLeft = maxScroll - track.clientWidth;
         track.classList.remove('no-smooth');
       } 
       // Hit the last clone (scrolling right past end)
-      else if (track.scrollLeft >= maxScroll - 1) { // -1 for subpixel safety
+      else if (track.scrollLeft >= maxScroll - 1) {
         track.classList.add('no-smooth');
-        track.scrollLeft = track.clientWidth; // jump to first real slide
+        track.scrollLeft = track.clientWidth;
         track.classList.remove('no-smooth');
       }
 
@@ -1202,9 +1197,7 @@ const App = (function() {
       const actionBtn = item.isCustom ? `<button class="add-btn" onclick="App.openCustomModal('${currentCategory}', '${item.id}')">Customize</button>`
                                       : `<button class="add-btn" onclick="App.addMenuItemToCart('${currentCategory}', '${item.id}')">Add +</button>`;
       
-      // Determine Thumbnail
-      const imageList = item.images && item.images.length > 0 ? item.images : defaultDummyImages;
-      const thumbnailSrc = imageList[0];
+      const thumbnailSrc = item.images && item.images.length > 0 ? item.images[0] : "https://placehold.co/400x400/083c33/fff?text=Oon+Jai";
       const imageHtml = `<img src="${thumbnailSrc}" class="product-image" alt="${item.name}" loading="lazy" onclick="App.openGallery('${currentCategory}', '${item.id}')" aria-label="View images for ${item.name}">`;
 
       card.innerHTML = `
@@ -1349,11 +1342,11 @@ const App = (function() {
       const item = menuData[catKey].find(i => i.id === itemId);
       if (!item) return;
       
-      // Populate Details
       document.getElementById('galleryTitle').innerText = item.name;
       document.getElementById('galleryDesc').innerText = item.desc;
+      document.getElementById('galleryPrice').innerText = formatKip(item.price);
       
-      const imageList = item.images && item.images.length > 0 ? item.images : defaultDummyImages;
+      const imageList = item.images && item.images.length > 0 ? item.images : ["https://placehold.co/400x400/083c33/fff?text=Oon+Jai"];
       setupCarousel('galleryCarouselTrack', 'galleryCarouselDots', imageList);
       
       const modal = document.getElementById('galleryModal');
