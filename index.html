@@ -954,15 +954,20 @@
     </div>
   </div>
 
-  <!-- THEMED NOTIFICATION MODALS -->
+  <!-- THEMED NOTIFICATION MODALS (UPDATED FOR DIRECT APP LAUNCH) -->
   <div class="modal-overlay" id="notificationModal" style="z-index: 2000;" role="alertdialog" aria-modal="true" aria-labelledby="notifTitle" aria-describedby="notifMessage" onclick="if(event.target === this) App.closeNotification()">
     <div class="modal-box" style="max-width: 320px; text-align: center; padding: 20px;">
       <h3 class="modal-title" id="notifTitle" style="margin-bottom: 12px;">Notification</h3>
       <p id="notifMessage" style="font-size: 13px; color: var(--text-subhead); margin-bottom: 20px; line-height: 1.5; white-space: pre-wrap;"></p>
-      <div id="notifAlertAction"><button class="add-btn" style="width: 100%;" onclick="App.closeNotification()">OK</button></div>
+      
+      <div id="notifAlertAction">
+        <button class="add-btn" style="width: 100%;" onclick="App.closeNotification()">OK</button>
+      </div>
+      
       <div id="notifConfirmActions" style="display: none; gap: 10px;">
         <button class="cat-btn" style="flex: 1; justify-content: center;" id="btnNotifCancel">Cancel</button>
-        <button class="add-btn" style="flex: 1;" id="btnNotifProceed">Proceed</button>
+        <!-- The Proceed button is now a true hyperlink to trigger Apple's Universal Links natively -->
+        <a class="add-btn" style="flex: 1; display:flex; align-items:center; justify-content:center; text-decoration:none; box-sizing:border-box;" id="btnNotifProceed" href="javascript:void(0)">Proceed</a>
       </div>
     </div>
   </div>
@@ -1204,6 +1209,7 @@ const App = (function() {
     observer.observe(cartSection);
   }
 
+  // --- UPDATED (STRICTER) SWIPE LOGIC ---
   function setupTabSwiping() {
     const appRoot = document.getElementById('appRoot');
     appRoot.addEventListener('touchstart', e => {
@@ -1218,9 +1224,14 @@ const App = (function() {
       touchEndY = e.changedTouches[0].screenY;
       
       const diffX = touchEndX - touchStartX;
-      const diffY = Math.abs(touchEndY - touchStartY);
+      const diffY = touchEndY - touchStartY;
+      const absX = Math.abs(diffX);
+      const absY = Math.abs(diffY);
       
-      if (Math.abs(diffX) > 50 && diffY < 50) {
+      // Strict swipe condition: 
+      // 1. Horizontal distance must be greater than 80px.
+      // 2. Horizontal distance must be at least 2.5x the vertical distance.
+      if (absX > 80 && absX > absY * 2.5) {
         const currentTab = document.querySelector('.nav-tab.active').dataset.tab;
         let idx = mainTabs.indexOf(currentTab);
         if (diffX < 0 && idx < mainTabs.length - 1) { 
@@ -1831,19 +1842,33 @@ const App = (function() {
       document.getElementById('orderTypeErrorMsg').style.display = 'none';
     },
 
+    /* --- IOS-SAFE APP REDIRECT FIXES --- */
     checkoutWA: function() {
       const msg = this._buildOrderMsg();
-      if (msg) window.location.href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
+      if (!msg) return;
+      
+      const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
+      const link = document.createElement('a');
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
 
     checkoutMessenger: function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
 
+      const url = `https://m.me/${MESSENGER_USERNAME}`;
+
       const proceedToMessenger = () => {
-        this.triggerConfirm("Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", "Order Ready! 📋", (proceed) => {
-          if (proceed) window.location.href = `https://m.me/${MESSENGER_USERNAME}`;
-        }, true);
+        // We pass the URL into the triggerConfirm function so it sets up the exact <a> tag internally
+        this.triggerConfirm(
+          "Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", 
+          "Order Ready! 📋", 
+          (proceed) => { /* Navigation is handled natively by the HTML <a> element we setup */ }, 
+          url
+        );
       };
 
       if (navigator.clipboard && window.isSecureContext) {
@@ -1890,27 +1915,53 @@ const App = (function() {
     },
 
     triggerAlert: function(message, title) {
-      document.getElementById('notifTitle').innerText = title; document.getElementById('notifMessage').innerText = message;
-      document.getElementById('notifAlertAction').style.display = 'block'; document.getElementById('notifConfirmActions').style.display = 'none';
+      document.getElementById('notifTitle').innerText = title; 
+      document.getElementById('notifMessage').innerText = message;
+      document.getElementById('notifAlertAction').style.display = 'block'; 
+      document.getElementById('notifConfirmActions').style.display = 'none';
       const m = document.getElementById('notificationModal'); 
       setScrollLock(true);
       m.classList.add('active'); 
       trapFocus(m);
     },
-    triggerConfirm: function(message, title, callback, isMessenger = false) {
-      document.getElementById('notifTitle').innerText = title; document.getElementById('notifMessage').innerText = message;
-      document.getElementById('notifAlertAction').style.display = 'none'; document.getElementById('notifConfirmActions').style.display = 'flex';
+    
+    triggerConfirm: function(message, title, callback, redirectUrl = null) {
+      document.getElementById('notifTitle').innerText = title; 
+      document.getElementById('notifMessage').innerText = message;
+      document.getElementById('notifAlertAction').style.display = 'none'; 
+      document.getElementById('notifConfirmActions').style.display = 'flex';
+      
       const m = document.getElementById('notificationModal'); 
       setScrollLock(true);
       m.classList.add('active'); 
       trapFocus(m);
       
       const btnProceed = document.getElementById('btnNotifProceed');
-      btnProceed.innerText = isMessenger ? "Open Messenger" : "Proceed";
       
-      document.getElementById('btnNotifCancel').onclick = () => { this.closeNotification(); callback(false); };
-      btnProceed.onclick = () => { this.closeNotification(); btnProceed.innerText = "Proceed"; callback(true); };
+      // If we need to bypass Apple's blocks, we inject the href directly into the <a> tag
+      if (redirectUrl) {
+        btnProceed.innerText = "Open App";
+        btnProceed.href = redirectUrl;
+        btnProceed.onclick = () => { 
+          this.closeNotification(); 
+          callback(true); 
+        };
+      } else {
+        btnProceed.innerText = "Proceed";
+        btnProceed.href = "javascript:void(0)";
+        btnProceed.onclick = (e) => { 
+          e.preventDefault();
+          this.closeNotification(); 
+          callback(true); 
+        };
+      }
+      
+      document.getElementById('btnNotifCancel').onclick = () => { 
+        this.closeNotification(); 
+        callback(false); 
+      };
     },
+    
     closeNotification: function() { 
       document.getElementById('notificationModal').classList.remove('active'); 
       setScrollLock(false);
