@@ -940,8 +940,7 @@ const App = (function() {
   // DEFAULT DUMMY IMAGES for testing the gallery (All Emerald Background)
   const defaultDummyImages = [
     "https://placehold.co/400x400/083c33/fff?text=Image+1",
-    "https://placehold.co/400x400/083c33/fff?text=Image+2",
-    "https://placehold.co/400x400/083c33/fff?text=Image+3"
+    "https://placehold.co/400x400/083c33/fff?text=Image+2"
   ];
 
   const commonChoices = {
@@ -954,17 +953,17 @@ const App = (function() {
 
   const menuData = {
     burgers: [
-      { id: 'b1', name: 'Burger Combo', price: 199000, desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', images: ["https://placehold.co/400x400/083c33/fff?text=Burger+Combo+1", "https://placehold.co/400x400/083c33/fff?text=Burger+Combo+2", "https://placehold.co/400x400/083c33/fff?text=Burger+Combo+3"] },
-      { id: 'b2', name: 'The Classic', price: 120000, desc: 'Meaty patty, lettuce, tomato, onion, pickles, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://placehold.co/400x400/083c33/fff?text=The+Classic+1", "https://placehold.co/400x400/083c33/fff?text=The+Classic+2", "https://placehold.co/400x400/083c33/fff?text=The+Classic+3"] },
+      { id: 'b1', name: 'Burger Combo', price: 199000, desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', images: ["https://i.postimg.cc/h4TW6rLk/Burger-combo-1.webp", "https://placehold.co/400x400/083c33/fff?text=Burger+Combo+2"] },
+      { id: 'b2', name: 'The Classic', price: 120000, desc: 'Meaty patty, lettuce, tomato, onion, pickles, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://i.postimg.cc/0jpTSk5t/classic-1.webp"] },
       { id: 'b3', name: 'The Cheeser', price: 110000, desc: 'Meaty patty, tomato, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://i.postimg.cc/v87p8m4T/cheeser.webp", "https://placehold.co/400x400/083c33/fff?text=The+Cheeser+2", "https://placehold.co/400x400/083c33/fff?text=The+Cheeser+3"] },
-      { id: 'b4', name: 'The Bougie', price: 130000, desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.', images: ["https://placehold.co/400x400/083c33/fff?text=The+Bougie+1", "https://placehold.co/400x400/083c33/fff?text=The+Bougie+2", "https://placehold.co/400x400/083c33/fff?text=The+Bougie+3"] },
+      { id: 'b4', name: 'The Bougie', price: 130000, desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.', images: ["https://i.postimg.cc/QCp278NY/Bougie-1.webp", "https://placehold.co/400x400/083c33/fff?text=The+Bougie+2", "https://placehold.co/400x400/083c33/fff?text=The+Bougie+3"] },
       { id: 'b5', name: 'French Fries', price: 60000, desc: 'Crispy golden French fries with seasoning.', images: ["https://placehold.co/400x400/083c33/fff?text=French+Fries+1", "https://placehold.co/400x400/083c33/fff?text=French+Fries+2", "https://placehold.co/400x400/083c33/fff?text=French+Fries+3"] }
     ],
     sandwiches: [
       { id: 's1', name: 'Sandwich Combo', price: 180000, desc: 'Chickelicious sandwich + Paradise Point Refresher + Brownie.', images: ["https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+1", "https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+2", "https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+3"] },
       { id: 's2', name: 'Mediterranean', price: 105000, desc: 'Falafel, hummus, tahini sauce, tomato, pickles, mint, and cilantro.', images: ["https://placehold.co/400x400/083c33/fff?text=Mediterranean+1", "https://placehold.co/400x400/083c33/fff?text=Mediterranean+2", "https://placehold.co/400x400/083c33/fff?text=Mediterranean+3"] },
       { id: 's3', name: 'Italian', price: 105000, desc: 'Grilled tofu, sautéed veggies, tomato, lettuce, onion, and basil mayo.', images: ["https://placehold.co/400x400/083c33/fff?text=Italian+1", "https://placehold.co/400x400/083c33/fff?text=Italian+2", "https://placehold.co/400x400/083c33/fff?text=Italian+3"] },
-      { id: 's4', name: 'Chickelicious', price: 110000, desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.', images: ["https://placehold.co/400x400/083c33/fff?text=Chickelicious+1", "https://placehold.co/400x400/083c33/fff?text=Chickelicious+2", "https://placehold.co/400x400/083c33/fff?text=Chickelicious+3"] },
+      { id: 's4', name: 'Chickelicious', price: 110000, desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.', images: ["https://i.postimg.cc/KcBSwN78/Chickelious-1.webp", "https://placehold.co/400x400/083c33/fff?text=Chickelicious+2", "https://placehold.co/400x400/083c33/fff?text=Chickelicious+3"] },
       { id: 's5', name: 'Build Your Own Sandwich', price: 110000, desc: 'Customizable sandwich. Choose your sauces, veggies, and protein.', isCustom: true, maxSauces: 2, maxVeggies: 3, maxProteins: 1, specificProteins: 'sandwichProteins', images: ["https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+1", "https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+2", "https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+3"] }
     ],
     texmex: [
