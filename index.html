@@ -29,7 +29,7 @@
   <!-- ========================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- ========================================== -->
   <!--                CSS STYLESHEET              -->
@@ -43,10 +43,22 @@
       --text-muted: #94a3b8; --text-subhead: #cbd5e1; --border-radius-main: 14px; --border-radius-sm: 10px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent !important;
+      outline: none;
+    }
+
+    *:focus {
+      outline: none !important;
+    }
     
     html, body { width: 100%; min-height: 100vh; background: var(--bg-dark); color: var(--text-bright); overflow-x: hidden; touch-action: pan-y; }
     body { background: var(--bg-gradient); background-attachment: fixed; }
+    body.modal-open { overflow: hidden !important; touch-action: none !important; }
 
     /* --- 2. TOP NAVIGATION --- */
     .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(1, 12, 10, 0.95); border-bottom: 1px solid var(--border-color); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
@@ -202,7 +214,6 @@
       }
     }
 
-    /* Basket Title */
     .cart-title {
       font-family: 'Georgia', serif;
       font-size: 16px;
@@ -276,7 +287,7 @@
     .btn-wa { background: var(--wa-color); } .btn-msgr { background: var(--msgr-color); }
     .btn-wa:hover, .btn-msgr:hover { opacity: 0.9; }
 
-    /* Floating Cart Button */
+    /* Floating Cart Button with Shake effect */
     .floating-cart-btn {
       position: fixed;
       bottom: 24px;
@@ -304,6 +315,16 @@
       pointer-events: none;
       transform: scale(0.85);
     }
+    .floating-cart-btn.cart-shake {
+      animation: cartShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes cartShake {
+      10%, 90% { transform: scale(1.15) translate3d(-1px, 0, 0); }
+      20%, 80% { transform: scale(1.15) translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: scale(1.2) translate3d(-3px, 0, 0); }
+      40%, 60% { transform: scale(1.2) translate3d(3px, 0, 0); }
+    }
+
     .floating-cart-icon {
       width: 28px;
       height: 28px;
@@ -327,6 +348,21 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.5);
     }
 
+    /* Flying Ball Particle Animation */
+    .flying-cart-item {
+      position: fixed;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+      box-shadow: 0 0 16px rgba(74, 222, 128, 0.9), 0 0 8px #ffffff;
+      pointer-events: none;
+      z-index: 9999;
+      transition: all 0.75s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
     /* Action Buttons Sidebar */
     .btn-review-action { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: #ffffff; color: #1a73e8; padding: 10px 12px; border-radius: var(--border-radius-sm); font-size: 11px; font-weight: 700; text-decoration: none; transition: all 0.2s ease; border: 1px solid #1a73e8; cursor: pointer; text-align: center; line-height: 1.2; }
     .btn-review-action:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3); }
@@ -334,7 +370,7 @@
     .btn-hope-action:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(74, 222, 128, 0.3); }
 
     /* --- 7. MODALS --- */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 2000; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 2000; }
     .modal-overlay.active { display: flex; }
     .modal-box { background: #041f1a; border: 1px solid var(--border-color); border-radius: var(--border-radius-main); max-width: 480px; width: 100%; max-height: 90%; overflow-y: auto; padding: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); position: relative; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -348,63 +384,63 @@
     .modal-subtitle { font-size: 11px; color: var(--accent-green); margin-bottom: 10px; background: rgba(74, 222, 128, 0.1); padding: 6px 10px; border-radius: var(--border-radius-sm); }
 
     /* ======================================================= */
-    /*           IMAGE GALLERY & DIRECT ORDER MODAL           */
+    /*           ELEGANT LUXURY ARTISAN MODAL STYLING          */
     /* ======================================================= */
     .gallery-modal-box {
       padding: 0;
-      background: radial-gradient(circle at 50% 0%, #083c33 0%, #041f1a 50%, #010c0a 100%);
-      border: 1px solid rgba(74, 222, 128, 0.35);
-      border-radius: 18px;
+      background: radial-gradient(circle at 50% 0%, #0d4a3e 0%, #041f1a 45%, #010a08 100%);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 20px;
       max-width: 440px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(74, 222, 128, 0.15);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.2);
       position: relative;
     }
     
     .gallery-header-section {
-      padding: 22px 20px 14px 20px;
+      padding: 24px 20px 16px 20px;
       text-align: center;
       position: relative;
-      background: linear-gradient(180deg, rgba(4, 31, 26, 0.8) 0%, rgba(1, 12, 10, 0.4) 100%);
-      border-bottom: 1px solid rgba(30, 77, 64, 0.6);
+      background: linear-gradient(180deg, rgba(6, 38, 32, 0.9) 0%, rgba(2, 18, 15, 0.6) 100%);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
     }
     
     .gallery-badge {
       font-size: 9.5px;
       color: #D4AF37;
-      letter-spacing: 3px;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
       font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      margin-bottom: 4px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      margin-bottom: 5px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.9);
     }
     
     .gallery-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      color: #f7f9f6;
-      font-size: 1.65rem;
+      color: #ffffff;
+      font-size: 1.75rem;
       font-weight: 600;
-      letter-spacing: 0.5px;
-      line-height: 1.2;
-      margin-bottom: 6px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      letter-spacing: 0.8px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
     
     .gallery-divider {
-      width: 40px;
+      width: 50px;
       height: 1px;
       background: linear-gradient(90deg, transparent, #D4AF37, transparent);
-      margin: 0 auto 8px auto;
+      margin: 0 auto 10px auto;
     }
 
     .gallery-desc {
-      color: var(--text-subhead);
-      font-size: 12.5px;
+      color: #d1e2d3;
+      font-size: 13px;
       font-style: italic;
-      font-family: 'Georgia', serif;
+      font-family: 'Cormorant Garamond', Georgia, serif;
       line-height: 1.45;
       padding: 0 10px;
     }
@@ -413,9 +449,9 @@
       aspect-ratio: 1/1 !important;
       border: none;
       border-radius: 0;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
       position: relative;
-      background: #083c33;
+      background: #02120f;
     }
     
     .square-carousel .carousel-img {
@@ -427,7 +463,7 @@
       top: 14px;
       right: 14px;
       z-index: 25;
-      background: rgba(1, 12, 10, 0.7);
+      background: rgba(1, 12, 10, 0.75);
       color: #cbd5e1;
       border-radius: 50%;
       width: 32px;
@@ -435,16 +471,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
-      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 14px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
       backdrop-filter: blur(8px);
       cursor: pointer;
       transition: all 0.2s ease;
     }
     .gallery-close-btn:hover {
-      background: var(--accent-green);
+      background: #D4AF37;
       color: #010c0a;
-      border-color: var(--accent-green);
+      border-color: #D4AF37;
       transform: scale(1.08);
     }
 
@@ -463,24 +499,33 @@
       height: 7px;
     }
     .gallery-dots .dot.active {
-      background: var(--accent-green);
+      background: #D4AF37;
       transform: scale(1.3);
     }
 
-    /* Modal Action Bar */
+    /* Modal Action Bar with Gold Accent */
     .gallery-order-bar {
-      padding: 14px 18px;
-      background: rgba(4, 31, 26, 0.95);
-      border-top: 1px solid var(--border-color);
+      padding: 16px 20px;
+      background: linear-gradient(180deg, rgba(3, 24, 20, 0.95) 0%, rgba(1, 12, 10, 0.98) 100%);
+      border-top: 1px solid rgba(212, 175, 55, 0.25);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
     .gallery-price-tag {
-      font-size: 15px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #4ade80;
+      letter-spacing: 0.5px;
+    }
+    .gallery-order-bar .add-btn {
+      padding: 9px 20px;
+      font-size: 13px;
       font-weight: 700;
-      color: var(--accent-green);
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
     }
 
     /* --- 8. SHARED CAROUSEL STYLES --- */
@@ -911,12 +956,12 @@
     </div>
   </div>
 
-  <!-- REDESIGNED LUXURY IMAGE GALLERY & DIRECT ORDER MODAL -->
+  <!-- ELEGANT ARTISAN IMAGE GALLERY & DIRECT ORDER MODAL -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
     <div class="modal-box gallery-modal-box">
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
       <div class="gallery-header-section">
-        <div class="gallery-badge">✦ Oon Jai Specialty ✦</div>
+        <div class="gallery-badge">✦ Oon Jai Artisan Creation ✦</div>
         <h3 class="gallery-title" id="galleryTitle"></h3>
         <div class="gallery-divider"></div>
         <p class="gallery-desc" id="galleryDesc"></p>
@@ -926,7 +971,7 @@
       </div>
       <div class="carousel-dots gallery-dots" id="galleryCarouselDots" aria-hidden="true"></div>
       
-      <!-- Interactive Add-to-Cart / Customization Bar inside image preview -->
+      <!-- Luxury Action Bar -->
       <div class="gallery-order-bar">
         <span class="gallery-price-tag" id="galleryPriceTag">0 Kip</span>
         <div id="galleryActionContainer"></div>
@@ -964,7 +1009,6 @@ const App = (function() {
     wellnessDrinks: ['Summer in My Heart', 'Wish Upon a Heart', 'Heartwarmer', 'Red Heart']
   };
 
-  // MENU DATA: Each item has exactly 1 image link initially (ready for comma-separated additions)
   const menuData = {
     burgers: [
       { id: 'b1', name: 'Burger Combo', price: 199000, desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', images: ["https://i.postimg.cc/h4TW6rLk/Burger-combo-1.webp"] },
@@ -1050,7 +1094,6 @@ const App = (function() {
   // --- INTERNAL UTILITIES ---
   function formatKip(amount) { return amount.toLocaleString() + ' Kip'; }
   
-  // Safe event-cleanup aware focus trap
   function trapFocus(modalEl) {
     const focusableEls = modalEl.querySelectorAll('a[href], button, textarea, input, select');
     if(focusableEls.length === 0) return;
@@ -1068,6 +1111,46 @@ const App = (function() {
 
     modalEl.addEventListener('keydown', modalEl._keyListener);
     setTimeout(() => first.focus(), 50);
+  }
+
+  // --- FLYING ANIMATION TO FLOATING CART ---
+  function animateFlyToCart(originElement) {
+    const cartBtn = document.getElementById('floatingCartBtn');
+    if (!cartBtn) return;
+
+    let startX = window.innerWidth / 2;
+    let startY = window.innerHeight / 2;
+
+    if (originElement) {
+      const rect = originElement.getBoundingClientRect();
+      startX = rect.left + rect.width / 2;
+      startY = rect.top + rect.height / 2;
+    }
+
+    const cartRect = cartBtn.getBoundingClientRect();
+    const endX = cartRect.left + cartRect.width / 2;
+    const endY = cartRect.top + cartRect.height / 2;
+
+    const particle = document.createElement('div');
+    particle.className = 'flying-cart-item';
+    particle.style.left = startX + 'px';
+    particle.style.top = startY + 'px';
+    document.body.appendChild(particle);
+
+    requestAnimationFrame(() => {
+      particle.style.left = endX + 'px';
+      particle.style.top = endY + 'px';
+      particle.style.transform = 'translate(-50%, -50%) scale(0.3)';
+      particle.style.opacity = '0.4';
+    });
+
+    setTimeout(() => {
+      particle.remove();
+      cartBtn.classList.remove('cart-shake');
+      void cartBtn.offsetWidth;
+      cartBtn.classList.add('cart-shake');
+      setTimeout(() => cartBtn.classList.remove('cart-shake'), 600);
+    }, 750);
   }
 
   function setupFloatingCartObserver() {
@@ -1154,7 +1237,6 @@ const App = (function() {
     }, intervalMs);
   }
 
-  // Dynamic Carousel Handler supporting 1, 2, or more images smoothly
   function setupCarousel(trackId, dotsId, imagesArray) {
     const track = document.getElementById(trackId), dots = document.getElementById(dotsId);
     const validImages = (imagesArray || []).filter(link => link && link.trim() !== "");
@@ -1347,7 +1429,7 @@ const App = (function() {
       const card = document.createElement('div'); card.className = 'product-card';
       const countHtml = totalCount > 0 ? `<span class="item-count-text">×${totalCount}</span>` : '';
       const actionBtn = item.isCustom ? `<button class="add-btn" onclick="App.openCustomModal('${currentCategory}', '${item.id}')">Customize</button>`
-                                      : `<button class="add-btn" onclick="App.addMenuItemToCart('${currentCategory}', '${item.id}')">Add +</button>`;
+                                      : `<button class="add-btn" onclick="App.addMenuItemToCart('${currentCategory}', '${item.id}', this)">Add +</button>`;
       
       const thumbnailSrc = item.images && item.images.length > 0 ? item.images[0] : defaultDummyImages[0];
       const imageHtml = `<img src="${thumbnailSrc}" class="product-image" alt="${item.name}" loading="lazy" onclick="App.openGallery('${currentCategory}', '${item.id}')" aria-label="View images and details for ${item.name}">`;
@@ -1457,7 +1539,7 @@ const App = (function() {
       if (scrollTarget && typeof scrollTarget.scrollIntoView === 'function') scrollTarget.scrollIntoView({behavior: 'smooth', block: 'start'});
     },
 
-    addMenuItemToCart: function(category, itemId) {
+    addMenuItemToCart: function(category, itemId, eventElement = null) {
       const item = menuData[category].find(i => i.id === itemId);
       if (item) { 
         const existing = cart.find(c => c.id === item.id && !c.isCustom);
@@ -1467,6 +1549,7 @@ const App = (function() {
           cart.push({ id: item.id, name: item.name, price: item.price, subtext: '', qty: 1, isCustom: false, category: category });
         }
         this._reRenderStore(); 
+        animateFlyToCart(eventElement);
       }
     },
 
@@ -1600,12 +1683,14 @@ const App = (function() {
       }
 
       const modal = document.getElementById('customModal');
+      document.body.classList.add('modal-open');
       modal.classList.add('active');
       trapFocus(modal);
     },
 
     closeCustomModal: function() { 
       document.getElementById('customModal').classList.remove('active'); 
+      document.body.classList.remove('modal-open');
       currentActiveCustomItem = null; 
       editingCartIndex = null;
     },
@@ -1623,18 +1708,20 @@ const App = (function() {
       if (item.isCustom) {
         actionContainer.innerHTML = `<button class="add-btn" onclick="App.closeGallery(); App.openCustomModal('${catKey}', '${item.id}')">Customize Item</button>`;
       } else {
-        actionContainer.innerHTML = `<button class="add-btn" onclick="App.addMenuItemToCart('${catKey}', '${item.id}'); App.closeGallery();">Add to Cart +</button>`;
+        actionContainer.innerHTML = `<button class="add-btn" onclick="App.addMenuItemToCart('${catKey}', '${item.id}', this); App.closeGallery();">Add to Cart +</button>`;
       }
 
       const imageList = item.images && item.images.length > 0 ? item.images : defaultDummyImages;
       setupCarousel('galleryCarouselTrack', 'galleryCarouselDots', imageList);
       
       const modal = document.getElementById('galleryModal');
+      document.body.classList.add('modal-open');
       modal.classList.add('active');
       trapFocus(modal);
     },
     closeGallery: function() { 
       document.getElementById('galleryModal').classList.remove('active'); 
+      document.body.classList.remove('modal-open');
       if(carouselIntervals['galleryCarouselTrack']) clearInterval(carouselIntervals['galleryCarouselTrack']);
     },
     
@@ -1702,6 +1789,7 @@ const App = (function() {
       }
 
       this._reRenderStore(); 
+      animateFlyToCart(document.getElementById('customModalSubmitBtn'));
       this.closeCustomModal();
     },
 
@@ -1715,7 +1803,6 @@ const App = (function() {
       if (msg) window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
     },
 
-    // Safe clipboard fallback handling non-HTTPS environments
     checkoutMessenger: function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
@@ -1772,12 +1859,18 @@ const App = (function() {
     triggerAlert: function(message, title) {
       document.getElementById('notifTitle').innerText = title; document.getElementById('notifMessage').innerText = message;
       document.getElementById('notifAlertAction').style.display = 'block'; document.getElementById('notifConfirmActions').style.display = 'none';
-      const m = document.getElementById('notificationModal'); m.classList.add('active'); trapFocus(m);
+      const m = document.getElementById('notificationModal'); 
+      document.body.classList.add('modal-open');
+      m.classList.add('active'); 
+      trapFocus(m);
     },
     triggerConfirm: function(message, title, callback, isMessenger = false) {
       document.getElementById('notifTitle').innerText = title; document.getElementById('notifMessage').innerText = message;
       document.getElementById('notifAlertAction').style.display = 'none'; document.getElementById('notifConfirmActions').style.display = 'flex';
-      const m = document.getElementById('notificationModal'); m.classList.add('active'); trapFocus(m);
+      const m = document.getElementById('notificationModal'); 
+      document.body.classList.add('modal-open');
+      m.classList.add('active'); 
+      trapFocus(m);
       
       const btnProceed = document.getElementById('btnNotifProceed');
       btnProceed.innerText = isMessenger ? "Open Messenger" : "Proceed";
@@ -1785,7 +1878,10 @@ const App = (function() {
       document.getElementById('btnNotifCancel').onclick = () => { this.closeNotification(); callback(false); };
       btnProceed.onclick = () => { this.closeNotification(); btnProceed.innerText = "Proceed"; callback(true); };
     },
-    closeNotification: function() { document.getElementById('notificationModal').classList.remove('active'); }
+    closeNotification: function() { 
+      document.getElementById('notificationModal').classList.remove('active'); 
+      document.body.classList.remove('modal-open');
+    }
   };
 })();
 </script>
