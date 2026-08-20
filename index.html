@@ -169,16 +169,22 @@
     .add-btn:active { transform: scale(0.95); }
     .item-count-text { color: #ef4444; font-size: 12px; font-weight: 800; }
 
-    /* Cart */
+    /* Cart Summary & Item Stepper Controls */
     .cart-summary { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius-main); padding: 14px; display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
     .cart-title { font-family: 'Georgia', serif; font-size: 15px; color: var(--accent-green); display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
-    .cart-items { max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .cart-items { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
     .empty-cart-msg { font-size: 12px; color: var(--text-muted); text-align: center; padding: 12px 0; }
     .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 6px; }
     .cart-item-name { font-size: 12px; font-weight: 600; }
     .cart-item-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-    .cart-item-price { font-size: 12px; font-weight: 600; color: var(--accent-green); }
-    .remove-btn { color: #f87171; background: none; border: none; font-size: 11px; cursor: pointer; margin-left: 8px; }
+    .cart-item-price { font-size: 12px; font-weight: 600; color: var(--accent-green); margin-right: 6px; }
+    
+    .cart-stepper { display: flex; align-items: center; gap: 4px; background: rgba(2, 18, 15, 0.8); padding: 2px 6px; border-radius: 20px; border: 1px solid var(--border-color); }
+    .cart-stepper-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; font-weight: 800; cursor: pointer; padding: 0 4px; line-height: 1; transition: transform 0.1s ease; }
+    .cart-stepper-btn:active { transform: scale(0.85); }
+    .cart-stepper-btn.minus { color: #f87171; }
+    .cart-stepper-count { font-size: 12px; font-weight: 700; color: #ffffff; min-width: 16px; text-align: center; }
+
     .order-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 4px; border-radius: var(--border-radius-sm); transition: border 0.2s ease; }
     .order-options.error-highlight { border: 1px solid #ef4444; background: rgba(239, 68, 68, 0.1); }
     .order-options label { font-size: 12px; background: rgba(2, 18, 15, 0.75); border: 1px solid var(--border-color); padding: 8px; border-radius: var(--border-radius-sm); text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.2s ease; }
@@ -193,6 +199,52 @@
     .btn-wa, .btn-msgr { flex: 1; padding: 10px; color: white; border: none; border-radius: var(--border-radius-sm); font-weight: 600; font-size: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; transition: opacity 0.2s ease; }
     .btn-wa { background: var(--wa-color); } .btn-msgr { background: var(--msgr-color); }
     .btn-wa:hover, .btn-msgr:hover { opacity: 0.9; }
+
+    /* Floating Cart Button */
+    .floating-cart-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(74, 222, 128, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1500;
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+      opacity: 1;
+      visibility: visible;
+    }
+    .floating-cart-btn:hover { transform: scale(1.08); }
+    .floating-cart-btn.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: scale(0.85);
+    }
+    .floating-cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #ef4444;
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-dark);
+    }
 
     /* Action Buttons Sidebar */
     .btn-review-action { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: #ffffff; color: #1a73e8; padding: 10px 12px; border-radius: var(--border-radius-sm); font-size: 11px; font-weight: 700; text-decoration: none; transition: all 0.2s ease; border: 1px solid #1a73e8; cursor: pointer; text-align: center; line-height: 1.2; }
@@ -282,7 +334,7 @@
       border-radius: 0;
       box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
       position: relative;
-      background: #010c0a;
+      background: #083c33;
     }
     
     .square-carousel .carousel-img {
@@ -428,6 +480,12 @@
     <button class="nav-tab" data-tab="hope" onclick="App.switchMainTab('hope')" role="tab" aria-selected="false">Words of Hope</button>
     <button class="nav-tab" data-tab="review" onclick="App.switchMainTab('review')" role="tab" aria-selected="false">Reviews</button>
   </div>
+
+  <!-- FLOATING CART BUTTON -->
+  <button class="floating-cart-btn" id="floatingCartBtn" onclick="App.scrollToBasket()" aria-label="View Order Basket">
+    🛒
+    <span class="floating-cart-badge" id="floatingCartBadge">0</span>
+  </button>
 
   <!-- ========================================== -->
   <!--               MAIN APP CONTAINER             -->
@@ -718,15 +776,6 @@
         <h3 class="modal-title" id="modalTitle">Build Your Own</h3>
         <button class="close-modal" onclick="App.closeCustomModal()" aria-label="Close modal">✕</button>
       </div>
-      <div id="refresherSweetenerBox" style="display: none;">
-        <div class="builder-section">
-          <h4>Choose Sweetener</h4>
-          <div class="builder-options">
-            <label class="option-label"><input type="radio" name="refresherSweetener" value="Honey" checked> Honey</label>
-            <label class="option-label"><input type="radio" name="refresherSweetener" value="Sugar"> Sugar</label>
-          </div>
-        </div>
-      </div>
       <div id="standardBuilderBox">
         <div class="modal-subtitle" id="modalRulesInfo"></div>
         <div id="wellnessChoiceBox" class="builder-section" style="display: none;">
@@ -766,23 +815,16 @@
   <!-- REDESIGNED LUXURY IMAGE GALLERY MODAL -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
     <div class="modal-box gallery-modal-box">
-      <!-- Close Button -->
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
-      
-      <!-- Top Title & Description Section -->
       <div class="gallery-header-section">
         <div class="gallery-badge">✦ Oon Jai Specialty ✦</div>
         <h3 class="gallery-title" id="galleryTitle"></h3>
         <div class="gallery-divider"></div>
         <p class="gallery-desc" id="galleryDesc"></p>
       </div>
-      
-      <!-- 1:1 Square Auto-Scrolling Carousel -->
       <div class="carousel-container square-carousel">
         <div class="carousel-track" id="galleryCarouselTrack"></div>
       </div>
-      
-      <!-- Dots Indicator -->
       <div class="carousel-dots gallery-dots" id="galleryCarouselDots" aria-hidden="true"></div>
     </div>
   </div>
@@ -862,10 +904,10 @@ const App = (function() {
       { id: 'sm5', name: "Reese's Cup", price: 70000, desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+1", "https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+2", "https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+3"] }
     ],
     refreshers: [
-      { id: 'r1', name: 'Mint Pineapple', price: 45000, desc: 'Fresh mint and pineapple.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+1", "https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+2", "https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+3"] },
-      { id: 'r2', name: 'Strawberry Lemonade', price: 50000, desc: 'Strawberry and lime.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+1", "https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+2", "https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+3"] },
-      { id: 'r3', name: 'Sparkling Lime', price: 45000, desc: 'Sparkling water and fresh lime.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+1", "https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+2", "https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+3"] },
-      { id: 'r4', name: 'Honey Passion', price: 45000, desc: 'Passion fruit and honey.', isCustom: true, isRefresher: true, images: ["https://placehold.co/400x400/083c33/fff?text=Honey+Passion+1", "https://placehold.co/400x400/083c33/fff?text=Honey+Passion+2", "https://placehold.co/400x400/083c33/fff?text=Honey+Passion+3"] }
+      { id: 'r1', name: 'Mint Pineapple', price: 45000, desc: 'Fresh mint and pineapple.', images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+1", "https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+2", "https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+3"] },
+      { id: 'r2', name: 'Strawberry Lemonade', price: 50000, desc: 'Strawberry and lime.', images: ["https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+1", "https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+2", "https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+3"] },
+      { id: 'r3', name: 'Sparkling Lime', price: 45000, desc: 'Sparkling water and fresh lime.', images: ["https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+1", "https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+2", "https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+3"] },
+      { id: 'r4', name: 'Honey Passion', price: 45000, desc: 'Passion fruit and honey.', images: ["https://placehold.co/400x400/083c33/fff?text=Honey+Passion+1", "https://placehold.co/400x400/083c33/fff?text=Honey+Passion+2", "https://placehold.co/400x400/083c33/fff?text=Honey+Passion+3"] }
     ],
     wellness: [
       { id: 'w1', name: 'Summer in My Heart', price: 47000, desc: 'Pineapple juice and coconut water.', images: ["https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+1", "https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+2", "https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+3"] },
@@ -906,7 +948,6 @@ const App = (function() {
 
   // --- INTERNAL UTILITIES ---
   function formatKip(amount) { return amount.toLocaleString() + ' Kip'; }
-  function getItemCountInCart(id) { return cart.filter(item => item.id === id).length; }
   
   function trapFocus(modalEl) {
     const focusableEls = modalEl.querySelectorAll('a[href], button, textarea, input, select');
@@ -921,6 +962,26 @@ const App = (function() {
     setTimeout(() => first.focus(), 50);
   }
 
+  // Floating Cart Observer
+  function setupFloatingCartObserver() {
+    const cartSection = document.getElementById('cartSection');
+    const floatingBtn = document.getElementById('floatingCartBtn');
+    if (!cartSection || !floatingBtn) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const isMenuTabActive = document.getElementById('tab-menu').classList.contains('active');
+        if (entry.isIntersecting || !isMenuTabActive) {
+          floatingBtn.classList.add('hidden');
+        } else {
+          floatingBtn.classList.remove('hidden');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(cartSection);
+  }
+
   // --- TAB SWIPE LOGIC ---
   function setupTabSwiping() {
     const appRoot = document.getElementById('appRoot');
@@ -930,7 +991,6 @@ const App = (function() {
     }, {passive: true});
 
     appRoot.addEventListener('touchend', e => {
-      // Don't trigger tab swipe if interacting with carousels, sliders, or modals
       if (e.target.closest('.carousel-container') || e.target.closest('.home-card-slider') || e.target.closest('.modal-overlay.active')) return;
       
       touchEndX = e.changedTouches[0].screenX;
@@ -939,13 +999,12 @@ const App = (function() {
       const diffX = touchEndX - touchStartX;
       const diffY = Math.abs(touchEndY - touchStartY);
       
-      // Horizontal swipe > 50px and vertical scroll < 50px
       if (Math.abs(diffX) > 50 && diffY < 50) {
         const currentTab = document.querySelector('.nav-tab.active').dataset.tab;
         let idx = mainTabs.indexOf(currentTab);
-        if (diffX < 0 && idx < mainTabs.length - 1) { // Swipe Left -> Next Tab
+        if (diffX < 0 && idx < mainTabs.length - 1) { 
           App.switchMainTab(mainTabs[idx + 1]);
-        } else if (diffX > 0 && idx > 0) { // Swipe Right -> Prev Tab
+        } else if (diffX > 0 && idx > 0) { 
           App.switchMainTab(mainTabs[idx - 1]);
         }
       }
@@ -998,46 +1057,38 @@ const App = (function() {
 
     let html = '', dotsHtml = '';
     
-    // Add LAST image clone to the start
     html += `<img src="${validImages[validImages.length - 1]}" class="carousel-img clone" draggable="false" loading="lazy"/>`;
     
-    // Original images
     validImages.forEach((imgLink, i) => {
       html += `<img src="${imgLink}" class="carousel-img" draggable="false" loading="lazy"/>`;
       dotsHtml += `<span class="dot" onclick="App.goToSlide('${trackId}', ${i + 1})"></span>`;
     });
     
-    // Add FIRST image clone to the end
     html += `<img src="${validImages[0]}" class="carousel-img clone" draggable="false" loading="lazy"/>`;
     
     track.innerHTML = html; 
     dots.innerHTML = dotsHtml;
     
-    // Initialize position without smooth scrolling to the first real slide
     track.classList.add('no-smooth');
     track.scrollLeft = track.clientWidth;
     void track.offsetWidth;
     track.classList.remove('no-smooth');
 
-    // Endless Wrap Logic
     track.onscroll = () => {
       if (track.clientWidth === 0) return;
       const maxScroll = track.scrollWidth - track.clientWidth;
       
-      // Hit the first clone (scrolling left past beginning)
       if (track.scrollLeft === 0) {
         track.classList.add('no-smooth');
-        track.scrollLeft = maxScroll - track.clientWidth;
+        track.scrollLeft = maxScroll - track.clientWidth; 
         track.classList.remove('no-smooth');
       } 
-      // Hit the last clone (scrolling right past end)
-      else if (track.scrollLeft >= maxScroll - 1) {
+      else if (track.scrollLeft >= maxScroll - 1) { 
         track.classList.add('no-smooth');
-        track.scrollLeft = track.clientWidth;
+        track.scrollLeft = track.clientWidth; 
         track.classList.remove('no-smooth');
       }
 
-      // Update dots
       let index = Math.round(track.scrollLeft / track.clientWidth) - 1;
       if (index < 0) index = validImages.length - 1;
       if (index >= validImages.length) index = 0;
@@ -1108,6 +1159,12 @@ const App = (function() {
     // Set auto year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+    // Persistent Tab on Page Refresh Check
+    const savedTab = sessionStorage.getItem('oonjai_active_tab') || window.location.hash.replace('#', '');
+    if (savedTab && mainTabs.includes(savedTab)) {
+      App.switchMainTab(savedTab);
+    }
+
     setupCarousel('hopeCarouselTrack', 'hopeCarouselDots', hopeImagesData);
     setupCarousel('reviewCarouselTrack', 'reviewCarouselDots', googleReviewPhotosData);
     initVerticalReviewsCarousel();
@@ -1115,6 +1172,7 @@ const App = (function() {
     renderProductsGrid();
     setupForm();
     setupTabSwiping();
+    setupFloatingCartObserver();
   });
 
   document.addEventListener('click', function(event) {
@@ -1157,11 +1215,16 @@ const App = (function() {
 
       fetch(WEB_APP_URL, { method: 'POST', body: new FormData(this), mode: 'no-cors' })
       .then(() => {
-        status.style.color = "#4ade80"; status.innerText = "✓ Sent successfully!";
-        App.clearForm(); submitBtn.disabled = false;
+        status.style.color = "#4ade80"; 
+        status.innerText = "✓ Sent successfully!";
+        App.triggerAlert("Thank you for sharing your message! 🌱\n\nYour word of hope has been received and may bring joy to someone when they need it most.", "Message Sent! 💌");
+        App.clearForm(); 
+        submitBtn.disabled = false;
       })
       .catch(error => {
-        status.style.color = "#f87171"; status.innerText = "Error submitting message. Please try again.";
+        status.style.color = "#f87171"; 
+        status.innerText = "Error submitting message. Please try again.";
+        App.triggerAlert("Something went wrong while submitting your message. Please check your connection and try again.", "Error");
         submitBtn.disabled = false;
       });
     });
@@ -1171,15 +1234,15 @@ const App = (function() {
   function renderProductsGrid() {
     const container = document.getElementById('productsGrid'); container.innerHTML = '';
     menuData[currentCategory].forEach(item => {
-      const count = getItemCountInCart(item.id);
+      // Calculate total count in cart across both single & customized variants
+      const totalCount = cart.filter(c => c.id === item.id).reduce((acc, curr) => acc + curr.qty, 0);
+      
       const card = document.createElement('div'); card.className = 'product-card';
-      const countHtml = count > 0 ? `<span class="item-count-text">×${count}</span>` : '';
+      const countHtml = totalCount > 0 ? `<span class="item-count-text">×${totalCount}</span>` : '';
       const actionBtn = item.isCustom ? `<button class="add-btn" onclick="App.openCustomModal('${currentCategory}', '${item.id}')">Customize</button>`
                                       : `<button class="add-btn" onclick="App.addMenuItemToCart('${currentCategory}', '${item.id}')">Add +</button>`;
       
-      // Determine Thumbnail
-      const imageList = item.images && item.images.length > 0 ? item.images : defaultDummyImages;
-      const thumbnailSrc = imageList[0];
+      const thumbnailSrc = item.images && item.images.length > 0 ? item.images[0] : defaultDummyImages[0];
       const imageHtml = `<img src="${thumbnailSrc}" class="product-image" alt="${item.name}" loading="lazy" onclick="App.openGallery('${currentCategory}', '${item.id}')" aria-label="View images for ${item.name}">`;
 
       card.innerHTML = `
@@ -1223,10 +1286,32 @@ const App = (function() {
         btn.setAttribute('aria-selected', 'true');
       });
 
+      // Save tab to keep active on page refresh
+      sessionStorage.setItem('oonjai_active_tab', tabId);
+      history.replaceState(null, null, '#' + tabId);
+
       const mobileMenu = document.getElementById('mobileMenu');
       mobileMenu.classList.remove('active');
       document.querySelector('.hamburger').setAttribute('aria-expanded', 'false');
+      
+      // Update floating cart visibility
+      const floatingBtn = document.getElementById('floatingCartBtn');
+      if (floatingBtn) {
+        if (tabId === 'menu') {
+          floatingBtn.classList.remove('hidden');
+        } else {
+          floatingBtn.classList.add('hidden');
+        }
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+
+    scrollToBasket: function() {
+      const cartSection = document.getElementById('cartSection');
+      if (cartSection) {
+        cartSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     },
 
     scrollCarousel: function(trackId, dir) {
@@ -1262,27 +1347,69 @@ const App = (function() {
 
     addMenuItemToCart: function(category, itemId) {
       const item = menuData[category].find(i => i.id === itemId);
-      if (item) { cart.push({ id: item.id, name: item.name, price: item.price, subtext: '' }); this._reRenderStore(); }
+      if (item) { 
+        const existing = cart.find(c => c.id === item.id && !c.isCustom);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          cart.push({ id: item.id, name: item.name, price: item.price, subtext: '', qty: 1, isCustom: false, category: category });
+        }
+        this._reRenderStore(); 
+      }
     },
 
-    removeFromCart: function(index) { cart.splice(index, 1); this._reRenderStore(); },
+    // Stepper Add/Subtract
+    incrementCartItem: function(index) {
+      const item = cart[index];
+      if (item.isCustom) {
+        // Tapping plus on customizable opens builder to build new choices
+        this.openCustomModal(item.category, item.id);
+      } else {
+        item.qty += 1;
+        this._reRenderStore();
+      }
+    },
+
+    decrementCartItem: function(index) {
+      if (cart[index].qty > 1) {
+        cart[index].qty -= 1;
+      } else {
+        cart.splice(index, 1);
+      }
+      this._reRenderStore();
+    },
     
     _reRenderStore: function() {
       renderProductsGrid();
-      const container = document.getElementById('cartItems'), countEl = document.getElementById('cartCount'), totalEl = document.getElementById('totalPrice');
-      let total = cart.reduce((sum, item) => sum + item.price, 0);
-      countEl.innerText = `(${cart.length} item${cart.length === 1 ? '' : 's'})`;
+      const container = document.getElementById('cartItems'), countEl = document.getElementById('cartCount'), totalEl = document.getElementById('totalPrice'), floatingBadge = document.getElementById('floatingCartBadge');
+      
+      let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+      let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      
+      countEl.innerText = `(${totalQty} item${totalQty === 1 ? '' : 's'})`;
+      if (floatingBadge) floatingBadge.innerText = totalQty;
 
       if (cart.length === 0) {
-        container.innerHTML = `<p class="empty-cart-msg">Your basket is empty.</p>`; totalEl.innerText = '0 Kip';
+        container.innerHTML = `<p class="empty-cart-msg">Your basket is empty.</p>`; 
+        totalEl.innerText = '0 Kip';
       } else {
         container.innerHTML = cart.map((item, idx) => `
           <div class="cart-item">
-            <div><div class="cart-item-name">${item.name}</div>${item.subtext ? `<div class="cart-item-sub">${item.subtext}</div>` : ''}</div>
-            <div style="display: flex; align-items: center;"><span class="cart-item-price">${formatKip(item.price)}</span><button class="remove-btn" onclick="App.removeFromCart(${idx})">Remove</button></div>
+            <div>
+              <div class="cart-item-name">${item.name}</div>
+              ${item.subtext ? `<div class="cart-item-sub">${item.subtext}</div>` : ''}
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="cart-item-price">${formatKip(item.price * item.qty)}</span>
+              <div class="cart-stepper">
+                <button class="cart-stepper-btn minus" onclick="App.decrementCartItem(${idx})" aria-label="Decrease quantity">−</button>
+                <span class="cart-stepper-count">${item.qty}</span>
+                <button class="cart-stepper-btn" onclick="App.incrementCartItem(${idx})" aria-label="Increase quantity">+</button>
+              </div>
+            </div>
           </div>
         `).join('');
-        totalEl.innerText = formatKip(total);
+        totalEl.innerText = formatKip(totalPrice);
       }
     },
 
@@ -1290,27 +1417,22 @@ const App = (function() {
       const item = menuData[catKey].find(i => i.id === itemId);
       if (!item) return;
 
-      currentActiveCustomItem = { ...item };
+      currentActiveCustomItem = { ...item, category: catKey };
       document.getElementById('modalTitle').innerText = item.name;
-      const refBox = document.getElementById('refresherSweetenerBox'), bldBox = document.getElementById('standardBuilderBox'), welBox = document.getElementById('wellnessChoiceBox');
+      const bldBox = document.getElementById('standardBuilderBox'), welBox = document.getElementById('wellnessChoiceBox');
 
-      if (item.isRefresher) {
-        refBox.style.display = 'block'; bldBox.style.display = 'none'; welBox.style.display = 'none';
-        document.querySelector('input[name="refresherSweetener"][value="Honey"]').checked = true;
-      } else {
-        refBox.style.display = 'none'; bldBox.style.display = 'block';
-        if (item.needsWellnessChoice) {
-          welBox.style.display = 'block';
-          document.getElementById('wellnessContainer').innerHTML = commonChoices.wellnessDrinks.map((drink, idx) => `<label class="option-label"><input type="radio" name="custWellness" value="${drink}" ${idx === 0 ? 'checked' : ''}> ${drink}</label>`).join('');
-        } else welBox.style.display = 'none';
+      bldBox.style.display = 'block';
+      if (item.needsWellnessChoice) {
+        welBox.style.display = 'block';
+        document.getElementById('wellnessContainer').innerHTML = commonChoices.wellnessDrinks.map((drink, idx) => `<label class="option-label"><input type="radio" name="custWellness" value="${drink}" ${idx === 0 ? 'checked' : ''}> ${drink}</label>`).join('');
+      } else welBox.style.display = 'none';
 
-        document.getElementById('modalRulesInfo').innerText = `Included: Up to ${item.maxSauces} Sauce(s), ${item.maxVeggies} Veggie(s), and ${item.maxProteins} Protein(s).\n(Extra Veggies or Proteins: +7,000 Kip each)`;
-        
-        const genChoices = (arr, name) => arr.map(val => `<label class="option-label"><input type="checkbox" name="${name}" value="${val}" onchange="App.enforceLimit(this, '${name}', currentActiveCustomItem.max${name.replace('cust', '')}s)"> ${val}</label>`).join('');
-        document.getElementById('saucesContainer').innerHTML = genChoices(commonChoices.sauces, 'custSauce');
-        document.getElementById('veggiesContainer').innerHTML = genChoices(commonChoices.veggies, 'custVeggie');
-        document.getElementById('proteinsContainer').innerHTML = genChoices(item.specificProteins ? commonChoices[item.specificProteins] : commonChoices.proteins, 'custProtein');
-      }
+      document.getElementById('modalRulesInfo').innerText = `Included: Up to ${item.maxSauces} Sauce(s), ${item.maxVeggies} Veggie(s), and ${item.maxProteins} Protein(s).\n(Extra Veggies or Proteins: +7,000 Kip each)`;
+      
+      const genChoices = (arr, name) => arr.map(val => `<label class="option-label"><input type="checkbox" name="${name}" value="${val}" onchange="App.enforceLimit(this, '${name}', currentActiveCustomItem.max${name.replace('cust', '')}s)"> ${val}</label>`).join('');
+      document.getElementById('saucesContainer').innerHTML = genChoices(commonChoices.sauces, 'custSauce');
+      document.getElementById('veggiesContainer').innerHTML = genChoices(commonChoices.veggies, 'custVeggie');
+      document.getElementById('proteinsContainer').innerHTML = genChoices(item.specificProteins ? commonChoices[item.specificProteins] : commonChoices.proteins, 'custProtein');
       
       const modal = document.getElementById('customModal');
       modal.classList.add('active');
@@ -1350,11 +1472,6 @@ const App = (function() {
 
     addCustomItemToCart: async function() {
       if (!currentActiveCustomItem) return;
-      if (currentActiveCustomItem.isRefresher) {
-        const sw = document.querySelector('input[name="refresherSweetener"]:checked').value;
-        cart.push({ id: currentActiveCustomItem.id, name: currentActiveCustomItem.name, price: currentActiveCustomItem.price, subtext: `Sweetened by: ${sw}` });
-        this._reRenderStore(); this.closeCustomModal(); return;
-      }
 
       const getVals = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
       const sauces = getVals('custSauce'), veggies = getVals('custVeggie'), proteins = getVals('custProtein');
@@ -1392,8 +1509,19 @@ const App = (function() {
       if (proteins.length) subParts.push(`Proteins: ${proteins.join(', ')}`);
       if (totExt > 0) subParts.push(`Add-ons: +${totExt} item(s) (+${formatKip(totExtCost)})`);
 
-      cart.push({ id: currentActiveCustomItem.id, name: currentActiveCustomItem.name, price: currentActiveCustomItem.price + totExtCost, subtext: subParts.join(' | ') });
-      this._reRenderStore(); this.closeCustomModal();
+      const finalSubtext = subParts.join(' | ');
+      const finalPrice = currentActiveCustomItem.price + totExtCost;
+
+      // Group identical custom builds together
+      const existing = cart.find(c => c.id === currentActiveCustomItem.id && c.subtext === finalSubtext && c.price === finalPrice);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ id: currentActiveCustomItem.id, name: currentActiveCustomItem.name, price: finalPrice, subtext: finalSubtext, qty: 1, isCustom: true, category: currentActiveCustomItem.category });
+      }
+
+      this._reRenderStore(); 
+      this.closeCustomModal();
     },
 
     clearOrderTypeError: function() {
@@ -1425,8 +1553,11 @@ const App = (function() {
         this.triggerAlert("⚠️ Please select either Dine-In or Pick-Up before submitting your order!", "Action Required"); return null;
       }
       let msg = `✦ *OON JAI ORDER* ✦\n*Type: ${type.value}*\n\n*Items Ordered:*\n`;
-      cart.forEach((item, index) => { msg += `${index + 1}. *${item.name}* - ${formatKip(item.price)}\n` + (item.subtext ? `   _${item.subtext}_\n` : ''); });
-      msg += `\n*Total: ${formatKip(cart.reduce((sum, item) => sum + item.price, 0))}*\n\n👉Note: Please send your payment receipt to process this order.\n`;
+      cart.forEach((item, index) => { 
+        msg += `${index + 1}. *${item.name}* (x${item.qty}) - ${formatKip(item.price * item.qty)}\n` + (item.subtext ? `   _${item.subtext}_\n` : ''); 
+      });
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      msg += `\n*Total: ${formatKip(totalPrice)}*\n\n👉Note: Please send your payment receipt to process this order.\n`;
       return msg;
     },
 
