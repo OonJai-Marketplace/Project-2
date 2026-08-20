@@ -169,17 +169,93 @@
     .add-btn:active { transform: scale(0.95); }
     .item-count-text { color: #ef4444; font-size: 12px; font-weight: 800; }
 
-    /* Cart Summary & Item Stepper Controls */
-    .cart-summary { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius-main); padding: 14px; display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
-    .cart-title { font-family: 'Georgia', serif; font-size: 15px; color: var(--accent-green); display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
-    .cart-items { max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
+    /* Cart Summary & Basket Highlighting */
+    .cart-summary {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-main);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 6px;
+      transition: border-color 0.8s ease, box-shadow 0.8s ease;
+    }
+    
+    /* Basket Glow Animation triggered by floating cart click */
+    .cart-summary.basket-highlight {
+      border-color: #4ade80 !important;
+      box-shadow: 0 0 28px rgba(74, 222, 128, 0.65), inset 0 0 14px rgba(74, 222, 128, 0.25) !important;
+      animation: basketPulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes basketPulse {
+      0% {
+        border-color: #4ade80;
+        box-shadow: 0 0 35px rgba(74, 222, 128, 0.8), inset 0 0 18px rgba(74, 222, 128, 0.35);
+      }
+      40% {
+        border-color: #22c55e;
+        box-shadow: 0 0 24px rgba(74, 222, 128, 0.5), inset 0 0 10px rgba(74, 222, 128, 0.2);
+      }
+      100% {
+        border-color: var(--border-color);
+        box-shadow: none;
+      }
+    }
+
+    /* Bolder Basket Title */
+    .cart-title {
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--accent-green);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+    .cart-title-text {
+      font-weight: 800;
+      color: var(--accent-green);
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .cart-items { max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
     .empty-cart-msg { font-size: 12px; color: var(--text-muted); text-align: center; padding: 12px 0; }
     
-    /* Order basket row styling with guaranteed single-line pricing and flexible text wrap */
-    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; }
+    /* Order basket row styling with guaranteed single-line pricing, description wrap & edit button */
+    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; }
     .cart-item-details { flex: 1; min-width: 0; word-break: break-word; }
-    .cart-item-name { font-size: 12.5px; font-weight: 600; color: #ffffff; line-height: 1.3; }
+    .cart-item-name { font-size: 13px; font-weight: 700; color: #ffffff; line-height: 1.3; }
     .cart-item-sub { font-size: 10.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
+    
+    /* Edit Order Button for Custom Items */
+    .cart-item-edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(74, 222, 128, 0.12);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      color: var(--accent-green);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: all 0.15s ease;
+    }
+    .cart-item-edit-btn:hover {
+      background: var(--accent-green);
+      color: #010c0a;
+      border-color: var(--accent-green);
+    }
+
     .cart-item-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-top: 2px; }
     .cart-item-price { font-size: 12.5px; font-weight: 700; color: var(--accent-green); white-space: nowrap; flex-shrink: 0; }
     
@@ -596,8 +672,8 @@
             </div>
             <div class="cart-summary" id="cartSection" aria-live="polite">
               <div class="cart-title">
-                <span>Your Order Basket</span>
-                <span id="cartCount">(0 items)</span>
+                <span class="cart-title-text">Your Order Basket</span>
+                <span id="cartCount" style="font-weight: 700; color: var(--accent-green);">(0 items)</span>
               </div>
               <div class="cart-items" id="cartItems">
                 <p class="empty-cart-msg">Your basket is empty.</p>
@@ -808,7 +884,7 @@
           <div class="builder-options" id="proteinsContainer"></div>
         </div>
       </div>
-      <button class="btn-wa" style="width:100%; margin-top: 10px; background: #22c55e;" onclick="App.addCustomItemToCart()">Add to Order</button>
+      <button class="btn-wa" id="customModalSubmitBtn" style="width:100%; margin-top: 10px; background: #22c55e;" onclick="App.addCustomItemToCart()">Add to Order</button>
     </div>
   </div>
 
@@ -851,6 +927,7 @@ const App = (function() {
   const carouselIntervals = {};
   let cart = [];
   let currentActiveCustomItem = null;
+  let editingCartIndex = null; // Tracks index when editing an existing cart item
   let currentCategory = 'burgers';
   let verticalScrollInterval;
   let isVerticalHoveredOrDragged = false;
@@ -1320,10 +1397,16 @@ const App = (function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
+    // Smooth scroll down to order basket with elegant glow animation
     scrollToBasket: function() {
       const cartSection = document.getElementById('cartSection');
       if (cartSection) {
         cartSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Trigger glowing outline animation
+        cartSection.classList.remove('basket-highlight');
+        void cartSection.offsetWidth; // Force DOM Reflow
+        cartSection.classList.add('basket-highlight');
       }
     },
 
@@ -1375,6 +1458,7 @@ const App = (function() {
     incrementCartItem: function(index) {
       const item = cart[index];
       if (item.isCustom) {
+        // Tapping plus on customizable opens modal to create an additional custom choice
         this.openCustomModal(item.category, item.id);
       } else {
         item.qty += 1;
@@ -1389,6 +1473,15 @@ const App = (function() {
         cart.splice(index, 1);
       }
       this._reRenderStore();
+    },
+
+    // Edit an existing customizable item in the cart
+    editCartItem: function(index) {
+      const item = cart[index];
+      if (!item || !item.isCustom) return;
+      
+      // Open builder modal in edit mode
+      this.openCustomModal(item.category, item.id, index);
     },
     
     _reRenderStore: function() {
@@ -1405,32 +1498,49 @@ const App = (function() {
         container.innerHTML = `<p class="empty-cart-msg">Your basket is empty.</p>`; 
         totalEl.innerText = '0 Kip';
       } else {
-        container.innerHTML = cart.map((item, idx) => `
-          <div class="cart-item">
-            <div class="cart-item-details">
-              <div class="cart-item-name">${item.name}</div>
-              ${item.subtext ? `<div class="cart-item-sub">${item.subtext}</div>` : ''}
-            </div>
-            <div class="cart-item-right">
-              <span class="cart-item-price">${formatKip(item.price * item.qty)}</span>
-              <div class="cart-stepper">
-                <button class="cart-stepper-btn minus" onclick="App.decrementCartItem(${idx})" aria-label="Decrease quantity">−</button>
-                <span class="cart-stepper-count">${item.qty}</span>
-                <button class="cart-stepper-btn" onclick="App.incrementCartItem(${idx})" aria-label="Increase quantity">+</button>
+        container.innerHTML = cart.map((item, idx) => {
+          const editBtnHtml = item.isCustom ? `<button class="cart-item-edit-btn" onclick="App.editCartItem(${idx})" aria-label="Edit options">✎ Edit Choices</button>` : '';
+          
+          return `
+            <div class="cart-item">
+              <div class="cart-item-details">
+                <div class="cart-item-name">${item.name}</div>
+                ${item.subtext ? `<div class="cart-item-sub">${item.subtext}</div>` : ''}
+                ${editBtnHtml}
+              </div>
+              <div class="cart-item-right">
+                <span class="cart-item-price">${formatKip(item.price * item.qty)}</span>
+                <div class="cart-stepper">
+                  <button class="cart-stepper-btn minus" onclick="App.decrementCartItem(${idx})" aria-label="Decrease quantity">−</button>
+                  <span class="cart-stepper-count">${item.qty}</span>
+                  <button class="cart-stepper-btn" onclick="App.incrementCartItem(${idx})" aria-label="Increase quantity">+</button>
+                </div>
               </div>
             </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
         totalEl.innerText = formatKip(totalPrice);
       }
     },
 
-    openCustomModal: function(catKey, itemId) {
+    openCustomModal: function(catKey, itemId, editIndex = null) {
       const item = menuData[catKey].find(i => i.id === itemId);
       if (!item) return;
 
+      editingCartIndex = editIndex;
       currentActiveCustomItem = { ...item, category: catKey };
-      document.getElementById('modalTitle').innerText = item.name;
+      
+      const modalTitleEl = document.getElementById('modalTitle');
+      const submitBtnEl = document.getElementById('customModalSubmitBtn');
+      
+      if (editingCartIndex !== null) {
+        modalTitleEl.innerText = `Edit: ${item.name}`;
+        submitBtnEl.innerText = "Save Changes";
+      } else {
+        modalTitleEl.innerText = item.name;
+        submitBtnEl.innerText = "Add to Order";
+      }
+
       const bldBox = document.getElementById('standardBuilderBox'), welBox = document.getElementById('wellnessChoiceBox');
 
       bldBox.style.display = 'block';
@@ -1446,12 +1556,49 @@ const App = (function() {
       document.getElementById('veggiesContainer').innerHTML = genChoices(commonChoices.veggies, 'custVeggie');
       document.getElementById('proteinsContainer').innerHTML = genChoices(item.specificProteins ? commonChoices[item.specificProteins] : commonChoices.proteins, 'custProtein');
       
+      // If in edit mode, pre-populate previously chosen selections
+      if (editingCartIndex !== null) {
+        const existingItem = cart[editingCartIndex];
+        if (existingItem && existingItem.subtext) {
+          const parts = existingItem.subtext.split(' | ');
+          parts.forEach(part => {
+            if (part.startsWith('Drink: ')) {
+              const drinkVal = part.replace('Drink: ', '').trim();
+              const radio = document.querySelector(`input[name="custWellness"][value="${drinkVal}"]`);
+              if (radio) radio.checked = true;
+            } else if (part.startsWith('Sauces: ')) {
+              const saucesArr = part.replace('Sauces: ', '').split(', ').map(s => s.trim());
+              saucesArr.forEach(s => {
+                const cb = document.querySelector(`input[name="custSauce"][value="${s}"]`);
+                if (cb) cb.checked = true;
+              });
+            } else if (part.startsWith('Veggies: ')) {
+              const vegArr = part.replace('Veggies: ', '').split(', ').map(s => s.trim());
+              vegArr.forEach(v => {
+                const cb = document.querySelector(`input[name="custVeggie"][value="${v}"]`);
+                if (cb) cb.checked = true;
+              });
+            } else if (part.startsWith('Proteins: ')) {
+              const protArr = part.replace('Proteins: ', '').split(', ').map(p => p.trim());
+              protArr.forEach(p => {
+                const cb = document.querySelector(`input[name="custProtein"][value="${p}"]`);
+                if (cb) cb.checked = true;
+              });
+            }
+          });
+        }
+      }
+
       const modal = document.getElementById('customModal');
       modal.classList.add('active');
       trapFocus(modal);
     },
 
-    closeCustomModal: function() { document.getElementById('customModal').classList.remove('active'); currentActiveCustomItem = null; },
+    closeCustomModal: function() { 
+      document.getElementById('customModal').classList.remove('active'); 
+      currentActiveCustomItem = null; 
+      editingCartIndex = null;
+    },
     
     // -- Image Gallery Logic --
     openGallery: function(catKey, itemId) {
@@ -1510,7 +1657,7 @@ const App = (function() {
       }
 
       if (warnings.length > 0) {
-        const proceed = await new Promise(resolve => this.triggerConfirm(warnings.join('\n\n') + `\n\nAre you sure you want to proceed and add to order?`, 'Customize Confirmation', resolve));
+        const proceed = await new Promise(resolve => this.triggerConfirm(warnings.join('\n\n') + `\n\nAre you sure you want to proceed?`, 'Customize Confirmation', resolve));
         if (!proceed) return;
       }
 
@@ -1524,11 +1671,18 @@ const App = (function() {
       const finalSubtext = subParts.join(' | ');
       const finalPrice = currentActiveCustomItem.price + totExtCost;
 
-      const existing = cart.find(c => c.id === currentActiveCustomItem.id && c.subtext === finalSubtext && c.price === finalPrice);
-      if (existing) {
-        existing.qty += 1;
+      // Handle Edit Mode: Update item in place
+      if (editingCartIndex !== null && cart[editingCartIndex]) {
+        cart[editingCartIndex].subtext = finalSubtext;
+        cart[editingCartIndex].price = finalPrice;
       } else {
-        cart.push({ id: currentActiveCustomItem.id, name: currentActiveCustomItem.name, price: finalPrice, subtext: finalSubtext, qty: 1, isCustom: true, category: currentActiveCustomItem.category });
+        // Group identical custom builds or push new item
+        const existing = cart.find(c => c.id === currentActiveCustomItem.id && c.subtext === finalSubtext && c.price === finalPrice);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          cart.push({ id: currentActiveCustomItem.id, name: currentActiveCustomItem.name, price: finalPrice, subtext: finalSubtext, qty: 1, isCustom: true, category: currentActiveCustomItem.category });
+        }
       }
 
       this._reRenderStore(); 
