@@ -172,8 +172,23 @@
     .product-card:hover { border-color: rgba(74, 222, 128, 0.4); }
     @media (min-width: 600px) { .product-card { flex-direction: row; justify-content: space-between; align-items: center; } }
     
-    /* Product Image Thumbnails */
-    .product-image { width: 75px; height: 75px; border-radius: var(--border-radius-sm); object-fit: cover; border: 1px solid var(--border-color); flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    /* Product Image Thumbnails & Loading Fade-In */
+    .product-image { 
+      width: 75px; 
+      height: 75px; 
+      border-radius: var(--border-radius-sm); 
+      object-fit: cover; 
+      border: 1px solid var(--border-color); 
+      flex-shrink: 0; 
+      cursor: pointer; 
+      transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.3s ease; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      background: rgba(74, 222, 128, 0.05); /* Soft placeholder color while loading */
+      opacity: 0; /* Hidden initially for fade in */
+    }
+    .product-image.loaded {
+      opacity: 1;
+    }
     .product-image:hover { transform: scale(1.04); border-color: var(--accent-green); }
 
     .product-info { flex: 1; }
@@ -956,7 +971,7 @@
     </div>
   </div>
 
-  <!-- ELEGANT IMAGE GALLERY & DIRECT ORDER MODAL -->
+  <!-- ELEGANT IMAGE GALLERY & DIRECT ORDER MODAL (OON JAI THEME MATCHED) -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
     <div class="gallery-modal-box">
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
@@ -1042,11 +1057,11 @@ const App = (function() {
       { id: 'bw4', name: 'Mini Pack', price: 99000, desc: 'Includes 1 sauce, 3 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 1, maxVeggies: 3, maxProteins: 1, images: ["https://i.postimg.cc/MZ0hZGnM/Build-Your-own.webp"] }
     ],
     smoothies: [
-      { id: 'sm1', name: 'Kickstart', price: 70000, desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', images: ["https://i.postimg.cc/5222wwfM/Kickstart.webp"] },
-      { id: 'sm2', name: 'Fruitopia', price: 70000, desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://i.postimg.cc/vZZZWWGF/Fruitopia.webp"] },
-      { id: 'sm3', name: 'Paradise Point', price: 70000, desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://i.postimg.cc/T333rrT8/Paradise-point-1.webp"] },
-      { id: 'sm4', name: 'Mary Jane', price: 80000, desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.', images: ["https://i.postimg.cc/9QQQGGC6/Mary-Jane-1.webp"] },
-      { id: 'sm5', name: "Reese's Cup", price: 70000, desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', images: ["https://i.postimg.cc/T333rrfF/Reese-s-Cup-1.webp"] }
+      { id: 'sm1', name: 'Kickstart', price: 70000, desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Kickstart"] },
+      { id: 'sm2', name: 'Fruitopia', price: 70000, desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Fruitopia"] },
+      { id: 'sm3', name: 'Paradise Point', price: 70000, desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Paradise+Point"] },
+      { id: 'sm4', name: 'Mary Jane', price: 80000, desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Mary+Jane"] },
+      { id: 'sm5', name: "Reese's Cup", price: 70000, desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Reeses+Cup"] }
     ],
     refreshers: [
       { id: 'r1', name: 'Mint Pineapple', price: 45000, desc: 'Fresh mint and pineapple.', images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple"] },
@@ -1123,6 +1138,20 @@ const App = (function() {
     setTimeout(() => first.focus(), 50);
   }
 
+  // --- SILENT IMAGE PRELOADER ---
+  function preloadThumbnails() {
+    setTimeout(() => {
+      Object.keys(menuData).forEach(cat => {
+        menuData[cat].forEach(item => {
+          if (item.images && item.images.length > 0 && item.images[0].trim() !== "") {
+            const img = new Image();
+            img.src = item.images[0];
+          }
+        });
+      });
+    }, 1000); // Wait 1 second so we don't block the initial fast load
+  }
+
   // --- FLYING ANIMATION TO FLOATING CART ---
   function animateFlyToCart(originElement) {
     const cartBtn = document.getElementById('floatingCartBtn');
@@ -1133,7 +1162,6 @@ const App = (function() {
 
     if (originElement) {
       const rect = originElement.getBoundingClientRect();
-      // Ensure element actually exists on screen before stealing its coords
       if (rect.width > 0 && (rect.top !== 0 || rect.left !== 0)) {
         startX = rect.left + rect.width / 2;
         startY = rect.top + rect.height / 2;
@@ -1258,19 +1286,19 @@ const App = (function() {
     if (carouselIntervals[trackId]) clearInterval(carouselIntervals[trackId]);
 
     if (validImages.length === 1) {
-      track.innerHTML = `<img src="${validImages[0]}" class="carousel-img" draggable="false" loading="lazy"/>`;
+      track.innerHTML = `<img src="${validImages[0]}" class="carousel-img loaded" draggable="false" loading="eager"/>`;
       dots.innerHTML = '';
       track.onscroll = null;
       return;
     }
 
     let html = '', dotsHtml = '';
-    html += `<img src="${validImages[validImages.length - 1]}" class="carousel-img clone" draggable="false" loading="lazy"/>`;
+    html += `<img src="${validImages[validImages.length - 1]}" class="carousel-img clone loaded" draggable="false" loading="eager"/>`;
     validImages.forEach((imgLink, i) => {
-      html += `<img src="${imgLink}" class="carousel-img" draggable="false" loading="lazy"/>`;
+      html += `<img src="${imgLink}" class="carousel-img loaded" draggable="false" loading="lazy"/>`;
       dotsHtml += `<span class="dot" onclick="App.goToSlide('${trackId}', ${i + 1})"></span>`;
     });
-    html += `<img src="${validImages[0]}" class="carousel-img clone" draggable="false" loading="lazy"/>`;
+    html += `<img src="${validImages[0]}" class="carousel-img clone loaded" draggable="false" loading="lazy"/>`;
     
     track.innerHTML = html; 
     dots.innerHTML = dotsHtml;
@@ -1377,6 +1405,7 @@ const App = (function() {
     setupForm();
     setupTabSwiping();
     setupFloatingCartObserver();
+    preloadThumbnails();
   });
 
   document.addEventListener('click', function(event) {
@@ -1436,7 +1465,7 @@ const App = (function() {
 
   function renderProductsGrid() {
     const container = document.getElementById('productsGrid'); container.innerHTML = '';
-    menuData[currentCategory].forEach(item => {
+    menuData[currentCategory].forEach((item, index) => {
       const totalCount = cart.filter(c => c.id === item.id).reduce((acc, curr) => acc + curr.qty, 0);
       
       const card = document.createElement('div'); card.className = 'product-card';
@@ -1445,7 +1474,8 @@ const App = (function() {
                                       : `<button class="add-btn" onclick="App.addMenuItemToCart('${currentCategory}', '${item.id}', this)">Add +</button>`;
       
       const thumbnailSrc = item.images && item.images.length > 0 ? item.images[0] : defaultDummyImages[0];
-      const imageHtml = `<img src="${thumbnailSrc}" class="product-image" alt="${item.name}" loading="lazy" onclick="App.openGallery('${currentCategory}', '${item.id}')" aria-label="View images and details for ${item.name}">`;
+      const isEager = index < 4 ? 'eager' : 'lazy'; // Smart eager loading for top items
+      const imageHtml = `<img src="${thumbnailSrc}" class="product-image" alt="${item.name}" loading="${isEager}" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')" onclick="App.openGallery('${currentCategory}', '${item.id}')" aria-label="View images and details for ${item.name}">`;
 
       card.innerHTML = `
         <div style="display: flex; gap: 12px; align-items: center; width: 100%;">
@@ -1562,7 +1592,6 @@ const App = (function() {
           cart.push({ id: item.id, name: item.name, price: item.price, subtext: '', qty: 1, isCustom: false, category: category });
         }
         
-        // Fix: Execute animation coordinate capture before ripping the element out of the DOM via _reRenderStore
         animateFlyToCart(eventElement);
         this._reRenderStore(); 
       }
