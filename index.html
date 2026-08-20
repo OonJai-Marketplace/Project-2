@@ -290,11 +290,10 @@
     .cart-stepper-count { font-size: 12px; font-weight: 700; color: #ffffff; min-width: 16px; text-align: center; }
 
     .order-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 4px; border-radius: var(--border-radius-sm); transition: border 0.2s ease; }
-    .order-options.error-highlight { border: 1px solid #ef4444; background: rgba(239, 68, 68, 0.1); }
     .order-options label { font-size: 12px; background: rgba(2, 18, 15, 0.75); border: 1px solid var(--border-color); padding: 8px; border-radius: var(--border-radius-sm); text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.2s ease; }
     .order-options input[type="radio"] { accent-color: var(--accent-green); }
     .order-options label:has(input:checked) { border-color: var(--accent-green); background: rgba(30, 77, 64, 0.5); color: var(--accent-green); font-weight: 700; }
-    .order-type-error-msg { display: none; color: #f87171; font-size: 11px; font-weight: 700; text-align: center; background: rgba(239, 68, 68, 0.15); padding: 6px; border-radius: var(--border-radius-sm); border: 1px solid #ef4444; }
+    
     .payment-note { font-size: 11px; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 8px 10px; border-radius: var(--border-radius-sm); border-left: 3px solid #fbbf24; line-height: 1.3; }
     .cart-total { border-top: 1px solid var(--border-color); padding-top: 10px; display: flex; flex-direction: column; gap: 12px; }
     .total-row { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 700; }
@@ -746,11 +745,12 @@
               <div class="cart-items" id="cartItems">
                 <p class="empty-cart-msg">Your basket is empty.</p>
               </div>
+              
               <div class="order-options" id="orderOptionsBox">
                 <label><input type="radio" name="orderType" value="Dine-In" onchange="App.clearOrderTypeError()"> Dine-In</label>
                 <label><input type="radio" name="orderType" value="Pick-Up" onchange="App.clearOrderTypeError()"> Pick-Up</label>
               </div>
-              <div class="order-type-error-msg" id="orderTypeErrorMsg" role="alert">⚠️ Please choose either "Dine-In" or "Pick-Up" to complete your order.</div>
+              
               <div class="payment-note"><strong>Note:</strong> A QR code will be sent to you for payment before your order is processed. This helps us verify and prevent fake orders. Thank you!</div>
               <div class="cart-total">
                 <div class="total-row">
@@ -758,8 +758,8 @@
                   <span id="totalPrice" class="price" style="font-size: 16px;">0 Kip</span>
                 </div>
                 <div class="action-buttons">
-                  <button class="btn-wa" onclick="App.checkoutWA()">Order via WhatsApp</button>
-                  <button class="btn-msgr" onclick="App.checkoutMessenger()">Order via Messenger</button>
+                  <button class="btn-wa" onclick="App.handleCheckout('wa')">Order via WhatsApp</button>
+                  <button class="btn-msgr" onclick="App.handleCheckout('msgr')">Order via Messenger</button>
                 </div>
               </div>
             </div>
@@ -1222,7 +1222,6 @@ const App = (function() {
     }, {passive: true});
 
     appRoot.addEventListener('touchend', e => {
-      // Ignore swipes interacting with sliders or modals
       if (e.target.closest('.carousel-container') || e.target.closest('.home-card-slider') || e.target.closest('.modal-overlay.active')) return;
       
       touchEndX = e.changedTouches[0].screenX;
@@ -1246,9 +1245,9 @@ const App = (function() {
         let idx = mainTabs.indexOf(currentTab);
         
         if (diffX < 0 && idx < mainTabs.length - 1) { 
-          App.switchMainTab(mainTabs[idx + 1]); // Swiped Left
+          App.switchMainTab(mainTabs[idx + 1]);
         } else if (diffX > 0 && idx > 0) { 
-          App.switchMainTab(mainTabs[idx - 1]); // Swiped Right
+          App.switchMainTab(mainTabs[idx - 1]);
         }
       }
     }, {passive: true});
@@ -1418,6 +1417,16 @@ const App = (function() {
     setupForm();
     setupTabSwiping();
     setupFloatingCartObserver();
+  });
+
+  // Visibility Change Hook to cleanly close Modals if the App successfully opened in the background
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'hidden') {
+      const modal = document.getElementById('notificationModal');
+      if (modal && modal.classList.contains('active')) {
+        App.closeNotification();
+      }
+    }
   });
 
   document.addEventListener('click', function(event) {
@@ -1849,16 +1858,58 @@ const App = (function() {
     },
 
     clearOrderTypeError: function() {
-      document.getElementById('orderOptionsBox').classList.remove('error-highlight');
-      document.getElementById('orderTypeErrorMsg').style.display = 'none';
+      // Keep this just in case, though the modal handles it now
     },
 
-    /* --- IOS-SAFE APP REDIRECT FIXES --- */
-    checkoutWA: function() {
-      const msg = this._buildOrderMsg();
-      if (!msg) return;
+    /* --- CHECKOUT FLOW --- */
+    
+    // Main checkout orchestrator
+    handleCheckout: function(platform) {
+      if (cart.length === 0) { 
+        this.triggerAlert("Your basket is empty! Please add items before ordering.", "Empty Basket"); 
+        return; 
+      }
       
+      const type = document.querySelector('input[name="orderType"]:checked');
+      if (!type) {
+        // Issue 2 Fix: Prompting with actual buttons inside the modal instead of a simple alert
+        const html = `
+          <div style="margin: 10px 0 20px 0;">
+            <p style="margin-bottom: 20px; font-size: 15px; color: var(--text-bright);">How would you like your order?</p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+              <button style="flex:1; padding: 14px; font-size: 14px; font-weight: 700; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: var(--border-radius-sm); cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);" onclick="App.setOrderTypeAndCheckout('Dine-In', '${platform}')">🍽️ Dine-In</button>
+              <button style="flex:1; padding: 14px; font-size: 14px; font-weight: 700; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; border-radius: var(--border-radius-sm); cursor: pointer; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);" onclick="App.setOrderTypeAndCheckout('Pick-Up', '${platform}')">🛍️ Pick-Up</button>
+            </div>
+          </div>
+        `;
+        this.triggerCustomPrompt(html, "Select Order Type");
+        return;
+      }
+      
+      // If everything is selected, execute the platform checkout
+      if (platform === 'wa') this.executeWA();
+      else if (platform === 'msgr') this.executeMessenger();
+    },
+    
+    // Called when a user clicks the Dine-In or Pick-Up button in the popup
+    setOrderTypeAndCheckout: function(typeValue, platform) {
+      this.closeNotification();
+      
+      // Update the radio button in the background
+      const radio = document.querySelector(`input[name="orderType"][value="${typeValue}"]`);
+      if (radio) radio.checked = true;
+
+      // Small timeout to allow the modal to close visually before the next action fires
+      setTimeout(() => {
+        if (platform === 'wa') this.executeWA();
+        else if (platform === 'msgr') this.executeMessenger();
+      }, 300);
+    },
+
+    executeWA: function() {
+      const msg = this._buildOrderMsg();
       const url = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encodeURIComponent(msg)}`;
+      
       const link = document.createElement('a');
       link.href = url;
       link.target = "_blank"; 
@@ -1869,20 +1920,29 @@ const App = (function() {
       setTimeout(() => document.body.removeChild(link), 800);
     },
 
-    checkoutMessenger: function() {
+    executeMessenger: function() {
       const msg = this._buildOrderMsg();
-      if (!msg) return;
-
-      // Use the official m.me Universal Link. 
-      // This is the ONLY link format the Messenger iOS app natively understands for opening specific profiles.
       const url = `https://m.me/${MESSENGER_USERNAME}`;
+      
+      // Issue 2 Fix: Extremely clear rich-HTML instruction that forces them to understand the paste step
+      const alertHtml = `
+        <div style="text-align: center; margin-bottom: 5px;">
+          <div style="background: rgba(34, 197, 94, 0.1); border: 2px dashed var(--accent-green); border-radius: 10px; padding: 18px 10px; margin: 15px 0;">
+            <div style="font-size: 32px; margin-bottom: 8px;">📋</div>
+            <h4 style="color: var(--accent-green); margin-bottom: 5px; font-size: 15px;">Order Details Copied!</h4>
+            <p style="font-size: 13px; color: #ffffff; line-height: 1.4;">When Messenger opens, you must <b>PASTE</b> the text into the chat box and hit send.</p>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); font-style: italic;">If you do not paste the message, we won't receive your order.</p>
+        </div>
+      `;
 
       const proceedToMessenger = () => {
         this.triggerConfirm(
-          "Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", 
-          "Order Ready! 📋", 
-          (proceed) => { /* Navigation handled natively by the HTML anchor tag */ }, 
-          url
+          alertHtml, 
+          "Almost Done! 🚀", 
+          (proceed) => { /* Navigation handled passively by the HTML anchor tag */ }, 
+          url,
+          "Got it, Open Messenger"
         );
       };
 
@@ -1913,14 +1973,10 @@ const App = (function() {
     },
 
     _buildOrderMsg: function() {
-      if (cart.length === 0) { this.triggerAlert("Your basket is empty! Please add items before ordering.", "Empty Basket"); return null; }
-      const type = document.querySelector('input[name="orderType"]:checked');
-      if (!type) {
-        document.getElementById('orderOptionsBox').classList.add('error-highlight'); document.getElementById('orderTypeErrorMsg').style.display = 'block';
-        document.getElementById('orderOptionsBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        this.triggerAlert("⚠️ Please select either Dine-In or Pick-Up before submitting your order!", "Action Required"); return null;
-      }
-      let msg = `✦ *OON JAI ORDER* ✦\n*Type: ${type.value}*\n\n*Items Ordered:*\n`;
+      // Assumes cart > 0 and type is selected (handled by handleCheckout orchestrator)
+      const type = document.querySelector('input[name="orderType"]:checked').value;
+      
+      let msg = `✦ *OON JAI ORDER* ✦\n*Type: ${type}*\n\n*Items Ordered:*\n`;
       cart.forEach((item, index) => { 
         msg += `${index + 1}. *${item.name}* (x${item.qty}) - ${formatKip(item.price * item.qty)}\n` + (item.subtext ? `   _${item.subtext}_\n` : ''); 
       });
@@ -1928,9 +1984,11 @@ const App = (function() {
       msg += `\n*Total: ${formatKip(totalPrice)}*\n\n👉Note: Please send your payment receipt to process this order.\n`;
       return msg;
     },
+    
+    /* --- CUSTOM NOTIFICATION MODAL INJECTIONS --- */
 
     triggerAlert: function(message, title) {
-      // Replaces basic \n line breaks with <br> tags safely
+      // Replaces basic \n line breaks with <br> tags safely if not already HTML formatted
       const formattedMessage = message.includes('<div') ? message : message.replace(/\n/g, '<br>');
       document.getElementById('notifTitle').innerHTML = title; 
       document.getElementById('notifMessage').innerHTML = formattedMessage;
@@ -1944,10 +2002,25 @@ const App = (function() {
       trapFocus(m);
     },
     
-    // Updated to accept custom button text and rich HTML structures for alerts
-    triggerConfirm: function(message, title, callback, redirectUrl = null) {
-      document.getElementById('notifTitle').innerText = title; 
-      document.getElementById('notifMessage').innerText = message;
+    triggerCustomPrompt: function(html, title) {
+      document.getElementById('notifTitle').innerHTML = title; 
+      document.getElementById('notifMessage').innerHTML = html;
+      
+      // Hide standard action buttons entirely since the HTML injects its own buttons
+      document.getElementById('notifAlertAction').style.display = 'none'; 
+      document.getElementById('notifConfirmActions').style.display = 'none';
+      
+      const m = document.getElementById('notificationModal'); 
+      setScrollLock(true);
+      m.classList.add('active'); 
+      trapFocus(m);
+    },
+    
+    triggerConfirm: function(message, title, callback, redirectUrl = null, confirmText = "Proceed") {
+      const formattedMessage = message.includes('<div') ? message : message.replace(/\n/g, '<br>');
+      document.getElementById('notifTitle').innerHTML = title; 
+      document.getElementById('notifMessage').innerHTML = formattedMessage;
+      
       document.getElementById('notifAlertAction').style.display = 'none'; 
       document.getElementById('notifConfirmActions').style.display = 'flex';
       
@@ -1958,27 +2031,29 @@ const App = (function() {
       
       const btnProceed = document.getElementById('btnNotifProceed');
       
+      // Issue 1 Fix: Flawless Safari App redirect logic
       if (redirectUrl) {
-        btnProceed.innerText = "Open App";
+        btnProceed.innerText = confirmText;
         btnProceed.href = redirectUrl;
         
-        // CRITICAL FIX: We remove target="_blank". 
-        // Opening a new tab on iOS strips the "/oon.jai.laos" path during the handoff to the Messenger app.
-        btnProceed.removeAttribute("target"); 
+        btnProceed.target = "_top"; // Explicitly tell Safari this is a top-level navigation to trigger deep-link handlers
         btnProceed.removeAttribute("rel");
         
+        // Remove ANY blocking DOM destruction from the native click to prevent Safari from cancelling the intent.
+        // It will close naturally via the global 'visibilitychange' listener when the user leaves the browser, 
+        // OR it will forcefully close after 3 seconds as a silent fallback if the link fails.
         btnProceed.onclick = () => { 
-          // Delay closing the modal so Safari doesn't kill the navigation context
           setTimeout(() => {
             this.closeNotification(); 
             callback(true); 
-          }, 800);
+          }, 3000);
         };
       } else {
-        btnProceed.innerText = "Proceed";
+        btnProceed.innerText = confirmText;
         btnProceed.href = "javascript:void(0)";
         btnProceed.removeAttribute("target");
         btnProceed.removeAttribute("rel");
+        
         btnProceed.onclick = (e) => { 
           e.preventDefault();
           this.closeNotification(); 
