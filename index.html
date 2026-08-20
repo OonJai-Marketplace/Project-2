@@ -172,14 +172,18 @@
     /* Cart Summary & Item Stepper Controls */
     .cart-summary { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius-main); padding: 14px; display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
     .cart-title { font-family: 'Georgia', serif; font-size: 15px; color: var(--accent-green); display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
-    .cart-items { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .cart-items { max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
     .empty-cart-msg { font-size: 12px; color: var(--text-muted); text-align: center; padding: 12px 0; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 6px; }
-    .cart-item-name { font-size: 12px; font-weight: 600; }
-    .cart-item-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-    .cart-item-price { font-size: 12px; font-weight: 600; color: var(--accent-green); margin-right: 6px; }
     
-    .cart-stepper { display: flex; align-items: center; gap: 4px; background: rgba(2, 18, 15, 0.8); padding: 2px 6px; border-radius: 20px; border: 1px solid var(--border-color); }
+    /* Order basket row styling with guaranteed single-line pricing and flexible text wrap */
+    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; }
+    .cart-item-details { flex: 1; min-width: 0; word-break: break-word; }
+    .cart-item-name { font-size: 12.5px; font-weight: 600; color: #ffffff; line-height: 1.3; }
+    .cart-item-sub { font-size: 10.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
+    .cart-item-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-top: 2px; }
+    .cart-item-price { font-size: 12.5px; font-weight: 700; color: var(--accent-green); white-space: nowrap; flex-shrink: 0; }
+    
+    .cart-stepper { display: flex; align-items: center; gap: 4px; background: rgba(2, 18, 15, 0.9); padding: 2px 6px; border-radius: 20px; border: 1px solid var(--border-color); flex-shrink: 0; }
     .cart-stepper-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; font-weight: 800; cursor: pointer; padding: 0 4px; line-height: 1; transition: transform 0.1s ease; }
     .cart-stepper-btn:active { transform: scale(0.85); }
     .cart-stepper-btn.minus { color: #f87171; }
@@ -200,7 +204,7 @@
     .btn-wa { background: var(--wa-color); } .btn-msgr { background: var(--msgr-color); }
     .btn-wa:hover, .btn-msgr:hover { opacity: 0.9; }
 
-    /* Floating Cart Button */
+    /* Floating Cart Button (High Contrast Crisp White SVG Icon) */
     .floating-cart-btn {
       position: fixed;
       bottom: 24px;
@@ -210,12 +214,11 @@
       border-radius: 50%;
       background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
       color: white;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(74, 222, 128, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 18px rgba(74, 222, 128, 0.5);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
       cursor: pointer;
       z-index: 1500;
       transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
@@ -228,6 +231,11 @@
       visibility: hidden;
       pointer-events: none;
       transform: scale(0.85);
+    }
+    .floating-cart-icon {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     }
     .floating-cart-badge {
       position: absolute;
@@ -244,6 +252,7 @@
       align-items: center;
       justify-content: center;
       border: 2px solid var(--bg-dark);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
     }
 
     /* Action Buttons Sidebar */
@@ -481,9 +490,13 @@
     <button class="nav-tab" data-tab="review" onclick="App.switchMainTab('review')" role="tab" aria-selected="false">Reviews</button>
   </div>
 
-  <!-- FLOATING CART BUTTON -->
+  <!-- FLOATING CART BUTTON (High Contrast Crisp White SVG Icon) -->
   <button class="floating-cart-btn" id="floatingCartBtn" onclick="App.scrollToBasket()" aria-label="View Order Basket">
-    🛒
+    <svg class="floating-cart-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="21" r="1.5"></circle>
+      <circle cx="20" cy="21" r="1.5"></circle>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
     <span class="floating-cart-badge" id="floatingCartBadge">0</span>
   </button>
 
@@ -1362,7 +1375,6 @@ const App = (function() {
     incrementCartItem: function(index) {
       const item = cart[index];
       if (item.isCustom) {
-        // Tapping plus on customizable opens builder to build new choices
         this.openCustomModal(item.category, item.id);
       } else {
         item.qty += 1;
@@ -1395,11 +1407,11 @@ const App = (function() {
       } else {
         container.innerHTML = cart.map((item, idx) => `
           <div class="cart-item">
-            <div>
+            <div class="cart-item-details">
               <div class="cart-item-name">${item.name}</div>
               ${item.subtext ? `<div class="cart-item-sub">${item.subtext}</div>` : ''}
             </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="cart-item-right">
               <span class="cart-item-price">${formatKip(item.price * item.qty)}</span>
               <div class="cart-stepper">
                 <button class="cart-stepper-btn minus" onclick="App.decrementCartItem(${idx})" aria-label="Decrease quantity">−</button>
@@ -1512,7 +1524,6 @@ const App = (function() {
       const finalSubtext = subParts.join(' | ');
       const finalPrice = currentActiveCustomItem.price + totExtCost;
 
-      // Group identical custom builds together
       const existing = cart.find(c => c.id === currentActiveCustomItem.id && c.subtext === finalSubtext && c.price === finalPrice);
       if (existing) {
         existing.qty += 1;
