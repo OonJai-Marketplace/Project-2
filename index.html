@@ -184,7 +184,7 @@
     
     /* Basket Pulse Animation (Smooth fade out) */
     .cart-summary.basket-highlight {
-      animation: basketPulse 4s ease-out forwards;
+      animation: basketPulse 6s ease-out forwards;
     }
 
     @keyframes basketPulse {
@@ -1400,10 +1400,10 @@ const App = (function() {
         void cartSection.offsetWidth; // Force DOM Reflow to restart keyframe animation
         cartSection.classList.add('basket-highlight');
 
-        // Automatically remove the highlight class after 4 seconds
+        // Automatically remove the highlight class after 6 seconds
         setTimeout(() => {
           cartSection.classList.remove('basket-highlight');
-        }, 4000);
+        }, 6000);
       }
     },
 
