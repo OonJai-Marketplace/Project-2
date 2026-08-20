@@ -1844,7 +1844,8 @@ const App = (function() {
 
     checkoutWA: function() {
       const msg = this._buildOrderMsg();
-      if (msg) window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+      // FIX: Use window.location.href instead of window.open to prevent iOS App Store redirect
+      if (msg) window.location.href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
     },
 
     checkoutMessenger: function() {
@@ -1853,7 +1854,10 @@ const App = (function() {
 
       const proceedToMessenger = () => {
         this.triggerConfirm("Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", "Order Ready! 📋", (proceed) => {
-          if (proceed) window.open(`https://m.me/${MESSENGER_USERNAME}`, '_blank');
+          if (proceed) {
+            // FIX: Use window.location.href instead of window.open to prevent iOS App Store redirect
+            window.location.href = `https://m.me/${MESSENGER_USERNAME}`;
+          }
         }, true);
       };
 
