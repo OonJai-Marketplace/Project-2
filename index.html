@@ -6,9 +6,9 @@
   <title>Oon Jai Marketplace</title>
 
   <!-- ========================================== -->
-  <!--             SEO & SEARCH LOGO              -->
+  <!--              SEO & SEARCH LOGO             -->
   <!-- ========================================== -->
-  <link rel="icon" type="image/jpeg" href="https://i.postimg.cc/NFhGYVSd/logo-png.png">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/NFhGYVSd/logo-png.png">
   <link rel="apple-touch-icon" href="https://i.postimg.cc/DZmP1t7Q/logo.jpg">
   <meta name="description" content="Oon Jai Marketplace is a mission-driven vegetarian and vegan restaurant in Vientiane, Laos. Discover wholesome food, words of hope, and community." />
   <meta name="keywords" content="Oon Jai, vegetarian restaurant Vientiane, vegan Laos, healthy food" />
@@ -182,7 +182,7 @@
       transition: border-color 0.4s ease, box-shadow 0.4s ease;
     }
     
-    /* Basket Pulse Animation (Smooth fade out) */
+    /* Basket Pulse Animation */
     .cart-summary.basket-highlight {
       animation: basketPulse 6s ease-out forwards;
     }
@@ -202,7 +202,7 @@
       }
     }
 
-    /* Bolder Basket Title */
+    /* Basket Title */
     .cart-title {
       font-family: 'Georgia', serif;
       font-size: 16px;
@@ -226,13 +226,11 @@
     .cart-items { max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
     .empty-cart-msg { font-size: 12px; color: var(--text-muted); text-align: center; padding: 12px 0; }
     
-    /* Order basket row styling with guaranteed single-line pricing, description wrap & edit button */
     .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; }
     .cart-item-details { flex: 1; min-width: 0; word-break: break-word; }
     .cart-item-name { font-size: 13px; font-weight: 700; color: #ffffff; line-height: 1.3; }
     .cart-item-sub { font-size: 10.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
     
-    /* Edit Order Button for Custom Items */
     .cart-item-edit-btn {
       display: inline-flex;
       align-items: center;
@@ -278,7 +276,7 @@
     .btn-wa { background: var(--wa-color); } .btn-msgr { background: var(--msgr-color); }
     .btn-wa:hover, .btn-msgr:hover { opacity: 0.9; }
 
-    /* Floating Cart Button (High Contrast Crisp White SVG Icon) */
+    /* Floating Cart Button */
     .floating-cart-btn {
       position: fixed;
       bottom: 24px;
@@ -350,7 +348,7 @@
     .modal-subtitle { font-size: 11px; color: var(--accent-green); margin-bottom: 10px; background: rgba(74, 222, 128, 0.1); padding: 6px 10px; border-radius: var(--border-radius-sm); }
 
     /* ======================================================= */
-    /*        PREMIUM LUXURY IMAGE GALLERY MODAL               */
+    /*           IMAGE GALLERY & DIRECT ORDER MODAL           */
     /* ======================================================= */
     .gallery-modal-box {
       padding: 0;
@@ -366,7 +364,7 @@
     }
     
     .gallery-header-section {
-      padding: 22px 20px 16px 20px;
+      padding: 22px 20px 14px 20px;
       text-align: center;
       position: relative;
       background: linear-gradient(180deg, rgba(4, 31, 26, 0.8) 0%, rgba(1, 12, 10, 0.4) 100%);
@@ -452,7 +450,7 @@
 
     .gallery-dots {
       position: absolute;
-      bottom: 14px;
+      bottom: 12px;
       left: 0;
       right: 0;
       margin: 0;
@@ -469,7 +467,23 @@
       transform: scale(1.3);
     }
 
-    /* --- 8. SHARED CAROUSEL STYLES (Used in Hope & Reviews) --- */
+    /* Modal Action Bar */
+    .gallery-order-bar {
+      padding: 14px 18px;
+      background: rgba(4, 31, 26, 0.95);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .gallery-price-tag {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+
+    /* --- 8. SHARED CAROUSEL STYLES --- */
     .gallery-col { display: flex; flex-direction: column; align-items: center; width: 100%; }
     .gallery-col-title { margin-top: 0; margin-bottom: 4px; font-size: 18px; font-weight: 600; color: #ffffff; text-align: center; font-family: 'Georgia', serif; }
     .gallery-col-title span { color: #4ade80; font-size: 13px; vertical-align: middle; }
@@ -564,7 +578,7 @@
     <button class="nav-tab" data-tab="review" onclick="App.switchMainTab('review')" role="tab" aria-selected="false">Reviews</button>
   </div>
 
-  <!-- FLOATING CART BUTTON (High Contrast Crisp White SVG Icon) -->
+  <!-- FLOATING CART BUTTON -->
   <button class="floating-cart-btn" id="floatingCartBtn" onclick="App.scrollToBasket()" aria-label="View Order Basket">
     <svg class="floating-cart-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="9" cy="21" r="1.5"></circle>
@@ -575,7 +589,7 @@
   </button>
 
   <!-- ========================================== -->
-  <!--               MAIN APP CONTAINER             -->
+  <!--               MAIN APP CONTAINER           -->
   <!-- ========================================== -->
   <div class="app-container" id="appRoot">
     
@@ -817,9 +831,7 @@
             <p class="gallery-col-subtitle">Real experiences from our Oon Jai family.</p>
             
             <div class="reviews-vertical-wrapper">
-              <div class="reviews-vertical-carousel" id="verticalReviewsCarousel" aria-live="off">
-                <!-- JS will populate vertical cards here -->
-              </div>
+              <div class="reviews-vertical-carousel" id="verticalReviewsCarousel" aria-live="off"></div>
             </div>
           </div>
         </div>
@@ -845,7 +857,7 @@
       </div>
     </div>
     
-    <!-- UNIVERSAL FOOTER OUTSIDE TABS (DRY PRINCIPLE) -->
+    <!-- UNIVERSAL FOOTER -->
     <div class="global-footer-wrapper">
       <footer class="app-footer">
         <div class="footer-brand">Oon Jai Marketplace</div>
@@ -856,7 +868,7 @@
 
   </div> <!-- End App Container -->
 
-  <!-- CUSTOMIZATION MODAL (Closes when clicking on the dark background) -->
+  <!-- CUSTOMIZATION MODAL -->
   <div class="modal-overlay" id="customModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target === this) App.closeCustomModal()">
     <div class="modal-box">
       <div class="modal-header">
@@ -886,7 +898,7 @@
     </div>
   </div>
 
-  <!-- THEMED NOTIFICATION MODALS (Closes when clicking on the dark background) -->
+  <!-- THEMED NOTIFICATION MODALS -->
   <div class="modal-overlay" id="notificationModal" style="z-index: 2000;" role="alertdialog" aria-modal="true" aria-labelledby="notifTitle" aria-describedby="notifMessage" onclick="if(event.target === this) App.closeNotification()">
     <div class="modal-box" style="max-width: 320px; text-align: center; padding: 20px;">
       <h3 class="modal-title" id="notifTitle" style="margin-bottom: 12px;">Notification</h3>
@@ -899,7 +911,7 @@
     </div>
   </div>
 
-  <!-- REDESIGNED LUXURY IMAGE GALLERY MODAL -->
+  <!-- REDESIGNED LUXURY IMAGE GALLERY & DIRECT ORDER MODAL -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
     <div class="modal-box gallery-modal-box">
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
@@ -913,11 +925,16 @@
         <div class="carousel-track" id="galleryCarouselTrack"></div>
       </div>
       <div class="carousel-dots gallery-dots" id="galleryCarouselDots" aria-hidden="true"></div>
+      
+      <!-- Interactive Add-to-Cart / Customization Bar inside image preview -->
+      <div class="gallery-order-bar">
+        <span class="gallery-price-tag" id="galleryPriceTag">0 Kip</span>
+        <div id="galleryActionContainer"></div>
+      </div>
     </div>
   </div>
 
 <script>
-// Encapsulate logic in an IIFE to prevent global namespace pollution
 const App = (function() {
   'use strict';
   
@@ -925,7 +942,7 @@ const App = (function() {
   const carouselIntervals = {};
   let cart = [];
   let currentActiveCustomItem = null;
-  let editingCartIndex = null; // Tracks index when editing an existing cart item
+  let editingCartIndex = null;
   let currentCategory = 'burgers';
   let verticalScrollInterval;
   let isVerticalHoveredOrDragged = false;
@@ -937,11 +954,7 @@ const App = (function() {
   const EXTRA_ADDON_PRICE = 7000;
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw82CgCvJ6vcNC4IZ86-gDOkn9--L2w-DYVD-txuZ3rqzjmcDeHftf9KSjgYS2USezn/exec";
 
-  // DEFAULT DUMMY IMAGES for testing the gallery (All Emerald Background)
-  const defaultDummyImages = [
-    "https://placehold.co/400x400/083c33/fff?text=Image+1",
-    "https://placehold.co/400x400/083c33/fff?text=Image+2"
-  ];
+  const defaultDummyImages = ["https://placehold.co/400x400/083c33/fff?text=Oon+Jai+Dish"];
 
   const commonChoices = {
     veggies: ['Grilled mushrooms', 'Grilled bell peppers', 'Grilled eggplant', 'Caramelized onion', 'Microgreens', 'Avocado', 'Lettuce', 'Tomatoes', 'Onions', 'Carrots', 'Olives', 'Corn'],
@@ -951,56 +964,57 @@ const App = (function() {
     wellnessDrinks: ['Summer in My Heart', 'Wish Upon a Heart', 'Heartwarmer', 'Red Heart']
   };
 
+  // MENU DATA: Each item has exactly 1 image link initially (ready for comma-separated additions)
   const menuData = {
     burgers: [
-      { id: 'b1', name: 'Burger Combo', price: 199000, desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', images: ["https://i.postimg.cc/h4TW6rLk/Burger-combo-1.webp", "https://placehold.co/400x400/083c33/fff?text=Burger+Combo+2"] },
+      { id: 'b1', name: 'Burger Combo', price: 199000, desc: 'The Classic Burger + Mint Pineapple Refresher + Lemon Oat Cookie.', images: ["https://i.postimg.cc/h4TW6rLk/Burger-combo-1.webp"] },
       { id: 'b2', name: 'The Classic', price: 120000, desc: 'Meaty patty, lettuce, tomato, onion, pickles, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://i.postimg.cc/0jpTSk5t/classic-1.webp"] },
-      { id: 'b3', name: 'The Cheeser', price: 110000, desc: 'Meaty patty, tomato, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://i.postimg.cc/v87p8m4T/cheeser.webp", "https://placehold.co/400x400/083c33/fff?text=The+Cheeser+2", "https://placehold.co/400x400/083c33/fff?text=The+Cheeser+3"] },
-      { id: 'b4', name: 'The Bougie', price: 130000, desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.', images: ["https://i.postimg.cc/QCp278NY/Bougie-1.webp", "https://placehold.co/400x400/083c33/fff?text=The+Bougie+2", "https://placehold.co/400x400/083c33/fff?text=The+Bougie+3"] },
-      { id: 'b5', name: 'French Fries', price: 60000, desc: 'Crispy golden French fries with seasoning.', images: ["https://placehold.co/400x400/083c33/fff?text=French+Fries+1", "https://placehold.co/400x400/083c33/fff?text=French+Fries+2", "https://placehold.co/400x400/083c33/fff?text=French+Fries+3"] }
+      { id: 'b3', name: 'The Cheeser', price: 110000, desc: 'Meaty patty, tomato, garlic mayo, and cheese sauce. Served with a portion of fries.', images: ["https://i.postimg.cc/v87p8m4T/cheeser.webp"] },
+      { id: 'b4', name: 'The Bougie', price: 130000, desc: 'Meaty patty, microgreens, tomato, caramelized onion, sautéed mushroom, grilled pineapple, and basil mayo. Served with a portion of fries.', images: ["https://i.postimg.cc/QCp278NY/Bougie-1.webp"] },
+      { id: 'b5', name: 'French Fries', price: 60000, desc: 'Crispy golden French fries with seasoning.', images: ["https://placehold.co/400x400/083c33/fff?text=French+Fries"] }
     ],
     sandwiches: [
-      { id: 's1', name: 'Sandwich Combo', price: 180000, desc: 'Chickelicious sandwich + Paradise Point Refresher + Brownie.', images: ["https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+1", "https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+2", "https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo+3"] },
-      { id: 's2', name: 'Mediterranean', price: 105000, desc: 'Falafel, hummus, tahini sauce, tomato, pickles, mint, and cilantro.', images: ["https://placehold.co/400x400/083c33/fff?text=Mediterranean+1", "https://placehold.co/400x400/083c33/fff?text=Mediterranean+2", "https://placehold.co/400x400/083c33/fff?text=Mediterranean+3"] },
-      { id: 's3', name: 'Italian', price: 105000, desc: 'Grilled tofu, sautéed veggies, tomato, lettuce, onion, and basil mayo.', images: ["https://placehold.co/400x400/083c33/fff?text=Italian+1", "https://placehold.co/400x400/083c33/fff?text=Italian+2", "https://placehold.co/400x400/083c33/fff?text=Italian+3"] },
-      { id: 's4', name: 'Chickelicious', price: 110000, desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.', images: ["https://i.postimg.cc/KcBSwN78/Chickelious-1.webp", "https://placehold.co/400x400/083c33/fff?text=Chickelicious+2", "https://placehold.co/400x400/083c33/fff?text=Chickelicious+3"] },
-      { id: 's5', name: 'Build Your Own Sandwich', price: 110000, desc: 'Customizable sandwich. Choose your sauces, veggies, and protein.', isCustom: true, maxSauces: 2, maxVeggies: 3, maxProteins: 1, specificProteins: 'sandwichProteins', images: ["https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+1", "https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+2", "https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich+3"] }
+      { id: 's1', name: 'Sandwich Combo', price: 180000, desc: 'Chickelicious sandwich + Paradise Point Refresher + Brownie.', images: ["https://placehold.co/400x400/083c33/fff?text=Sandwich+Combo"] },
+      { id: 's2', name: 'Mediterranean', price: 105000, desc: 'Falafel, hummus, tahini sauce, tomato, pickles, mint, and cilantro.', images: ["https://placehold.co/400x400/083c33/fff?text=Mediterranean"] },
+      { id: 's3', name: 'Italian', price: 105000, desc: 'Grilled tofu, sautéed veggies, tomato, lettuce, onion, and basil mayo.', images: ["https://placehold.co/400x400/083c33/fff?text=Italian"] },
+      { id: 's4', name: 'Chickelicious', price: 110000, desc: 'Plant-based chicken, caramelized onion, olives, microgreens, tomato, cheese sauce, and basil mayo.', images: ["https://i.postimg.cc/KcBSwN78/Chickelious-1.webp"] },
+      { id: 's5', name: 'Build Your Own Sandwich', price: 110000, desc: 'Customizable sandwich. Choose your sauces, veggies, and protein.', isCustom: true, maxSauces: 2, maxVeggies: 3, maxProteins: 1, specificProteins: 'sandwichProteins', images: ["https://placehold.co/400x400/083c33/fff?text=BYO+Sandwich"] }
     ],
     texmex: [
-      { id: 'tx1', name: 'Tex-Mex Combo', price: 210000, desc: 'Tacos + Quesadilla + Mint Pineapple Refresher.', images: ["https://placehold.co/400x400/083c33/fff?text=Tex-Mex+Combo+1", "https://placehold.co/400x400/083c33/fff?text=Tex-Mex+Combo+2", "https://placehold.co/400x400/083c33/fff?text=Tex-Mex+Combo+3"] },
-      { id: 'tx2', name: 'Quesadilla', price: 85000, desc: 'Flour tortilla with cheese sauce, ground meat, and pico de gallo.', images: ["https://placehold.co/400x400/083c33/fff?text=Quesadilla+1", "https://placehold.co/400x400/083c33/fff?text=Quesadilla+2", "https://placehold.co/400x400/083c33/fff?text=Quesadilla+3"] },
-      { id: 'tx3', name: 'Tacos', price: 99000, desc: 'Two soft shell tacos filled with ground meat or black beans, grilled bell pepper, avocado, pico de gallo, and cheese sauce.', images: ["https://placehold.co/400x400/083c33/fff?text=Tacos+1", "https://placehold.co/400x400/083c33/fff?text=Tacos+2", "https://placehold.co/400x400/083c33/fff?text=Tacos+3"] }
+      { id: 'tx1', name: 'Tex-Mex Combo', price: 210000, desc: 'Tacos + Quesadilla + Mint Pineapple Refresher.', images: ["https://placehold.co/400x400/083c33/fff?text=Tex-Mex+Combo"] },
+      { id: 'tx2', name: 'Quesadilla', price: 85000, desc: 'Flour tortilla with cheese sauce, ground meat, and pico de gallo.', images: ["https://placehold.co/400x400/083c33/fff?text=Quesadilla"] },
+      { id: 'tx3', name: 'Tacos', price: 99000, desc: 'Two soft shell tacos filled with ground meat or black beans, grilled bell pepper, avocado, pico de gallo, and cheese sauce.', images: ["https://placehold.co/400x400/083c33/fff?text=Tacos"] }
     ],
     pasta: [
-      { id: 'p1', name: 'Miso-Seaweed', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic miso-seaweed fusion.', images: ["https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed+1", "https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed+2", "https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed+3"] },
-      { id: 'p2', name: 'Carbonara', price: 110000, desc: 'Rich and creamy pasta made with peanut butter and coconut milk.', images: ["https://placehold.co/400x400/083c33/fff?text=Carbonara+1", "https://placehold.co/400x400/083c33/fff?text=Carbonara+2", "https://placehold.co/400x400/083c33/fff?text=Carbonara+3"] },
-      { id: 'p3', name: 'Spaghetti', price: 110000, desc: 'Classic spaghetti packed with fresh, bright tomato goodness.', images: ["https://placehold.co/400x400/083c33/fff?text=Spaghetti+1", "https://placehold.co/400x400/083c33/fff?text=Spaghetti+2", "https://placehold.co/400x400/083c33/fff?text=Spaghetti+3"] },
-      { id: 'p4', name: 'Pesto Pasta', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic basil pesto.', images: ["https://placehold.co/400x400/083c33/fff?text=Pesto+Pasta+1", "https://placehold.co/400x400/083c33/fff?text=Pesto+Pasta+2", "https://placehold.co/400x400/083c33/fff?text=Pesto+Pasta+3"] }
+      { id: 'p1', name: 'Miso-Seaweed', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic miso-seaweed fusion.', images: ["https://placehold.co/400x400/083c33/fff?text=Miso-Seaweed"] },
+      { id: 'p2', name: 'Carbonara', price: 110000, desc: 'Rich and creamy pasta made with peanut butter and coconut milk.', images: ["https://placehold.co/400x400/083c33/fff?text=Carbonara"] },
+      { id: 'p3', name: 'Spaghetti', price: 110000, desc: 'Classic spaghetti packed with fresh, bright tomato goodness.', images: ["https://placehold.co/400x400/083c33/fff?text=Spaghetti"] },
+      { id: 'p4', name: 'Pesto Pasta', price: 110000, desc: 'Herb, fresh, vibrant, and aromatic basil pesto.', images: ["https://placehold.co/400x400/083c33/fff?text=Pesto+Pasta"] }
     ],
     bowl: [
-      { id: 'bw1', name: 'Bowl Combo', price: 160000, desc: 'Protein pack + Wellness drink of your choice + Banana bread.', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, needsWellnessChoice: true, images: ["https://i.postimg.cc/gcyfc0xL/Bowl-combo.webp", "https://placehold.co/400x400/083c33/fff?text=Bowl+Combo+2", "https://placehold.co/400x400/083c33/fff?text=Bowl+Combo+3"] },
-      { id: 'bw2', name: 'Veggie Pack', price: 110000, desc: 'Includes 2 sauces, 5 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 5, maxProteins: 1, images: ["https://i.postimg.cc/MZ0hZGnM/Build-Your-own.webp", "https://placehold.co/400x400/083c33/fff?text=Veggie+Pack+2", "https://placehold.co/400x400/083c33/fff?text=Veggie+Pack+3"] },
-      { id: 'bw3', name: 'Protein Pack', price: 115000, desc: 'Includes 2 sauces, 4 veggies, and 2 proteins. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, images: ["https://i.postimg.cc/MZ0hZGnM/Build-Your-own.webp", "https://placehold.co/400x400/083c33/fff?text=Protein+Pack+2", "https://placehold.co/400x400/083c33/fff?text=Protein+Pack+3"] },
-      { id: 'bw4', name: 'Mini Pack', price: 99000, desc: 'Includes 1 sauce, 3 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 1, maxVeggies: 3, maxProteins: 1, images: ["https://i.postimg.cc/MZ0hZGnM/Build-Your-own.webp", "https://placehold.co/400x400/083c33/fff?text=Mini+Pack+2", "https://placehold.co/400x400/083c33/fff?text=Mini+Pack+3"] }
+      { id: 'bw1', name: 'Bowl Combo', price: 160000, desc: 'Protein pack + Wellness drink of your choice + Banana bread.', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, needsWellnessChoice: true, images: ["https://i.postimg.cc/gcyfc0xL/Bowl-combo.webp"] },
+      { id: 'bw2', name: 'Veggie Pack', price: 110000, desc: 'Includes 2 sauces, 5 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 5, maxProteins: 1, images: ["https://i.postimg.cc/MZ0hZGnM/Build-Your-own.webp"] },
+      { id: 'bw3', name: 'Protein Pack', price: 115000, desc: 'Includes 2 sauces, 4 veggies, and 2 proteins. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 2, maxVeggies: 4, maxProteins: 2, images: ["https://i.postimg.cc/MZ0hZGnM/Build-Your-own.webp"] },
+      { id: 'bw4', name: 'Mini Pack', price: 99000, desc: 'Includes 1 sauce, 3 veggies, and 1 protein. Additional choices (+7,000 Kip each).', isCustom: true, maxSauces: 1, maxVeggies: 3, maxProteins: 1, images: ["https://i.postimg.cc/MZ0hZGnM/Build-Your-own.webp"] }
     ],
     smoothies: [
-      { id: 'sm1', name: 'Kickstart', price: 70000, desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Kickstart+1", "https://placehold.co/400x400/083c33/fff?text=Kickstart+2", "https://placehold.co/400x400/083c33/fff?text=Kickstart+3"] },
-      { id: 'sm2', name: 'Fruitopia', price: 70000, desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Fruitopia+1", "https://placehold.co/400x400/083c33/fff?text=Fruitopia+2", "https://placehold.co/400x400/083c33/fff?text=Fruitopia+3"] },
-      { id: 'sm3', name: 'Paradise Point', price: 70000, desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Paradise+Point+1", "https://placehold.co/400x400/083c33/fff?text=Paradise+Point+2", "https://placehold.co/400x400/083c33/fff?text=Paradise+Point+3"] },
-      { id: 'sm4', name: 'Mary Jane', price: 80000, desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Mary+Jane+1", "https://placehold.co/400x400/083c33/fff?text=Mary+Jane+2", "https://placehold.co/400x400/083c33/fff?text=Mary+Jane+3"] },
-      { id: 'sm5', name: "Reese's Cup", price: 70000, desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+1", "https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+2", "https://placehold.co/400x400/083c33/fff?text=Reeses+Cup+3"] }
+      { id: 'sm1', name: 'Kickstart', price: 70000, desc: 'Banana, pineapple, and spinach. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Kickstart"] },
+      { id: 'sm2', name: 'Fruitopia', price: 70000, desc: 'Mango, strawberry, and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Fruitopia"] },
+      { id: 'sm3', name: 'Paradise Point', price: 70000, desc: 'Passion fruit and pineapple. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Paradise+Point"] },
+      { id: 'sm4', name: 'Mary Jane', price: 80000, desc: 'Strawberry, mulberry, and banana. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Mary+Jane"] },
+      { id: 'sm5', name: "Reese's Cup", price: 70000, desc: 'Banana, peanut butter, and cocoa powder. No ice or sugar added, sweetened by dates.', images: ["https://placehold.co/400x400/083c33/fff?text=Reeses+Cup"] }
     ],
     refreshers: [
-      { id: 'r1', name: 'Mint Pineapple', price: 45000, desc: 'Fresh mint and pineapple.', images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+1", "https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+2", "https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple+3"] },
-      { id: 'r2', name: 'Strawberry Lemonade', price: 50000, desc: 'Strawberry and lime.', images: ["https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+1", "https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+2", "https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade+3"] },
-      { id: 'r3', name: 'Sparkling Lime', price: 45000, desc: 'Sparkling water and fresh lime.', images: ["https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+1", "https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+2", "https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime+3"] },
-      { id: 'r4', name: 'Honey Passion', price: 45000, desc: 'Passion fruit and honey.', images: ["https://placehold.co/400x400/083c33/fff?text=Honey+Passion+1", "https://placehold.co/400x400/083c33/fff?text=Honey+Passion+2", "https://placehold.co/400x400/083c33/fff?text=Honey+Passion+3"] }
+      { id: 'r1', name: 'Mint Pineapple', price: 45000, desc: 'Fresh mint and pineapple.', images: ["https://placehold.co/400x400/083c33/fff?text=Mint+Pineapple"] },
+      { id: 'r2', name: 'Strawberry Lemonade', price: 50000, desc: 'Strawberry and lime.', images: ["https://placehold.co/400x400/083c33/fff?text=Strawberry+Lemonade"] },
+      { id: 'r3', name: 'Sparkling Lime', price: 45000, desc: 'Sparkling water and fresh lime.', images: ["https://placehold.co/400x400/083c33/fff?text=Sparkling+Lime"] },
+      { id: 'r4', name: 'Honey Passion', price: 45000, desc: 'Passion fruit and honey.', images: ["https://placehold.co/400x400/083c33/fff?text=Honey+Passion"] }
     ],
     wellness: [
-      { id: 'w1', name: 'Summer in My Heart', price: 47000, desc: 'Pineapple juice and coconut water.', images: ["https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+1", "https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+2", "https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart+3"] },
-      { id: 'w2', name: 'Wish Upon a Heart', price: 47000, desc: 'Green apple, basil cordial, lemon juice, and tapioca pearls.', images: ["https://placehold.co/400x400/083c33/fff?text=Wish+Upon+a+Heart+1", "https://placehold.co/400x400/083c33/fff?text=Wish+Upon+a+Heart+2", "https://placehold.co/400x400/083c33/fff?text=Wish+Upon+a+Heart+3"] },
-      { id: 'w3', name: 'Heartwarmer', price: 47000, desc: 'Ginger and turmeric tea, lemon juice, honey, and chia seeds.', images: ["https://placehold.co/400x400/083c33/fff?text=Heartwarmer+1", "https://placehold.co/400x400/083c33/fff?text=Heartwarmer+2", "https://placehold.co/400x400/083c33/fff?text=Heartwarmer+3"] },
-      { id: 'w4', name: 'Red Heart', price: 47000, desc: 'Lemongrass cordial, lemon, beetroot, and apple.', images: ["https://placehold.co/400x400/083c33/fff?text=Red+Heart+1", "https://placehold.co/400x400/083c33/fff?text=Red+Heart+2", "https://placehold.co/400x400/083c33/fff?text=Red+Heart+3"] }
+      { id: 'w1', name: 'Summer in My Heart', price: 47000, desc: 'Pineapple juice and coconut water.', images: ["https://placehold.co/400x400/083c33/fff?text=Summer+in+My+Heart"] },
+      { id: 'w2', name: 'Wish Upon a Heart', price: 47000, desc: 'Green apple, basil cordial, lemon juice, and tapioca pearls.', images: ["https://placehold.co/400x400/083c33/fff?text=Wish+Upon+a+Heart"] },
+      { id: 'w3', name: 'Heartwarmer', price: 47000, desc: 'Ginger and turmeric tea, lemon juice, honey, and chia seeds.', images: ["https://placehold.co/400x400/083c33/fff?text=Heartwarmer"] },
+      { id: 'w4', name: 'Red Heart', price: 47000, desc: 'Lemongrass cordial, lemon, beetroot, and apple.', images: ["https://placehold.co/400x400/083c33/fff?text=Red+Heart"] }
     ]
   };
 
@@ -1036,20 +1050,26 @@ const App = (function() {
   // --- INTERNAL UTILITIES ---
   function formatKip(amount) { return amount.toLocaleString() + ' Kip'; }
   
+  // Safe event-cleanup aware focus trap
   function trapFocus(modalEl) {
     const focusableEls = modalEl.querySelectorAll('a[href], button, textarea, input, select');
     if(focusableEls.length === 0) return;
     const first = focusableEls[0], last = focusableEls[focusableEls.length - 1];
 
-    modalEl.addEventListener('keydown', function(e) {
+    if (modalEl._keyListener) {
+      modalEl.removeEventListener('keydown', modalEl._keyListener);
+    }
+
+    modalEl._keyListener = function(e) {
       if (e.key !== 'Tab') return;
       if (e.shiftKey) { if (document.activeElement === first) { last.focus(); e.preventDefault(); } } 
       else { if (document.activeElement === last) { first.focus(); e.preventDefault(); } }
-    });
+    };
+
+    modalEl.addEventListener('keydown', modalEl._keyListener);
     setTimeout(() => first.focus(), 50);
   }
 
-  // Floating Cart Observer
   function setupFloatingCartObserver() {
     const cartSection = document.getElementById('cartSection');
     const floatingBtn = document.getElementById('floatingCartBtn');
@@ -1069,7 +1089,6 @@ const App = (function() {
     observer.observe(cartSection);
   }
 
-  // --- TAB SWIPE LOGIC ---
   function setupTabSwiping() {
     const appRoot = document.getElementById('appRoot');
     appRoot.addEventListener('touchstart', e => {
@@ -1098,7 +1117,6 @@ const App = (function() {
     }, {passive: true});
   }
 
-  // --- CAROUSEL SYSTEM ---
   function makeScrollableDraggable(ele, trackId, isVertical = false) {
     if (ele.dataset.dragAttached) return;
     let pos = { top: 0, left: 0, x: 0, y: 0 }, isDragging = false;
@@ -1136,21 +1154,27 @@ const App = (function() {
     }, intervalMs);
   }
 
-  // Endless Loop Carousel Setup with Clones
+  // Dynamic Carousel Handler supporting 1, 2, or more images smoothly
   function setupCarousel(trackId, dotsId, imagesArray) {
     const track = document.getElementById(trackId), dots = document.getElementById(dotsId);
-    const validImages = imagesArray.filter(link => link.trim() !== "");
+    const validImages = (imagesArray || []).filter(link => link && link.trim() !== "");
     if (validImages.length === 0) return;
 
+    if (carouselIntervals[trackId]) clearInterval(carouselIntervals[trackId]);
+
+    if (validImages.length === 1) {
+      track.innerHTML = `<img src="${validImages[0]}" class="carousel-img" draggable="false" loading="lazy"/>`;
+      dots.innerHTML = '';
+      track.onscroll = null;
+      return;
+    }
+
     let html = '', dotsHtml = '';
-    
     html += `<img src="${validImages[validImages.length - 1]}" class="carousel-img clone" draggable="false" loading="lazy"/>`;
-    
     validImages.forEach((imgLink, i) => {
       html += `<img src="${imgLink}" class="carousel-img" draggable="false" loading="lazy"/>`;
       dotsHtml += `<span class="dot" onclick="App.goToSlide('${trackId}', ${i + 1})"></span>`;
     });
-    
     html += `<img src="${validImages[0]}" class="carousel-img clone" draggable="false" loading="lazy"/>`;
     
     track.innerHTML = html; 
@@ -1165,7 +1189,7 @@ const App = (function() {
       if (track.clientWidth === 0) return;
       const maxScroll = track.scrollWidth - track.clientWidth;
       
-      if (track.scrollLeft === 0) {
+      if (track.scrollLeft <= 1) {
         track.classList.add('no-smooth');
         track.scrollLeft = maxScroll - track.clientWidth; 
         track.classList.remove('no-smooth');
@@ -1182,7 +1206,7 @@ const App = (function() {
       
       const dotElements = document.querySelectorAll(`#${dotsId} .dot`);
       if(dotElements.length > 0) {
-          dotElements.forEach((d, i) => d.classList.toggle('active', i === index));
+        dotElements.forEach((d, i) => d.classList.toggle('active', i === index));
       }
     };
 
@@ -1306,7 +1330,7 @@ const App = (function() {
         App.clearForm(); 
         submitBtn.disabled = false;
       })
-      .catch(error => {
+      .catch(() => {
         status.style.color = "#f87171"; 
         status.innerText = "Error submitting message. Please try again.";
         App.triggerAlert("Something went wrong while submitting your message. Please check your connection and try again.", "Error");
@@ -1315,7 +1339,6 @@ const App = (function() {
     });
   }
 
-  // Helper used internally to render HTML (Menu Items)
   function renderProductsGrid() {
     const container = document.getElementById('productsGrid'); container.innerHTML = '';
     menuData[currentCategory].forEach(item => {
@@ -1327,7 +1350,7 @@ const App = (function() {
                                       : `<button class="add-btn" onclick="App.addMenuItemToCart('${currentCategory}', '${item.id}')">Add +</button>`;
       
       const thumbnailSrc = item.images && item.images.length > 0 ? item.images[0] : defaultDummyImages[0];
-      const imageHtml = `<img src="${thumbnailSrc}" class="product-image" alt="${item.name}" loading="lazy" onclick="App.openGallery('${currentCategory}', '${item.id}')" aria-label="View images for ${item.name}">`;
+      const imageHtml = `<img src="${thumbnailSrc}" class="product-image" alt="${item.name}" loading="lazy" onclick="App.openGallery('${currentCategory}', '${item.id}')" aria-label="View images and details for ${item.name}">`;
 
       card.innerHTML = `
         <div style="display: flex; gap: 12px; align-items: center; width: 100%;">
@@ -1389,17 +1412,14 @@ const App = (function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
-    // Smooth scroll down to order basket with auto-fading highlight animation
     scrollToBasket: function() {
       const cartSection = document.getElementById('cartSection');
       if (cartSection) {
         cartSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
         cartSection.classList.remove('basket-highlight');
-        void cartSection.offsetWidth; // Force DOM Reflow to restart keyframe animation
+        void cartSection.offsetWidth;
         cartSection.classList.add('basket-highlight');
 
-        // Automatically remove the highlight class after 6 seconds
         setTimeout(() => {
           cartSection.classList.remove('basket-highlight');
         }, 6000);
@@ -1450,7 +1470,6 @@ const App = (function() {
       }
     },
 
-    // Stepper Add/Subtract
     incrementCartItem: function(index) {
       const item = cart[index];
       if (item.isCustom) {
@@ -1470,7 +1489,6 @@ const App = (function() {
       this._reRenderStore();
     },
 
-    // Edit an existing customizable item in the cart
     editCartItem: function(index) {
       const item = cart[index];
       if (!item || !item.isCustom) return;
@@ -1549,7 +1567,6 @@ const App = (function() {
       document.getElementById('veggiesContainer').innerHTML = genChoices(commonChoices.veggies, 'custVeggie');
       document.getElementById('proteinsContainer').innerHTML = genChoices(item.specificProteins ? commonChoices[item.specificProteins] : commonChoices.proteins, 'custProtein');
       
-      // If in edit mode, pre-populate previously chosen selections
       if (editingCartIndex !== null) {
         const existingItem = cart[editingCartIndex];
         if (existingItem && existingItem.subtext) {
@@ -1593,14 +1610,22 @@ const App = (function() {
       editingCartIndex = null;
     },
     
-    // -- Image Gallery Logic --
+    // -- Image Gallery & Direct Order Logic --
     openGallery: function(catKey, itemId) {
       const item = menuData[catKey].find(i => i.id === itemId);
       if (!item) return;
       
       document.getElementById('galleryTitle').innerText = item.name;
       document.getElementById('galleryDesc').innerText = item.desc;
+      document.getElementById('galleryPriceTag').innerText = formatKip(item.price);
       
+      const actionContainer = document.getElementById('galleryActionContainer');
+      if (item.isCustom) {
+        actionContainer.innerHTML = `<button class="add-btn" onclick="App.closeGallery(); App.openCustomModal('${catKey}', '${item.id}')">Customize Item</button>`;
+      } else {
+        actionContainer.innerHTML = `<button class="add-btn" onclick="App.addMenuItemToCart('${catKey}', '${item.id}'); App.closeGallery();">Add to Cart +</button>`;
+      }
+
       const imageList = item.images && item.images.length > 0 ? item.images : defaultDummyImages;
       setupCarousel('galleryCarouselTrack', 'galleryCarouselDots', imageList);
       
@@ -1664,7 +1689,6 @@ const App = (function() {
       const finalSubtext = subParts.join(' | ');
       const finalPrice = currentActiveCustomItem.price + totExtCost;
 
-      // Handle Edit Mode: Update item in place
       if (editingCartIndex !== null && cart[editingCartIndex]) {
         cart[editingCartIndex].subtext = finalSubtext;
         cart[editingCartIndex].price = finalPrice;
@@ -1691,14 +1715,41 @@ const App = (function() {
       if (msg) window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
     },
 
+    // Safe clipboard fallback handling non-HTTPS environments
     checkoutMessenger: function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
-      navigator.clipboard.writeText(msg).then(() => {
-        this.triggerConfirm("Your order details have been successfully copied.\n\nWhen Messenger opens, just PASTE the text into the chat to send your order.", "Order Copied! 📋", (proceed) => {
+
+      const proceedToMessenger = () => {
+        this.triggerConfirm("Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", "Order Ready! 📋", (proceed) => {
           if (proceed) window.open(`https://m.me/${MESSENGER_USERNAME}`, '_blank');
         }, true);
-      }).catch(() => this.triggerAlert("We couldn't copy the text automatically. You can still proceed to Messenger, or use WhatsApp for an automatic message.", "Notice"));
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(msg).then(() => {
+          proceedToMessenger();
+        }).catch(() => {
+          this._fallbackCopyText(msg);
+          proceedToMessenger();
+        });
+      } else {
+        this._fallbackCopyText(msg);
+        proceedToMessenger();
+      }
+    },
+
+    _fallbackCopyText: function(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try { document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(textArea);
     },
 
     _buildOrderMsg: function() {
@@ -1718,7 +1769,6 @@ const App = (function() {
       return msg;
     },
 
-    // Modal Prompts
     triggerAlert: function(message, title) {
       document.getElementById('notifTitle').innerText = title; document.getElementById('notifMessage').innerText = message;
       document.getElementById('notifAlertAction').style.display = 'block'; document.getElementById('notifConfirmActions').style.display = 'none';
