@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Oon Jai Marketplace</title>
+  <title>Oonjai Marketplace</title>
 
   <!-- ========================================== -->
   <!--             SEO & SEARCH LOGO              -->
@@ -179,24 +179,22 @@
       flex-direction: column;
       gap: 12px;
       margin-top: 6px;
-      transition: border-color 0.8s ease, box-shadow 0.8s ease;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
     }
     
-    /* Basket Glow Animation triggered by floating cart click */
+    /* Basket Pulse Animation (Smooth fade out) */
     .cart-summary.basket-highlight {
-      border-color: #4ade80 !important;
-      box-shadow: 0 0 28px rgba(74, 222, 128, 0.65), inset 0 0 14px rgba(74, 222, 128, 0.25) !important;
-      animation: basketPulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation: basketPulse 2s ease-out forwards;
     }
 
     @keyframes basketPulse {
       0% {
         border-color: #4ade80;
-        box-shadow: 0 0 35px rgba(74, 222, 128, 0.8), inset 0 0 18px rgba(74, 222, 128, 0.35);
+        box-shadow: 0 0 30px rgba(74, 222, 128, 0.75), inset 0 0 14px rgba(74, 222, 128, 0.3);
       }
-      40% {
+      30% {
         border-color: #22c55e;
-        box-shadow: 0 0 24px rgba(74, 222, 128, 0.5), inset 0 0 10px rgba(74, 222, 128, 0.2);
+        box-shadow: 0 0 20px rgba(74, 222, 128, 0.45), inset 0 0 8px rgba(74, 222, 128, 0.15);
       }
       100% {
         border-color: var(--border-color);
@@ -1246,10 +1244,8 @@ const App = (function() {
 
   // --- INITIALIZATION ---
   document.addEventListener('DOMContentLoaded', () => {
-    // Set auto year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-    // Persistent Tab on Page Refresh Check
     const savedTab = sessionStorage.getItem('oonjai_active_tab') || window.location.hash.replace('#', '');
     if (savedTab && mainTabs.includes(savedTab)) {
       App.switchMainTab(savedTab);
@@ -1324,7 +1320,6 @@ const App = (function() {
   function renderProductsGrid() {
     const container = document.getElementById('productsGrid'); container.innerHTML = '';
     menuData[currentCategory].forEach(item => {
-      // Calculate total count in cart across both single & customized variants
       const totalCount = cart.filter(c => c.id === item.id).reduce((acc, curr) => acc + curr.qty, 0);
       
       const card = document.createElement('div'); card.className = 'product-card';
@@ -1376,7 +1371,6 @@ const App = (function() {
         btn.setAttribute('aria-selected', 'true');
       });
 
-      // Save tab to keep active on page refresh
       sessionStorage.setItem('oonjai_active_tab', tabId);
       history.replaceState(null, null, '#' + tabId);
 
@@ -1384,7 +1378,6 @@ const App = (function() {
       mobileMenu.classList.remove('active');
       document.querySelector('.hamburger').setAttribute('aria-expanded', 'false');
       
-      // Update floating cart visibility
       const floatingBtn = document.getElementById('floatingCartBtn');
       if (floatingBtn) {
         if (tabId === 'menu') {
@@ -1397,16 +1390,20 @@ const App = (function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
-    // Smooth scroll down to order basket with elegant glow animation
+    // Smooth scroll down to order basket with auto-fading highlight animation
     scrollToBasket: function() {
       const cartSection = document.getElementById('cartSection');
       if (cartSection) {
         cartSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Trigger glowing outline animation
         cartSection.classList.remove('basket-highlight');
-        void cartSection.offsetWidth; // Force DOM Reflow
+        void cartSection.offsetWidth; // Force DOM Reflow to restart keyframe animation
         cartSection.classList.add('basket-highlight');
+
+        // Automatically remove the highlight class after 2 seconds
+        setTimeout(() => {
+          cartSection.classList.remove('basket-highlight');
+        }, 2000);
       }
     },
 
@@ -1458,7 +1455,6 @@ const App = (function() {
     incrementCartItem: function(index) {
       const item = cart[index];
       if (item.isCustom) {
-        // Tapping plus on customizable opens modal to create an additional custom choice
         this.openCustomModal(item.category, item.id);
       } else {
         item.qty += 1;
@@ -1479,8 +1475,6 @@ const App = (function() {
     editCartItem: function(index) {
       const item = cart[index];
       if (!item || !item.isCustom) return;
-      
-      // Open builder modal in edit mode
       this.openCustomModal(item.category, item.id, index);
     },
     
@@ -1676,7 +1670,6 @@ const App = (function() {
         cart[editingCartIndex].subtext = finalSubtext;
         cart[editingCartIndex].price = finalPrice;
       } else {
-        // Group identical custom builds or push new item
         const existing = cart.find(c => c.id === currentActiveCustomItem.id && c.subtext === finalSubtext && c.price === finalPrice);
         if (existing) {
           existing.qty += 1;
