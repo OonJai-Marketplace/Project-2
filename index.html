@@ -1873,27 +1873,16 @@ const App = (function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
 
+      // Use the official m.me Universal Link. 
+      // This is the ONLY link format the Messenger iOS app natively understands for opening specific profiles.
       const url = `https://m.me/${MESSENGER_USERNAME}`;
-      
-      // High-Visibility rich HTML message emphasizing the PASTE step
-      const alertHtml = `
-        <div style="text-align: center; margin-bottom: 5px;">
-          <div style="background: rgba(34, 197, 94, 0.1); border: 2px dashed var(--accent-green); border-radius: 10px; padding: 18px 10px; margin: 15px 0;">
-            <div style="font-size: 32px; margin-bottom: 8px;">📋</div>
-            <h4 style="color: var(--accent-green); margin-bottom: 5px; font-size: 15px;">Order Details Copied!</h4>
-            <p style="font-size: 13px; color: #ffffff; line-height: 1.4;">When Messenger opens, you must <b>PASTE</b> the text into the chat box and hit send.</p>
-          </div>
-          <p style="font-size: 11px; color: var(--text-muted); font-style: italic;">If you do not paste the message, we won't receive your order.</p>
-        </div>
-      `;
 
       const proceedToMessenger = () => {
         this.triggerConfirm(
-          alertHtml, 
-          "Almost Done! 🚀", 
+          "Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", 
+          "Order Ready! 📋", 
           (proceed) => { /* Navigation handled natively by the HTML anchor tag */ }, 
-          url,
-          "Got it, Open Messenger"
+          url
         );
       };
 
@@ -1956,11 +1945,9 @@ const App = (function() {
     },
     
     // Updated to accept custom button text and rich HTML structures for alerts
-    triggerConfirm: function(message, title, callback, redirectUrl = null, confirmText = "Proceed") {
-      const formattedMessage = message.includes('<div') ? message : message.replace(/\n/g, '<br>');
-      document.getElementById('notifTitle').innerHTML = title; 
-      document.getElementById('notifMessage').innerHTML = formattedMessage;
-      
+    triggerConfirm: function(message, title, callback, redirectUrl = null) {
+      document.getElementById('notifTitle').innerText = title; 
+      document.getElementById('notifMessage').innerText = message;
       document.getElementById('notifAlertAction').style.display = 'none'; 
       document.getElementById('notifConfirmActions').style.display = 'flex';
       
@@ -1972,24 +1959,26 @@ const App = (function() {
       const btnProceed = document.getElementById('btnNotifProceed');
       
       if (redirectUrl) {
-        btnProceed.innerText = confirmText;
+        btnProceed.innerText = "Open App";
         btnProceed.href = redirectUrl;
         
+        // CRITICAL FIX: We remove target="_blank". 
+        // Opening a new tab on iOS strips the "/oon.jai.laos" path during the handoff to the Messenger app.
         btnProceed.removeAttribute("target"); 
         btnProceed.removeAttribute("rel");
         
         btnProceed.onclick = () => { 
+          // Delay closing the modal so Safari doesn't kill the navigation context
           setTimeout(() => {
             this.closeNotification(); 
             callback(true); 
           }, 800);
         };
       } else {
-        btnProceed.innerText = confirmText;
+        btnProceed.innerText = "Proceed";
         btnProceed.href = "javascript:void(0)";
         btnProceed.removeAttribute("target");
         btnProceed.removeAttribute("rel");
-        
         btnProceed.onclick = (e) => { 
           e.preventDefault();
           this.closeNotification(); 
