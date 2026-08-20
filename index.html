@@ -6,7 +6,7 @@
   <title>Oon Jai Marketplace</title>
 
   <!-- ========================================== -->
-  <!--              SEO & SEARCH LOGO             -->
+  <!--               SEO & SEARCH LOGO            -->
   <!-- ========================================== -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/NFhGYVSd/logo-png.png">
   <link rel="apple-touch-icon" href="https://i.postimg.cc/DZmP1t7Q/logo.jpg">
@@ -25,14 +25,14 @@
   </script>
 
   <!-- ========================================== -->
-  <!--                GOOGLE FONTS                -->
+  <!--                 GOOGLE FONTS                 -->
   <!-- ========================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- ========================================== -->
-  <!--                CSS STYLESHEET              -->
+  <!--                 CSS STYLESHEET               -->
   <!-- ========================================== -->
   <style>
     /* --- 1. THEME COLORS & VARIABLES --- */
@@ -954,7 +954,7 @@
     </div>
   </div>
 
-  <!-- THEMED NOTIFICATION MODALS (UPDATED FOR DIRECT APP LAUNCH & RICH HTML) -->
+  <!-- THEMED NOTIFICATION MODALS -->
   <div class="modal-overlay" id="notificationModal" style="z-index: 2000;" role="alertdialog" aria-modal="true" aria-labelledby="notifTitle" aria-describedby="notifMessage" onclick="if(event.target === this) App.closeNotification()">
     <div class="modal-box" style="max-width: 320px; text-align: center; padding: 20px;">
       <h3 class="modal-title" id="notifTitle" style="margin-bottom: 12px;">Notification</h3>
@@ -973,7 +973,7 @@
     </div>
   </div>
 
-  <!-- ELEGANT IMAGE GALLERY & DIRECT ORDER MODAL (OON JAI THEME MATCHED) -->
+  <!-- ELEGANT IMAGE GALLERY & DIRECT ORDER MODAL -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
     <div class="gallery-modal-box">
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
@@ -1027,8 +1027,7 @@ const App = (function() {
   };
 
   /* ========================================================================= */
-  /*                     ↓↓ PASTE YOUR MENU DATA HERE ↓↓                     */
-  /* Replace everything from "const menuData = {" down to "};" with your code! */
+  /*                    ↓↓ PASTE YOUR MENU DATA HERE ↓↓                      */
   /* ========================================================================= */
   
   const menuData = {
@@ -1085,7 +1084,7 @@ const App = (function() {
   };
 
   /* ========================================================================= */
-  /*                     ↑↑ PASTE YOUR MENU DATA HERE ↑↑                     */
+  /*                    ↑↑ PASTE YOUR MENU DATA HERE ↑↑                      */
   /* ========================================================================= */
 
   const customReviewsData = [
@@ -1235,9 +1234,6 @@ const App = (function() {
       const duration = e.timeStamp - touchStartTime;
       
       // Strict conditions to prevent accidental tabs switching:
-      // 1. Must be a fast swipe (under 600ms)
-      // 2. Horizontal distance must be significantly long (over 120px)
-      // 3. Must be very clearly horizontal (X movement must be 3 times greater than Y movement)
       if (duration < 600 && absX > 120 && absX > (absY * 3)) {
         const activeTabEl = document.querySelector('.nav-tab.active');
         if(!activeTabEl) return;
@@ -1873,7 +1869,6 @@ const App = (function() {
       
       const type = document.querySelector('input[name="orderType"]:checked');
       if (!type) {
-        // Issue 2 Fix: Prompting with actual buttons inside the modal instead of a simple alert
         const html = `
           <div style="margin: 10px 0 20px 0;">
             <p style="margin-bottom: 20px; font-size: 15px; color: var(--text-bright);">How would you like your order?</p>
@@ -1896,36 +1891,26 @@ const App = (function() {
     setOrderTypeAndCheckout: function(typeValue, platform) {
       this.closeNotification();
       
-      // Update the radio button in the background
       const radio = document.querySelector(`input[name="orderType"][value="${typeValue}"]`);
       if (radio) radio.checked = true;
 
-      // Small timeout to allow the modal to close visually before the next action fires
-      setTimeout(() => {
-        if (platform === 'wa') this.executeWA();
-        else if (platform === 'msgr') this.executeMessenger();
-      }, 300);
+      // Executing immediately without timeout to ensure clipboard/deep link APIs aren't blocked by iOS Safari
+      if (platform === 'wa') this.executeWA();
+      else if (platform === 'msgr') this.executeMessenger();
     },
 
     executeWA: function() {
       const msg = this._buildOrderMsg();
       const url = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encodeURIComponent(msg)}`;
       
-      const link = document.createElement('a');
-      link.href = url;
-      link.target = "_top"; // Fix for Safari iOS bugs 
-      link.rel = "noopener noreferrer";
-      document.body.appendChild(link);
-      link.click();
-      
-      setTimeout(() => document.body.removeChild(link), 800);
+      // Use window.location.href directly for better iOS universal linking behavior
+      window.location.href = url;
     },
 
     executeMessenger: function() {
       const msg = this._buildOrderMsg();
       const url = `https://m.me/${MESSENGER_USERNAME}`;
       
-      // Issue 2 Fix: Extremely clear rich-HTML instruction that forces them to understand the paste step
       const alertHtml = `
         <div style="text-align: center; margin-bottom: 5px;">
           <div style="background: rgba(34, 197, 94, 0.1); border: 2px dashed var(--accent-green); border-radius: 10px; padding: 18px 10px; margin: 15px 0;">
@@ -1974,7 +1959,6 @@ const App = (function() {
     },
 
     _buildOrderMsg: function() {
-      // Assumes cart > 0 and type is selected (handled by handleCheckout orchestrator)
       const type = document.querySelector('input[name="orderType"]:checked').value;
       
       let msg = `✦ *OON JAI ORDER* ✦\n*Type: ${type}*\n\n*Items Ordered:*\n`;
@@ -1989,7 +1973,6 @@ const App = (function() {
     /* --- CUSTOM NOTIFICATION MODAL INJECTIONS --- */
 
     triggerAlert: function(message, title) {
-      // Replaces basic \n line breaks with <br> tags safely if not already HTML formatted
       const formattedMessage = message.includes('<div') ? message : message.replace(/\n/g, '<br>');
       document.getElementById('notifTitle').innerHTML = title; 
       document.getElementById('notifMessage').innerHTML = formattedMessage;
@@ -2007,7 +1990,6 @@ const App = (function() {
       document.getElementById('notifTitle').innerHTML = title; 
       document.getElementById('notifMessage').innerHTML = html;
       
-      // Hide standard action buttons entirely since the HTML injects its own buttons
       document.getElementById('notifAlertAction').style.display = 'none'; 
       document.getElementById('notifConfirmActions').style.display = 'none';
       
@@ -2032,22 +2014,17 @@ const App = (function() {
       
       const btnProceed = document.getElementById('btnNotifProceed');
       
-      // Issue 1 Fix: Flawless Safari App redirect logic
       if (redirectUrl) {
         btnProceed.innerText = confirmText;
         btnProceed.href = redirectUrl;
         
-        btnProceed.target = "_top"; // Explicitly tell Safari this is a top-level navigation to trigger deep-link handlers
+        // Remove target & rel so iOS Safari hands off the link to the Messenger app natively
+        btnProceed.removeAttribute("target");
         btnProceed.removeAttribute("rel");
         
-        // Remove ANY blocking DOM destruction from the native click to prevent Safari from cancelling the intent.
-        // It will close naturally via the global 'visibilitychange' listener when the user leaves the browser, 
-        // OR it will forcefully close after 3 seconds as a silent fallback if the link fails.
         btnProceed.onclick = () => { 
-          setTimeout(() => {
-            this.closeNotification(); 
-            if(callback) callback(true); 
-          }, 3000);
+          this.closeNotification(); 
+          if(callback) callback(true); 
         };
       } else {
         btnProceed.innerText = confirmText;
