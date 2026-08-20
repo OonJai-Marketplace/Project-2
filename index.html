@@ -939,7 +939,7 @@
           <div class="builder-options" id="proteinsContainer"></div>
         </div>
       </div>
-      <button class="btn-wa" id="customModalSubmitBtn" style="width:100%; margin-top: 10px; background: #22c55e;" onclick="App.addCustomItemToCart()">Add to Order</button>
+      <button class="btn-wa" id="customModalSubmitBtn" style="width:100%; margin-top: 10px; background: #22c55e;" onclick="App.addCustomItemToCart(this)">Add to Order</button>
     </div>
   </div>
 
@@ -956,7 +956,7 @@
     </div>
   </div>
 
-  <!-- ELEGANT IMAGE GALLERY & DIRECT ORDER MODAL (OON JAI THEME MATCHED) -->
+  <!-- ELEGANT IMAGE GALLERY & DIRECT ORDER MODAL -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
     <div class="gallery-modal-box">
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
@@ -1133,8 +1133,11 @@ const App = (function() {
 
     if (originElement) {
       const rect = originElement.getBoundingClientRect();
-      startX = rect.left + rect.width / 2;
-      startY = rect.top + rect.height / 2;
+      // Ensure element actually exists on screen before stealing its coords
+      if (rect.width > 0 && (rect.top !== 0 || rect.left !== 0)) {
+        startX = rect.left + rect.width / 2;
+        startY = rect.top + rect.height / 2;
+      }
     }
 
     const cartRect = cartBtn.getBoundingClientRect();
@@ -1558,8 +1561,10 @@ const App = (function() {
         } else {
           cart.push({ id: item.id, name: item.name, price: item.price, subtext: '', qty: 1, isCustom: false, category: category });
         }
-        this._reRenderStore(); 
+        
+        // Fix: Execute animation coordinate capture before ripping the element out of the DOM via _reRenderStore
         animateFlyToCart(eventElement);
+        this._reRenderStore(); 
       }
     },
 
@@ -1744,7 +1749,7 @@ const App = (function() {
       }
     },
 
-    addCustomItemToCart: async function() {
+    addCustomItemToCart: async function(eventElement) {
       if (!currentActiveCustomItem) return;
 
       const getVals = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
@@ -1798,8 +1803,8 @@ const App = (function() {
         }
       }
 
+      animateFlyToCart(eventElement);
       this._reRenderStore(); 
-      animateFlyToCart(document.getElementById('customModalSubmitBtn'));
       this.closeCustomModal();
     },
 
