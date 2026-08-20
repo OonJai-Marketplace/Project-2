@@ -1864,8 +1864,9 @@ const App = (function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
 
-      // Fix for Safari m.me bug: Use messenger.com directly to trigger Universal Links
-      const url = `https://www.messenger.com/t/${MESSENGER_USERNAME}`;
+      // Use the official m.me Universal Link. 
+      // This is the ONLY link format the Messenger iOS app natively understands for opening specific profiles.
+      const url = `https://m.me/${MESSENGER_USERNAME}`;
 
       const proceedToMessenger = () => {
         this.triggerConfirm(
@@ -1875,6 +1876,19 @@ const App = (function() {
           url
         );
       };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(msg).then(() => {
+          proceedToMessenger();
+        }).catch(() => {
+          this._fallbackCopyText(msg);
+          proceedToMessenger();
+        });
+      } else {
+        this._fallbackCopyText(msg);
+        proceedToMessenger();
+      }
+    },
 
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(msg).then(() => {
@@ -1943,18 +1957,21 @@ const App = (function() {
       
       const btnProceed = document.getElementById('btnNotifProceed');
       
-      // If a URL is provided (e.g., Messenger)
       if (redirectUrl) {
         btnProceed.innerText = "Open App";
         btnProceed.href = redirectUrl;
-        btnProceed.target = "_blank"; // Forces new context, avoiding DOM destruction issues
-        btnProceed.rel = "noopener noreferrer";
+        
+        // CRITICAL FIX: We remove target="_blank". 
+        // Opening a new tab on iOS strips the "/oon.jai.laos" path during the handoff to the Messenger app.
+        btnProceed.removeAttribute("target"); 
+        btnProceed.removeAttribute("rel");
+        
         btnProceed.onclick = () => { 
           // Delay closing the modal so Safari doesn't kill the navigation context
           setTimeout(() => {
             this.closeNotification(); 
             callback(true); 
-          }, 600);
+          }, 800);
         };
       } else {
         btnProceed.innerText = "Proceed";
