@@ -405,7 +405,7 @@
     .modal-subtitle { font-size: 11px; color: var(--accent-green); margin-bottom: 10px; background: rgba(74, 222, 128, 0.1); padding: 6px 10px; border-radius: var(--border-radius-sm); }
 
     /* ======================================================= */
-    /*           IMAGE GALLERY & DIRECT ORDER MODAL            */
+    /*            IMAGE GALLERY & DIRECT ORDER MODAL           */
     /* ======================================================= */
     .gallery-modal-box {
       padding: 0;
@@ -1026,7 +1026,7 @@ const App = (function() {
   };
 
   /* ========================================================================= */
-  /*                      ↓↓ PASTE YOUR MENU DATA HERE ↓↓                      */
+  /*                     ↓↓ PASTE YOUR MENU DATA HERE ↓↓                     */
   /* Replace everything from "const menuData = {" down to "};" with your code! */
   /* ========================================================================= */
   
@@ -1084,7 +1084,7 @@ const App = (function() {
   };
 
   /* ========================================================================= */
-  /*                      ↑↑ PASTE YOUR MENU DATA HERE ↑↑                      */
+  /*                     ↑↑ PASTE YOUR MENU DATA HERE ↑↑                     */
   /* ========================================================================= */
 
   const customReviewsData = [
@@ -1847,26 +1847,31 @@ const App = (function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
       
-      const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
+      // api.whatsapp.com is much more stable on Safari than the wa.me shortlink
+      const url = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encodeURIComponent(msg)}`;
       const link = document.createElement('a');
       link.href = url;
+      link.target = "_blank"; // Force new tab to prevent Safari context destruction
+      link.rel = "noopener noreferrer";
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      
+      // Delay removing the link so Safari fully registers the intent
+      setTimeout(() => document.body.removeChild(link), 600);
     },
 
     checkoutMessenger: function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
 
-      const url = `https://m.me/${MESSENGER_USERNAME}`;
+      // Fix for Safari m.me bug: Use messenger.com directly to trigger Universal Links
+      const url = `https://www.messenger.com/t/${MESSENGER_USERNAME}`;
 
       const proceedToMessenger = () => {
-        // We pass the URL into the triggerConfirm function so it sets up the exact <a> tag internally
         this.triggerConfirm(
           "Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", 
           "Order Ready! 📋", 
-          (proceed) => { /* Navigation is handled natively by the HTML <a> element we setup */ }, 
+          (proceed) => { /* Navigation handled natively by the HTML anchor tag */ }, 
           url
         );
       };
@@ -1938,17 +1943,24 @@ const App = (function() {
       
       const btnProceed = document.getElementById('btnNotifProceed');
       
-      // If we need to bypass Apple's blocks, we inject the href directly into the <a> tag
+      // If a URL is provided (e.g., Messenger)
       if (redirectUrl) {
         btnProceed.innerText = "Open App";
         btnProceed.href = redirectUrl;
+        btnProceed.target = "_blank"; // Forces new context, avoiding DOM destruction issues
+        btnProceed.rel = "noopener noreferrer";
         btnProceed.onclick = () => { 
-          this.closeNotification(); 
-          callback(true); 
+          // Delay closing the modal so Safari doesn't kill the navigation context
+          setTimeout(() => {
+            this.closeNotification(); 
+            callback(true); 
+          }, 600);
         };
       } else {
         btnProceed.innerText = "Proceed";
         btnProceed.href = "javascript:void(0)";
+        btnProceed.removeAttribute("target");
+        btnProceed.removeAttribute("rel");
         btnProceed.onclick = (e) => { 
           e.preventDefault();
           this.closeNotification(); 
