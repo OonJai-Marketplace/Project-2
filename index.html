@@ -954,11 +954,13 @@
     </div>
   </div>
 
-  <!-- THEMED NOTIFICATION MODALS (UPDATED FOR DIRECT APP LAUNCH) -->
+  <!-- THEMED NOTIFICATION MODALS (UPDATED FOR DIRECT APP LAUNCH & RICH HTML) -->
   <div class="modal-overlay" id="notificationModal" style="z-index: 2000;" role="alertdialog" aria-modal="true" aria-labelledby="notifTitle" aria-describedby="notifMessage" onclick="if(event.target === this) App.closeNotification()">
     <div class="modal-box" style="max-width: 320px; text-align: center; padding: 20px;">
       <h3 class="modal-title" id="notifTitle" style="margin-bottom: 12px;">Notification</h3>
-      <p id="notifMessage" style="font-size: 13px; color: var(--text-subhead); margin-bottom: 20px; line-height: 1.5; white-space: pre-wrap;"></p>
+      
+      <!-- Changed from <p> to <div> to properly support injected HTML structure without validation issues -->
+      <div id="notifMessage" style="font-size: 13px; color: var(--text-subhead); margin-bottom: 20px; line-height: 1.5;"></div>
       
       <div id="notifAlertAction">
         <button class="add-btn" style="width: 100%;" onclick="App.closeNotification()">OK</button>
@@ -966,7 +968,6 @@
       
       <div id="notifConfirmActions" style="display: none; gap: 10px;">
         <button class="cat-btn" style="flex: 1; justify-content: center;" id="btnNotifCancel">Cancel</button>
-        <!-- The Proceed button is now a true hyperlink to trigger Apple's Universal Links natively -->
         <a class="add-btn" style="flex: 1; display:flex; align-items:center; justify-content:center; text-decoration:none; box-sizing:border-box;" id="btnNotifProceed" href="javascript:void(0)">Proceed</a>
       </div>
     </div>
@@ -1212,12 +1213,16 @@ const App = (function() {
   // --- UPDATED (STRICTER) SWIPE LOGIC ---
   function setupTabSwiping() {
     const appRoot = document.getElementById('appRoot');
+    let touchStartTime = 0;
+    
     appRoot.addEventListener('touchstart', e => {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
+      touchStartTime = e.timeStamp;
     }, {passive: true});
 
     appRoot.addEventListener('touchend', e => {
+      // Ignore swipes interacting with sliders or modals
       if (e.target.closest('.carousel-container') || e.target.closest('.home-card-slider') || e.target.closest('.modal-overlay.active')) return;
       
       touchEndX = e.changedTouches[0].screenX;
@@ -1227,17 +1232,23 @@ const App = (function() {
       const diffY = touchEndY - touchStartY;
       const absX = Math.abs(diffX);
       const absY = Math.abs(diffY);
+      const duration = e.timeStamp - touchStartTime;
       
-      // Strict swipe condition: 
-      // 1. Horizontal distance must be greater than 80px.
-      // 2. Horizontal distance must be at least 2.5x the vertical distance.
-      if (absX > 80 && absX > absY * 2.5) {
-        const currentTab = document.querySelector('.nav-tab.active').dataset.tab;
+      // Strict conditions to prevent accidental tabs switching:
+      // 1. Must be a fast swipe (under 600ms)
+      // 2. Horizontal distance must be significantly long (over 120px)
+      // 3. Must be very clearly horizontal (X movement must be 3 times greater than Y movement)
+      if (duration < 600 && absX > 120 && absX > (absY * 3)) {
+        const activeTabEl = document.querySelector('.nav-tab.active');
+        if(!activeTabEl) return;
+        
+        const currentTab = activeTabEl.dataset.tab;
         let idx = mainTabs.indexOf(currentTab);
+        
         if (diffX < 0 && idx < mainTabs.length - 1) { 
-          App.switchMainTab(mainTabs[idx + 1]);
+          App.switchMainTab(mainTabs[idx + 1]); // Swiped Left
         } else if (diffX > 0 && idx > 0) { 
-          App.switchMainTab(mainTabs[idx - 1]);
+          App.switchMainTab(mainTabs[idx - 1]); // Swiped Right
         }
       }
     }, {passive: true});
@@ -1847,48 +1858,44 @@ const App = (function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
       
-      // api.whatsapp.com is much more stable on Safari than the wa.me shortlink
       const url = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encodeURIComponent(msg)}`;
       const link = document.createElement('a');
       link.href = url;
-      link.target = "_blank"; // Force new tab to prevent Safari context destruction
+      link.target = "_blank"; 
       link.rel = "noopener noreferrer";
       document.body.appendChild(link);
       link.click();
       
-      // Delay removing the link so Safari fully registers the intent
-      setTimeout(() => document.body.removeChild(link), 600);
+      setTimeout(() => document.body.removeChild(link), 800);
     },
 
     checkoutMessenger: function() {
       const msg = this._buildOrderMsg();
       if (!msg) return;
 
-      // Use the official m.me Universal Link. 
-      // This is the ONLY link format the Messenger iOS app natively understands for opening specific profiles.
       const url = `https://m.me/${MESSENGER_USERNAME}`;
+      
+      // High-Visibility rich HTML message emphasizing the PASTE step
+      const alertHtml = `
+        <div style="text-align: center; margin-bottom: 5px;">
+          <div style="background: rgba(34, 197, 94, 0.1); border: 2px dashed var(--accent-green); border-radius: 10px; padding: 18px 10px; margin: 15px 0;">
+            <div style="font-size: 32px; margin-bottom: 8px;">📋</div>
+            <h4 style="color: var(--accent-green); margin-bottom: 5px; font-size: 15px;">Order Details Copied!</h4>
+            <p style="font-size: 13px; color: #ffffff; line-height: 1.4;">When Messenger opens, you must <b>PASTE</b> the text into the chat box and hit send.</p>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); font-style: italic;">If you do not paste the message, we won't receive your order.</p>
+        </div>
+      `;
 
       const proceedToMessenger = () => {
         this.triggerConfirm(
-          "Your order details have been successfully prepared.\n\nWhen Messenger opens, paste your order text into the chat to send.", 
-          "Order Ready! 📋", 
+          alertHtml, 
+          "Almost Done! 🚀", 
           (proceed) => { /* Navigation handled natively by the HTML anchor tag */ }, 
-          url
+          url,
+          "Got it, Open Messenger"
         );
       };
-
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(msg).then(() => {
-          proceedToMessenger();
-        }).catch(() => {
-          this._fallbackCopyText(msg);
-          proceedToMessenger();
-        });
-      } else {
-        this._fallbackCopyText(msg);
-        proceedToMessenger();
-      }
-    },
 
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(msg).then(() => {
@@ -1934,19 +1941,26 @@ const App = (function() {
     },
 
     triggerAlert: function(message, title) {
-      document.getElementById('notifTitle').innerText = title; 
-      document.getElementById('notifMessage').innerText = message;
+      // Replaces basic \n line breaks with <br> tags safely
+      const formattedMessage = message.includes('<div') ? message : message.replace(/\n/g, '<br>');
+      document.getElementById('notifTitle').innerHTML = title; 
+      document.getElementById('notifMessage').innerHTML = formattedMessage;
+      
       document.getElementById('notifAlertAction').style.display = 'block'; 
       document.getElementById('notifConfirmActions').style.display = 'none';
+      
       const m = document.getElementById('notificationModal'); 
       setScrollLock(true);
       m.classList.add('active'); 
       trapFocus(m);
     },
     
-    triggerConfirm: function(message, title, callback, redirectUrl = null) {
-      document.getElementById('notifTitle').innerText = title; 
-      document.getElementById('notifMessage').innerText = message;
+    // Updated to accept custom button text and rich HTML structures for alerts
+    triggerConfirm: function(message, title, callback, redirectUrl = null, confirmText = "Proceed") {
+      const formattedMessage = message.includes('<div') ? message : message.replace(/\n/g, '<br>');
+      document.getElementById('notifTitle').innerHTML = title; 
+      document.getElementById('notifMessage').innerHTML = formattedMessage;
+      
       document.getElementById('notifAlertAction').style.display = 'none'; 
       document.getElementById('notifConfirmActions').style.display = 'flex';
       
@@ -1958,26 +1972,24 @@ const App = (function() {
       const btnProceed = document.getElementById('btnNotifProceed');
       
       if (redirectUrl) {
-        btnProceed.innerText = "Open App";
+        btnProceed.innerText = confirmText;
         btnProceed.href = redirectUrl;
         
-        // CRITICAL FIX: We remove target="_blank". 
-        // Opening a new tab on iOS strips the "/oon.jai.laos" path during the handoff to the Messenger app.
         btnProceed.removeAttribute("target"); 
         btnProceed.removeAttribute("rel");
         
         btnProceed.onclick = () => { 
-          // Delay closing the modal so Safari doesn't kill the navigation context
           setTimeout(() => {
             this.closeNotification(); 
             callback(true); 
           }, 800);
         };
       } else {
-        btnProceed.innerText = "Proceed";
+        btnProceed.innerText = confirmText;
         btnProceed.href = "javascript:void(0)";
         btnProceed.removeAttribute("target");
         btnProceed.removeAttribute("rel");
+        
         btnProceed.onclick = (e) => { 
           e.preventDefault();
           this.closeNotification(); 
