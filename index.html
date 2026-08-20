@@ -1222,6 +1222,7 @@ const App = (function() {
     }, {passive: true});
 
     appRoot.addEventListener('touchend', e => {
+      // Ignore swipes interacting with sliders or modals
       if (e.target.closest('.carousel-container') || e.target.closest('.home-card-slider') || e.target.closest('.modal-overlay.active')) return;
       
       touchEndX = e.changedTouches[0].screenX;
@@ -1245,9 +1246,9 @@ const App = (function() {
         let idx = mainTabs.indexOf(currentTab);
         
         if (diffX < 0 && idx < mainTabs.length - 1) { 
-          App.switchMainTab(mainTabs[idx + 1]);
+          App.switchMainTab(mainTabs[idx + 1]); // Swiped Left
         } else if (diffX > 0 && idx > 0) { 
-          App.switchMainTab(mainTabs[idx - 1]);
+          App.switchMainTab(mainTabs[idx - 1]); // Swiped Right
         }
       }
     }, {passive: true});
@@ -1912,7 +1913,7 @@ const App = (function() {
       
       const link = document.createElement('a');
       link.href = url;
-      link.target = "_blank"; 
+      link.target = "_top"; // Fix for Safari iOS bugs 
       link.rel = "noopener noreferrer";
       document.body.appendChild(link);
       link.click();
@@ -2045,7 +2046,7 @@ const App = (function() {
         btnProceed.onclick = () => { 
           setTimeout(() => {
             this.closeNotification(); 
-            callback(true); 
+            if(callback) callback(true); 
           }, 3000);
         };
       } else {
@@ -2057,13 +2058,13 @@ const App = (function() {
         btnProceed.onclick = (e) => { 
           e.preventDefault();
           this.closeNotification(); 
-          callback(true); 
+          if(callback) callback(true); 
         };
       }
       
       document.getElementById('btnNotifCancel').onclick = () => { 
         this.closeNotification(); 
-        callback(false); 
+        if(callback) callback(false); 
       };
     },
     
