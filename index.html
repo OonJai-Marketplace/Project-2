@@ -43,22 +43,28 @@
       --text-muted: #94a3b8; --text-subhead: #cbd5e1; --border-radius-main: 14px; --border-radius-sm: 10px;
     }
 
+    /* ERADICATE BLUE TAP HIGHLIGHT */
     * { 
       box-sizing: border-box; 
       margin: 0; 
       padding: 0; 
       font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent !important;
-      outline: none;
     }
-
-    *:focus {
+    img, button, a, div, span {
+      -webkit-tap-highlight-color: transparent !important;
       outline: none !important;
     }
     
     html, body { width: 100%; min-height: 100vh; background: var(--bg-dark); color: var(--text-bright); overflow-x: hidden; touch-action: pan-y; }
     body { background: var(--bg-gradient); background-attachment: fixed; }
-    body.modal-open { overflow: hidden !important; touch-action: none !important; }
+    
+    /* HARD SCROLL LOCK FOR MODALS */
+    html.modal-open, body.modal-open { 
+      overflow: hidden !important; 
+      height: 100vh !important; 
+      touch-action: none !important;
+      overscroll-behavior: none !important;
+    }
 
     /* --- 2. TOP NAVIGATION --- */
     .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(1, 12, 10, 0.95); border-bottom: 1px solid var(--border-color); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
@@ -370,7 +376,11 @@
     .btn-hope-action:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(74, 222, 128, 0.3); }
 
     /* --- 7. MODALS --- */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 2000; }
+    .modal-overlay { 
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); 
+      display: none; justify-content: center; align-items: center; padding: 16px; z-index: 2000;
+      overscroll-behavior: contain;
+    }
     .modal-overlay.active { display: flex; }
     .modal-box { background: #041f1a; border: 1px solid var(--border-color); border-radius: var(--border-radius-main); max-width: 480px; width: 100%; max-height: 90%; overflow-y: auto; padding: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); position: relative; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -384,64 +394,61 @@
     .modal-subtitle { font-size: 11px; color: var(--accent-green); margin-bottom: 10px; background: rgba(74, 222, 128, 0.1); padding: 6px 10px; border-radius: var(--border-radius-sm); }
 
     /* ======================================================= */
-    /*           ELEGANT LUXURY ARTISAN MODAL STYLING          */
+    /*           IMAGE GALLERY & DIRECT ORDER MODAL            */
     /* ======================================================= */
     .gallery-modal-box {
       padding: 0;
-      background: radial-gradient(circle at 50% 0%, #0d4a3e 0%, #041f1a 45%, #010a08 100%);
-      border: 1px solid rgba(212, 175, 55, 0.45);
-      border-radius: 20px;
+      background: #041f1a;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-main);
       max-width: 440px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
       position: relative;
     }
     
     .gallery-header-section {
-      padding: 24px 20px 16px 20px;
+      padding: 20px 20px 16px 20px;
       text-align: center;
       position: relative;
-      background: linear-gradient(180deg, rgba(6, 38, 32, 0.9) 0%, rgba(2, 18, 15, 0.6) 100%);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      background: rgba(1, 12, 10, 0.6);
+      border-bottom: 1px solid var(--border-color);
     }
     
     .gallery-badge {
-      font-size: 9.5px;
-      color: #D4AF37;
-      letter-spacing: 3.5px;
+      font-size: 10px;
+      color: var(--accent-green);
+      letter-spacing: 2px;
       text-transform: uppercase;
-      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      margin-bottom: 5px;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+      margin-bottom: 6px;
     }
     
     .gallery-title {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      color: #ffffff;
-      font-size: 1.75rem;
+      font-family: 'Georgia', serif;
+      color: var(--text-bright);
+      font-size: 22px;
       font-weight: 600;
-      letter-spacing: 0.8px;
-      line-height: 1.15;
+      letter-spacing: 0.5px;
       margin-bottom: 8px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
     
     .gallery-divider {
-      width: 50px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+      width: 40px;
+      height: 2px;
+      background: var(--accent-green);
       margin: 0 auto 10px auto;
+      border-radius: 2px;
     }
 
     .gallery-desc {
-      color: #d1e2d3;
+      color: var(--text-subhead);
       font-size: 13px;
       font-style: italic;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      line-height: 1.45;
+      font-family: 'Georgia', serif;
+      line-height: 1.5;
       padding: 0 10px;
     }
 
@@ -449,9 +456,9 @@
       aspect-ratio: 1/1 !important;
       border: none;
       border-radius: 0;
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
       position: relative;
-      background: #02120f;
+      background: var(--bg-dark);
     }
     
     .square-carousel .carousel-img {
@@ -460,28 +467,26 @@
 
     .gallery-close-btn {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: 12px;
+      right: 12px;
       z-index: 25;
-      background: rgba(1, 12, 10, 0.75);
-      color: #cbd5e1;
+      background: rgba(1, 12, 10, 0.8);
+      color: var(--text-muted);
       border-radius: 50%;
       width: 32px;
       height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      border: 1px solid rgba(212, 175, 55, 0.35);
+      font-size: 15px;
+      border: 1px solid var(--border-color);
       backdrop-filter: blur(8px);
       cursor: pointer;
       transition: all 0.2s ease;
     }
     .gallery-close-btn:hover {
-      background: #D4AF37;
+      background: var(--accent-green);
       color: #010c0a;
-      border-color: #D4AF37;
-      transform: scale(1.08);
     }
 
     .gallery-dots {
@@ -499,33 +504,28 @@
       height: 7px;
     }
     .gallery-dots .dot.active {
-      background: #D4AF37;
+      background: var(--accent-green);
       transform: scale(1.3);
     }
 
-    /* Modal Action Bar with Gold Accent */
+    /* Modal Action Bar */
     .gallery-order-bar {
-      padding: 16px 20px;
-      background: linear-gradient(180deg, rgba(3, 24, 20, 0.95) 0%, rgba(1, 12, 10, 0.98) 100%);
-      border-top: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 15px 20px;
+      background: #041f1a;
+      border-top: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
     .gallery-price-tag {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #4ade80;
-      letter-spacing: 0.5px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent-green);
     }
     .gallery-order-bar .add-btn {
       padding: 9px 20px;
       font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
     }
 
     /* --- 8. SHARED CAROUSEL STYLES --- */
@@ -956,12 +956,12 @@
     </div>
   </div>
 
-  <!-- ELEGANT ARTISAN IMAGE GALLERY & DIRECT ORDER MODAL -->
+  <!-- ELEGANT IMAGE GALLERY & DIRECT ORDER MODAL (OON JAI THEME MATCHED) -->
   <div class="modal-overlay" id="galleryModal" role="dialog" aria-modal="true" aria-label="Image Gallery" onclick="if(event.target === this) App.closeGallery()">
-    <div class="modal-box gallery-modal-box">
+    <div class="gallery-modal-box">
       <button class="gallery-close-btn" onclick="App.closeGallery()" aria-label="Close Gallery">✕</button>
       <div class="gallery-header-section">
-        <div class="gallery-badge">✦ Oon Jai Artisan Creation ✦</div>
+        <div class="gallery-badge">✦ Oon Jai Specialty ✦</div>
         <h3 class="gallery-title" id="galleryTitle"></h3>
         <div class="gallery-divider"></div>
         <p class="gallery-desc" id="galleryDesc"></p>
@@ -971,7 +971,7 @@
       </div>
       <div class="carousel-dots gallery-dots" id="galleryCarouselDots" aria-hidden="true"></div>
       
-      <!-- Luxury Action Bar -->
+      <!-- Theme-Matched Action Bar -->
       <div class="gallery-order-bar">
         <span class="gallery-price-tag" id="galleryPriceTag">0 Kip</span>
         <div id="galleryActionContainer"></div>
@@ -1093,6 +1093,16 @@ const App = (function() {
 
   // --- INTERNAL UTILITIES ---
   function formatKip(amount) { return amount.toLocaleString() + ' Kip'; }
+  
+  function setScrollLock(isLocked) {
+    if (isLocked) {
+      document.documentElement.classList.add('modal-open');
+      document.body.classList.add('modal-open');
+    } else {
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+    }
+  }
   
   function trapFocus(modalEl) {
     const focusableEls = modalEl.querySelectorAll('a[href], button, textarea, input, select');
@@ -1683,14 +1693,14 @@ const App = (function() {
       }
 
       const modal = document.getElementById('customModal');
-      document.body.classList.add('modal-open');
+      setScrollLock(true);
       modal.classList.add('active');
       trapFocus(modal);
     },
 
     closeCustomModal: function() { 
       document.getElementById('customModal').classList.remove('active'); 
-      document.body.classList.remove('modal-open');
+      setScrollLock(false);
       currentActiveCustomItem = null; 
       editingCartIndex = null;
     },
@@ -1715,13 +1725,13 @@ const App = (function() {
       setupCarousel('galleryCarouselTrack', 'galleryCarouselDots', imageList);
       
       const modal = document.getElementById('galleryModal');
-      document.body.classList.add('modal-open');
+      setScrollLock(true);
       modal.classList.add('active');
       trapFocus(modal);
     },
     closeGallery: function() { 
       document.getElementById('galleryModal').classList.remove('active'); 
-      document.body.classList.remove('modal-open');
+      setScrollLock(false);
       if(carouselIntervals['galleryCarouselTrack']) clearInterval(carouselIntervals['galleryCarouselTrack']);
     },
     
@@ -1860,7 +1870,7 @@ const App = (function() {
       document.getElementById('notifTitle').innerText = title; document.getElementById('notifMessage').innerText = message;
       document.getElementById('notifAlertAction').style.display = 'block'; document.getElementById('notifConfirmActions').style.display = 'none';
       const m = document.getElementById('notificationModal'); 
-      document.body.classList.add('modal-open');
+      setScrollLock(true);
       m.classList.add('active'); 
       trapFocus(m);
     },
@@ -1868,7 +1878,7 @@ const App = (function() {
       document.getElementById('notifTitle').innerText = title; document.getElementById('notifMessage').innerText = message;
       document.getElementById('notifAlertAction').style.display = 'none'; document.getElementById('notifConfirmActions').style.display = 'flex';
       const m = document.getElementById('notificationModal'); 
-      document.body.classList.add('modal-open');
+      setScrollLock(true);
       m.classList.add('active'); 
       trapFocus(m);
       
@@ -1880,7 +1890,7 @@ const App = (function() {
     },
     closeNotification: function() { 
       document.getElementById('notificationModal').classList.remove('active'); 
-      document.body.classList.remove('modal-open');
+      setScrollLock(false);
     }
   };
 })();
