@@ -1882,27 +1882,28 @@ const App = (function() {
 
     executeMessenger: function() {
       const msg = this._buildOrderMsg();
-      const url = `https://m.me/${MESSENGER_USERNAME}`;
+      // Use your main Facebook page URL instead of the m.me redirect
+      const url = `https://www.facebook.com/oon.jai.laos`;
       
-      // 1. Copy the order text to the device clipboard
+      // 1. Silently copy order details to the clipboard
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(msg).catch(() => this._fallbackCopyText(msg));
       } else {
         this._fallbackCopyText(msg);
       }
 
-      // 2. Show a clean, foolproof popup with a direct button to your chat
+      // 2. Present a clean prompt that takes them straight to your Facebook page
       const directHtml = `
         <div style="text-align: center; padding: 10px 0;">
           <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid var(--accent-green); border-radius: 10px; padding: 15px; margin-bottom: 15px;">
             <p style="font-size: 13px; color: #ffffff; margin-bottom: 8px; font-weight: 600;">✓ Order Details Copied!</p>
-            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">Your order is saved in your clipboard. Tap below to open Messenger, then paste it into our chat!</p>
+            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">Your order is saved in your clipboard. Tap below to visit our Facebook page, then paste it into a message!</p>
           </div>
-          <a href="${url}" target="_blank" rel="noopener" onclick="App.closeNotification();" style="display: block; width: 100%; padding: 12px; background: #0084FF; color: white; text-decoration: none; border-radius: var(--border-radius-sm); font-weight: bold; font-size: 13px; text-align: center; box-sizing: border-box;">Open Messenger Chat ↗</a>
+          <a href="${url}" target="_blank" rel="noopener" onclick="App.closeNotification();" style="display: block; width: 100%; padding: 12px; background: #1877F2; color: white; text-decoration: none; border-radius: var(--border-radius-sm); font-weight: bold; font-size: 13px; text-align: center; box-sizing: border-box;">Open Facebook Page ↗</a>
         </div>
       `;
 
-      this.triggerCustomPrompt(directHtml, "Ready to Send! 🚀");
+      this.triggerCustomPrompt(directHtml, "Order via Facebook 📘");
     },
 
     _fallbackCopyText: function(text) {
