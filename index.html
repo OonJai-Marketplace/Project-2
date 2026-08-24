@@ -1062,6 +1062,9 @@ const App = (function() {
     const hint = document.getElementById('swipeHint');
     if (!hint) return;
     
+    // Check if it's a desktop screen. If it is, STOP here and do nothing.
+    if (window.innerWidth >= 768) return;
+    
     // Check local storage so we only bother them once
     if (!localStorage.getItem('oonjai_swipe_hint_shown')) {
       hint.classList.remove('hidden');
